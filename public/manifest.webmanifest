@@ -1,0 +1,29 @@
+{
+  "name": "Color Guessing Game - Free Online Color Quiz",
+  "short_name": "ColorGuess",
+  "description": "Test your color recognition skills with a free online color guessing game featuring RGB, HEX, matching, timed challenges, and daily puzzles.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#8b5cf6",
+  "categories": ["games", "education", "puzzle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

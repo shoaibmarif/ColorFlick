@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>Color Guessing Game - Free Online Color Quiz</title>
+    <meta
+      name="description"
+      content="Test your color recognition skills with a free online color guessing game featuring RGB, HEX, color matching, timed challenges, daily challenges, and statistics."
+    />
+    <link rel="canonical" href="https://colorguess.game/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#8b5cf6" />
+    
+    <!-- Open Graph Metadata -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Color Guessing Game - Free Online Color Quiz" />
+    <meta
+      property="og:description"
+      content="Test your color recognition skills with a free online color guessing game featuring RGB, HEX, color matching, timed challenges, daily challenges, and statistics."
+    />
+    <meta property="og:url" content="https://colorguess.game/" />
+    <meta property="og:image" content="https://colorguess.game/favicon.svg" />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Color Guessing Game - Free Online Color Quiz" />
+    <meta
+      name="twitter:description"
+      content="Test your color recognition skills with a free online color guessing game featuring RGB, HEX, color matching, timed challenges, daily challenges, and statistics."
+    />
+    <meta name="twitter:image" content="https://colorguess.game/favicon.svg" />
+
+    <!-- Structured Data (WebApplication) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Color Guessing Game",
+      "url": "https://colorguess.game/",
+      "description": "Test your color recognition skills with a free online color guessing game featuring RGB, HEX, color matching, timed challenges, daily challenges, and statistics.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+  </head>
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Safe Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
