@@ -86,6 +86,20 @@ class SoundManager {
     this.playTone(1046.5, 'sine', 0.35, 0.2);
   }
 
+  public playCountdown() {
+    // Gentle high tick
+    this.playTone(880, 'sine', 0.04);
+  }
+
+  public playPersonalBest() {
+    // Triumphant double-octave fanfare
+    this.playTone(523.25, 'triangle', 0.12, 0);
+    this.playTone(659.25, 'triangle', 0.12, 0.08);
+    this.playTone(783.99, 'triangle', 0.15, 0.16);
+    this.playTone(1046.5, 'sine', 0.25, 0.24);
+    this.playTone(1318.51, 'sine', 0.45, 0.35);
+  }
+
   public playGameComplete() {
     // Celebration progression
     this.playTone(523.25, 'triangle', 0.12, 0);

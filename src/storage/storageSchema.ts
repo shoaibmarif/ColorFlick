@@ -9,8 +9,12 @@ export const DEFAULT_SETTINGS: GameSettings = {
   soundVolume: 0.6,
   reducedMotion: false,
   colorAssistance: 'off',
+  colorblindMode: 'off',
   showColorCodes: 'after-answer',
   highContrast: false,
+  autoNext: false,
+  largeText: false,
+  keyboardNavigation: true,
 };
 
 const initialModeStats = {
@@ -45,16 +49,21 @@ export const DEFAULT_STATS: PlayerStats = {
     'warm-cool': { ...initialModeStats },
     'light-dark': { ...initialModeStats },
     'closest-color': { ...initialModeStats },
+    'color-picker': { ...initialModeStats },
+    'color-match': { ...initialModeStats },
   },
 };
 
 export interface GameHistoryEntry {
   id: string;
   timestamp: number;
+  date: string; // ISO date string
   mode: string;
   format: string;
   difficulty: string;
   score: number;
   accuracy: number;
+  durationMs: number;
+  bestStreak: number;
   rounds: RoundResult[];
 }

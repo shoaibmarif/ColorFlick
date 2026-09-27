@@ -88,9 +88,13 @@ export const Storage = {
 
   addHistoryEntry(entry: GameHistoryEntry): void {
     const history = this.getHistory();
-    // Keep last 25 games to prevent excessive storage
-    const updated = [entry, ...history].slice(0, 25);
+    // Keep last 200 games
+    const updated = [entry, ...history].slice(0, 200);
     setItem(KEYS.HISTORY, updated);
+  },
+
+  clearHistory(): void {
+    setItem(KEYS.HISTORY, []);
   },
 
   getAchievements(): Achievement[] {

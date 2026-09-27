@@ -5,15 +5,18 @@ export type GameMode =
   | 'color-name'
   | 'warm-cool'
   | 'light-dark'
-  | 'closest-color';
+  | 'closest-color'
+  | 'color-picker'
+  | 'color-match';
 
 export type GameFormat =
   | 'standard'        // 10 rounds
-  | 'quick-challenge' // 10 rounds with 30s total limit
+  | 'quick-challenge' // 5, 10, or 20 rounds with progressive difficulty
   | 'timed'           // Fixed countdown (30s, 60s, 120s)
   | 'endless'         // 3 lives, play until lost
-  | 'survival'        // Progressive difficulty escalating every 3 rounds
-  | 'daily';          // Seeded daily 10-round challenge
+  | 'survival'        // Progressive difficulty escalating until mistake
+  | 'daily'           // Seeded daily 10-round challenge
+  | 'practice';       // Untimed learning mode with hints
 
 export type Difficulty = 'easy' | 'medium' | 'hard' | 'expert';
 
@@ -34,7 +37,9 @@ export interface RoundResult {
   scoreEarned: number;
   responseTimeMs: number;
   differencePercentage?: number;
+  similarityPercentage?: number;
   targetCategory?: string;
+  explanation?: string;
 }
 
 export interface GameSettings {
@@ -43,8 +48,12 @@ export interface GameSettings {
   soundVolume: number; // 0 to 1
   reducedMotion: boolean;
   colorAssistance: 'off' | 'basic' | 'enhanced';
+  colorblindMode: 'off' | 'protanopia' | 'deuteranopia' | 'tritanopia';
   showColorCodes: 'never' | 'after-answer' | 'always';
   highContrast: boolean;
+  autoNext: boolean;
+  largeText: boolean;
+  keyboardNavigation: boolean;
 }
 
 export interface DailyChallengeState {

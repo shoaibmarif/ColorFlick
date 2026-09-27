@@ -7,66 +7,71 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: 'What is a color guessing game?',
     answer:
-      'A color guessing game is an interactive browser-based puzzle where players are challenged to identify, match, or predict color values. Players test their visual perception and color theory knowledge across multiple modes including Exact Color matching, RGB channel mixing, HEX code guessing, and color temperature classification.',
+      'A color guessing game is an interactive web-based platform that challenges players to identify, match, and reason about colors across multiple scientific modes. Players test their visual perception, RGB mixing intuition, HEX code recognition, temperature perception, and color theory knowledge.',
   },
   {
-    question: 'How do I play?',
+    question: 'How does RGB work?',
     answer:
-      'In each round, a central target color swatch is displayed. Depending on the selected mode, choose the matching swatch from multiple cards, adjust the Red, Green, and Blue sliders to recreate it, or enter its 3-digit or 6-digit hex code. Correct answers award points and build streaks.',
-  },
-  {
-    question: 'What is RGB?',
-    answer:
-      'RGB stands for Red, Green, and Blue, which are the primary colors of additive light used by computer displays and phone screens. Each channel has an 8-bit integer value ranging from 0 (no light) to 255 (full intensity), combining to produce over 16.7 million distinct colors.',
+      'RGB is the hardware additive color system of screens. Red, Green, and Blue light channels each range from 0 (completely off) to 255 (maximum photon intensity). Blending all three at 255 creates pure white light, while setting all three to 0 produces black, yielding 16,777,216 distinct TrueColor combinations.',
   },
   {
     question: 'What is HEX?',
     answer:
-      'HEX is a hexadecimal (base-16) representation of an RGB color. It consists of a hash sign followed by six characters (#RRGGBB), where each pair of characters represents the intensity of Red, Green, and Blue respectively from 00 (0) to FF (255). Shorthand 3-digit hex codes (like #FFF) double each digit (#FFFFFF).',
+      'HEX is a base-16 hexadecimal representation of 8-bit RGB channels. Written as #RRGGBB, each 2-character pair ranges from 00 (0) to FF (255). Shorthand #RGB (like #4A9) expands automatically to #44AA99.',
   },
   {
-    question: 'How does the color matching mode work?',
+    question: 'What is HSL?',
     answer:
-      'In Exact Color mode, you are presented with a target color and 3 to 12 candidate swatches depending on difficulty. Candidate distractors are mathematically chosen within strict perceptual distance boundaries to ensure challenges are fair and never ambiguous.',
+      'HSL represents colors along cylindrical coordinates: Hue (an angle from 0° to 360° on the color wheel), Saturation (color purity from 0% gray to 100% full saturation), and Lightness (illumination from 0% pure black to 100% pure white). Designers prefer HSL because creating tints and shades is intuitive.',
   },
   {
-    question: 'How is color distance calculated?',
+    question: 'How does color similarity work?',
     answer:
-      'Color distance is calculated in the OKLab color space, developed by Björn Ottosson in 2020. Unlike raw RGB Euclidean distance, OKLab accounts for human eye sensitivity to green wavelengths versus blue wavelengths, producing a uniform perceptual difference measure (Delta E).',
-  },
-  {
-    question: 'Can I play on mobile?',
-    answer:
-      'Yes! ColorGuess is designed mobile-first. Large responsive touch cards, swipeable controls, and an installable Progressive Web App (PWA) manifest allow full standalone gameplay on iOS and Android devices without horizontal scroll.',
-  },
-  {
-    question: 'Does the game require an account?',
-    answer:
-      'No. The application is 100% frontend-only and requires no account registration, login credentials, or email address. You can begin playing immediately upon opening the page.',
-  },
-  {
-    question: 'Are my scores stored online?',
-    answer:
-      'No. Scores, round history, personal bests, and unlocked achievements are saved exclusively in your browser\'s private localStorage on your local device. We run no database or tracking servers.',
-  },
-  {
-    question: 'What is the Daily Color Challenge?',
-    answer:
-      'The Daily Color Challenge is a deterministic 10-round puzzle seeded with the calendar date (YYYY-MM-DD). Every player in the world receives the exact same color questions. Refreshing the browser preserves your score and prevents multiple attempts on the same day.',
+      'Our similarity engine computes perceptual color distance in the OKLab color space (Ottosson, 2020) rather than naive RGB Euclidean math. OKLab models human retinal cone responses (LMS), accounting for the human eye’s heightened sensitivity to green wavelengths compared to blue.',
   },
   {
     question: 'How is the score calculated?',
     answer:
-      'Scores consist of 100 Base Points for a correct answer, plus a Difficulty Bonus (+0 for Easy, +50 for Medium, +100 for Hard, +180 for Expert), a Speed Bonus of up to +100 points for responses under 5 seconds, and a Streak Bonus of +15 points per active streak level.',
+      'Points are awarded based on: Base Score (100 pts) × Difficulty Multiplier (Easy 1.0x, Medium 1.25x, Hard 1.5x, Expert 2.0x) + Speed Bonus (up to +100 pts for sub-second answers) + Streak Multiplier (up to 2.0x for consecutive correct answers). Exact matches earn a Perfect Match bonus.',
   },
   {
-    question: 'Does the game support color accessibility?',
+    question: 'Is the game free?',
     answer:
-      'Yes. The game strictly avoids color-only indicators by pairing all states with distinct icons (checkmarks, crosses), readable text labels, keyboard shortcuts, and ARIA live screen reader announcements. An optional Enhanced Accessibility setting adds micro-patterns and high-contrast borders.',
+      'Yes, the game is 100% free with no paywalls, hidden microtransactions, or subscription tiers.',
   },
   {
-    question: 'Can color display vary between devices?',
+    question: 'Does the game require an account?',
     answer:
-      'Yes. Slight visual differences can occur across hardware due to varying display gamuts (sRGB vs Display P3), screen brightness, ambient lighting, Night Shift / True Tone settings, and device calibration.',
+      'No. The application is completely frontend-only and requires no account registration, login credentials, or personal email address. You can jump directly into playing.',
+  },
+  {
+    question: 'Are my statistics stored online?',
+    answer:
+      'No. All stats, round history, personal records, and unlocked achievements are persisted strictly on your own device inside the browser\'s localStorage. Nothing is ever sent to or stored on an external server.',
+  },
+  {
+    question: 'Can I play on mobile?',
+    answer:
+      'Yes! The interface is built mobile-first with touch-friendly 44px+ hit targets, adaptive vertical card stacks, fluid typography, and support for installable PWA mode on iOS and Android.',
+  },
+  {
+    question: 'What is the daily color challenge?',
+    answer:
+      'The Daily Color Challenge generates a deterministic 10-round set of color puzzles each midnight using a seeded pseudo-random generator keyed to the current calendar date (YYYY-MM-DD). Every player worldwide gets the exact same questions each day.',
+  },
+  {
+    question: 'How does the color picker challenge work?',
+    answer:
+      'In Color Picker mode, you view a target color and use an interactive color palette or RGB/HSL sliders to manually recreate that color. Live similarity feedback displays your precision, and target values are revealed only upon submission.',
+  },
+  {
+    question: 'How accurate is color matching?',
+    answer:
+      'Visual color matching is calibrated to Delta E distances in OKLab color space. While screen calibration and ambient room lighting can slightly influence visual perception, the underlying mathematical comparisons are 100% reproducible and objective.',
+  },
+  {
+    question: 'Can colorblind users play?',
+    answer:
+      'Yes! The game features dedicated Colorblind Assistance settings (supporting Protanopia, Deuteranopia, and Tritanopia simulations), High Contrast borders, letter/number labels (A, B, C, D), and distinct icons so gameplay never relies on color recognition alone.',
   },
 ];

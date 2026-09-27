@@ -22,7 +22,21 @@ export function calculateLuminance(rgb: RGB): number {
  * Classifies a color deterministically as 'Light' or 'Dark'.
  * Uses a luminance threshold of 0.20 (derived from perceptual midpoint).
  */
-export function classifyLightDark(rgb: RGB): LightDarkCategory {
+export function classifyLightDark(rgb: RGB, threshold: number = 0.20): LightDarkCategory {
   const lum = calculateLuminance(rgb);
-  return lum >= 0.20 ? 'Light' : 'Dark';
+  return lum >= threshold ? 'Light' : 'Dark';
 }
+
+/**
+ * Returns an educational explanation for the color's luminance classification.
+ */
+export function getLuminanceExplanation(rgb: RGB, category: LightDarkCategory, threshold: number = 0.20): string {
+  const lum = calculateLuminance(rgb);
+  const roundedLum = (lum * 100).toFixed(1);
+  const thresholdPct = (threshold * 100).toFixed(0);
+  if (category === 'Light') {
+    return `Light: Relative luminance is ${roundedLum}% (>= ${thresholdPct}% perceptual threshold by WCAG 2.1 gamma expansion).`;
+  }
+  return `Dark: Relative luminance is ${roundedLum}% (< ${thresholdPct}% threshold). Requires light text for readability.`;
+}
+

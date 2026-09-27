@@ -10,6 +10,7 @@ import { RGB } from '../types/color';
 import {
   hexToRgb,
   rgbToHex,
+  rgbToHsl,
 } from '../utils/colorConversion';
 import {
   generateExactColorChoices,
@@ -17,9 +18,10 @@ import {
   generateColorNameChoices,
   generateRandomRgb,
   RngFn,
+  secureRandom,
 } from '../utils/randomColor';
-import { classifyWarmCool } from '../utils/warmCool';
-import { classifyLightDark } from '../utils/luminance';
+import { classifyWarmCool, getWarmCoolExplanation } from '../utils/warmCool';
+import { classifyLightDark, getLuminanceExplanation } from '../utils/luminance';
 import { calculateRoundScore } from '../utils/scoring';
 import { calculateDifferencePercentage } from '../utils/colorDistance';
 import { sanitizeHexInput } from '../utils/validation';
@@ -53,9 +55,10 @@ export function useGameEngine({
   const [mode, setMode] = useState<GameMode>(initialMode);
   const [format, setFormat] = useState<GameFormat>(initialFormat);
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
+  const [targetRoundsCount, setTargetRoundsCount] = useState<number>(totalRounds);
 
   const [roundNumber, setRoundNumber] = useState(1);
-  const [targetRgb, setTargetRgb] = useState<RGB>(() => generateRandomRgb(customRng));
+  const [targetRgb, setTargetRgb] = useState<RGB>(() => generateRandomRgb(customRng || secureRandom));
   const [choices, setChoices] = useState<RoundChoice[]>([]);
   const [nameChoices, setNameChoices] = useState<string[]>([]);
   const [nameTargetName, setNameTargetName] = useState<string>('');
@@ -66,18 +69,28 @@ export function useGameEngine({
   const [score, setScore] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [lives, setLives] = useState(3);
+  const [comboBanner, setComboBanner] = useState<string | null>(null);
 
   const roundStartTimeRef = useRef<number>(Date.now());
-  const rngRef = useRef<RngFn>(customRng || Math.random);
+  const rngRef = useRef<RngFn>(customRng || secureRandom);
 
-  // Determine active difficulty (auto-escalates in survival mode)
+  // Determine active difficulty (auto-escalates in survival and quick-challenge modes)
   const getActiveDifficulty = useCallback((): Difficulty => {
-    if (format !== 'survival') return difficulty;
-    if (roundNumber <= 3) return 'easy';
-    if (roundNumber <= 7) return 'medium';
-    if (roundNumber <= 12) return 'hard';
-    return 'expert';
-  }, [format, difficulty, roundNumber]);
+    if (format === 'survival') {
+      if (roundNumber <= 3) return 'easy';
+      if (roundNumber <= 6) return 'medium';
+      if (roundNumber <= 10) return 'hard';
+      return 'expert';
+    }
+    if (format === 'quick-challenge') {
+      const progress = roundNumber / targetRoundsCount;
+      if (progress <= 0.3) return 'easy';
+      if (progress <= 0.6) return 'medium';
+      if (progress <= 0.85) return 'hard';
+      return 'expert';
+    }
+    return difficulty;
+  }, [format, difficulty, roundNumber, targetRoundsCount]);
 
   // Generate question for current round
   const setupRound = useCallback(
@@ -106,29 +119,26 @@ export function useGameEngine({
           }))
         );
       } else if (mode === 'warm-cool') {
-        // Ensure non-ambiguous target
-        let cleanTarget = target;
-        let attempts = 0;
-        while (attempts < 20) {
-          const category = classifyWarmCool(cleanTarget);
-          if (category) break;
-          cleanTarget = generateRandomRgb(rng);
-          attempts++;
-        }
-        setTargetRgb(cleanTarget);
-        const correctCategory = classifyWarmCool(cleanTarget);
+        // Generate target color
+        const targetCat = classifyWarmCool(target);
         setChoices([
           {
             id: 'Warm',
-            hex: rgbToHex(cleanTarget),
+            hex: rgbToHex(target),
             label: 'Warm',
-            isCorrect: correctCategory === 'Warm',
+            isCorrect: targetCat === 'Warm',
           },
           {
             id: 'Cool',
-            hex: rgbToHex(cleanTarget),
+            hex: rgbToHex(target),
             label: 'Cool',
-            isCorrect: correctCategory === 'Cool',
+            isCorrect: targetCat === 'Cool',
+          },
+          {
+            id: 'Neutral',
+            hex: rgbToHex(target),
+            label: 'Neutral',
+            isCorrect: targetCat === 'Neutral',
           },
         ]);
       } else if (mode === 'light-dark') {
@@ -148,26 +158,29 @@ export function useGameEngine({
           },
         ]);
       } else {
-        // rgb-guess or hex-guess: no discrete choices, player inputs value
+        // rgb-guess, hex-guess, color-picker, color-match: user manipulates inputs/sliders
         setChoices([]);
       }
 
       setRoundStatus('guessing');
       setLastResult(null);
+      setComboBanner(null);
       roundStartTimeRef.current = Date.now();
     },
     [mode]
   );
 
-  // Initialize first round or when mode/difficulty changes
+  // Initialize first round or when mode/difficulty/format changes
   const startNewGame = useCallback(
-    (newMode?: GameMode, newFormat?: GameFormat, newDifficulty?: Difficulty) => {
+    (newMode?: GameMode, newFormat?: GameFormat, newDifficulty?: Difficulty, newTotalRounds?: number) => {
       const activeFormat = newFormat || format;
       const activeDiff = newDifficulty || difficulty;
+      const activeRounds = newTotalRounds || targetRoundsCount;
 
       if (newMode) setMode(newMode);
       if (newFormat) setFormat(activeFormat);
       if (newDifficulty) setDifficulty(activeDiff);
+      if (newTotalRounds) setTargetRoundsCount(activeRounds);
 
       setRoundNumber(1);
       setScore(0);
@@ -175,12 +188,13 @@ export function useGameEngine({
       setLives(3);
       setRoundHistory([]);
       setRoundStatus('guessing');
+      setComboBanner(null);
 
       const initialTarget = generateRandomRgb(rngRef.current);
       setTargetRgb(initialTarget);
       setupRound(initialTarget, activeDiff);
     },
-    [mode, format, difficulty, setupRound]
+    [mode, format, difficulty, targetRoundsCount, setupRound]
   );
 
   useEffect(() => {
@@ -195,14 +209,15 @@ export function useGameEngine({
       playerHex?: string,
       playerAnswerLabel?: string,
       differencePercentage?: number,
-      targetCategory?: string
+      targetCategory?: string,
+      explanation?: string
     ) => {
       const responseTimeMs = Date.now() - roundStartTimeRef.current;
       const activeDiff = getActiveDifficulty();
 
       const similarity =
         differencePercentage !== undefined
-          ? 100 - differencePercentage
+          ? Math.max(0, Math.min(100, 100 - differencePercentage))
           : isCorrect
           ? 100
           : 0;
@@ -226,13 +241,28 @@ export function useGameEngine({
         scoreEarned: scoreBreakdown.totalPoints,
         responseTimeMs,
         differencePercentage,
+        similarityPercentage: Math.round(similarity * 10) / 10,
         targetCategory,
+        explanation,
       };
 
       setLastResult(result);
       const updatedHistory = [...roundHistory, result];
       setRoundHistory(updatedHistory);
       setScore((s) => s + scoreBreakdown.totalPoints);
+
+      // Check special combo events
+      if (similarity >= 98) {
+        setComboBanner('✨ Perfect Match!');
+      } else if (isCorrect && responseTimeMs <= 900) {
+        setComboBanner('⚡ Lightning Answer!');
+      } else if (currentStreak + 1 === 5) {
+        setComboBanner('🔥 5 Streak Bonus!');
+      } else if (currentStreak + 1 === 10) {
+        setComboBanner('👑 10 Streak Master!');
+      } else {
+        setComboBanner(null);
+      }
 
       if (isCorrect) {
         const nextStreak = currentStreak + 1;
@@ -264,9 +294,12 @@ export function useGameEngine({
         if (!isCorrect) {
           isGameOver = true;
         }
+      } else if (format === 'practice') {
+        // Practice never auto-terminates
+        isGameOver = false;
       } else {
-        // standard, quick-challenge, daily: 10 rounds max
-        if (roundNumber >= totalRounds) {
+        // standard, quick-challenge, daily
+        if (roundNumber >= targetRoundsCount) {
           isGameOver = true;
         }
       }
@@ -298,13 +331,13 @@ export function useGameEngine({
       mode,
       format,
       lives,
-      totalRounds,
+      targetRoundsCount,
       difficulty,
       onGameComplete,
     ]
   );
 
-  // Choice button submission
+  // Choice button submission (Exact color, closest color, warm-cool, light-dark, color-name)
   const submitChoice = useCallback(
     (choiceId: string) => {
       if (roundStatus !== 'guessing') return;
@@ -314,10 +347,16 @@ export function useGameEngine({
       const isCorrect = selected.isCorrect;
 
       let targetCategory: string | undefined = undefined;
+      let explanation: string | undefined = undefined;
+
       if (mode === 'warm-cool') {
-        targetCategory = classifyWarmCool(targetRgb);
+        const cat = classifyWarmCool(targetRgb);
+        targetCategory = cat;
+        explanation = getWarmCoolExplanation(targetRgb, cat);
       } else if (mode === 'light-dark') {
-        targetCategory = classifyLightDark(targetRgb);
+        const cat = classifyLightDark(targetRgb);
+        targetCategory = cat;
+        explanation = getLuminanceExplanation(targetRgb, cat);
       }
 
       finishRound(
@@ -325,7 +364,8 @@ export function useGameEngine({
         selected.hex,
         selected.label || selected.hex,
         selected.distanceToTarget ? Math.round(selected.distanceToTarget * 100) : undefined,
-        targetCategory
+        targetCategory,
+        explanation
       );
     },
     [roundStatus, choices, targetRgb, mode, finishRound]
@@ -342,7 +382,6 @@ export function useGameEngine({
       if (!guessedRgb) return;
 
       const diff = calculateDifferencePercentage(targetRgb, guessedRgb);
-      // Considered correct if within 8% perceptual difference
       const isCorrect = diff <= 8.0;
 
       finishRound(isCorrect, sanitized, sanitized, diff);
@@ -363,6 +402,25 @@ export function useGameEngine({
     [roundStatus, targetRgb, finishRound]
   );
 
+  // Similarity guess submission (Color Picker and Color Matching modes)
+  const submitSimilarityGuess = useCallback(
+    (guessedRgb: RGB, similarityPercentage: number) => {
+      if (roundStatus !== 'guessing') return;
+      const diff = calculateDifferencePercentage(targetRgb, guessedRgb);
+      // Correct if similarity >= 88%
+      const isCorrect = similarityPercentage >= 88.0;
+      const hex = rgbToHex(guessedRgb);
+      const hsl = rgbToHsl(guessedRgb);
+
+      const label = mode === 'color-match'
+        ? `HSL(${hsl.h}°, ${hsl.s}%, ${hsl.l}%)`
+        : hex;
+
+      finishRound(isCorrect, hex, label, diff);
+    },
+    [roundStatus, targetRgb, mode, finishRound]
+  );
+
   // Advance to next round
   const nextRound = useCallback(() => {
     if (roundStatus === 'completed') return;
@@ -376,9 +434,9 @@ export function useGameEngine({
       format === 'survival'
         ? nextRoundNum <= 3
           ? 'easy'
-          : nextRoundNum <= 7
+          : nextRoundNum <= 6
           ? 'medium'
-          : nextRoundNum <= 12
+          : nextRoundNum <= 10
           ? 'hard'
           : 'expert'
         : difficulty;
@@ -386,12 +444,23 @@ export function useGameEngine({
     setupRound(nextTarget, activeDiff);
   }, [roundStatus, roundNumber, format, difficulty, setupRound]);
 
+  // Complete game prematurely (e.g. when timed countdown expires)
+  const forceCompleteGame = useCallback(() => {
+    setRoundStatus('completed');
+    soundManager.playGameComplete();
+    if (onGameComplete) {
+      onGameComplete(mode, format, difficulty, score, roundHistory);
+    }
+  }, [mode, format, difficulty, score, roundHistory, onGameComplete]);
+
   return {
     mode,
     format,
     difficulty,
     activeDifficulty: getActiveDifficulty(),
     roundNumber,
+    targetRoundsCount,
+    setTargetRoundsCount,
     targetRgb,
     targetHex: rgbToHex(targetRgb),
     choices,
@@ -403,11 +472,14 @@ export function useGameEngine({
     score,
     currentStreak,
     lives,
+    comboBanner,
     submitChoice,
     submitHexGuess,
     submitRgbGuess,
+    submitSimilarityGuess,
     nextRound,
     startNewGame,
+    forceCompleteGame,
     setMode,
     setFormat,
     setDifficulty,

@@ -28,5 +28,6 @@ export interface NamedColor {
   category: string; // e.g., 'Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown', 'Gray'
 }
 
-export type WarmCoolCategory = 'Warm' | 'Cool';
+export type WarmCoolCategory = 'Warm' | 'Cool' | 'Neutral';
 export type LightDarkCategory = 'Light' | 'Dark';
+

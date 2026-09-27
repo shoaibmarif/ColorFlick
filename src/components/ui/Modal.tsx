@@ -41,13 +41,13 @@ export const Modal: React.FC<ModalProps> = ({
   const maxWidthClasses = {
     sm: 'max-w-sm',
     md: 'max-w-md',
-    lg: 'max-w-lg',
+    lg: 'max-w-xl',
     xl: 'max-w-2xl',
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -57,13 +57,13 @@ export const Modal: React.FC<ModalProps> = ({
     >
       <div
         ref={modalRef}
-        className={`relative w-full ${maxWidthClasses[maxWidth]} bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh] animate-pop`}
+        className={`relative w-full ${maxWidthClasses[maxWidth]} bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden flex flex-col max-h-[88vh] animate-pop`}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/30">
           <h2
             id="modal-title"
-            className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white"
+            className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight"
           >
             {title}
           </h2>
@@ -78,7 +78,7 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto">{children}</div>
+        <div className="p-5 sm:p-6 overflow-y-auto">{children}</div>
       </div>
     </div>
   );

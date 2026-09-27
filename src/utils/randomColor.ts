@@ -7,16 +7,29 @@ import { CURATED_NAMED_COLORS } from '../data/colorNames';
 export type RngFn = () => number;
 
 /**
- * Generates a random integer in [min, max] using either Math.random or custom PRNG.
+ * Uses Web Crypto API when available for cryptographically secure float in [0, 1).
+ * Falls back to Math.random() in older or SSR environments.
  */
-export function randomInt(min: number, max: number, rng: RngFn = Math.random): number {
+export function secureRandom(): number {
+  if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
+    const arr = new Uint32Array(1);
+    window.crypto.getRandomValues(arr);
+    return arr[0] / (0xffffffff + 1);
+  }
+  return Math.random();
+}
+
+/**
+ * Generates a random integer in [min, max] using either secure randomness or custom PRNG.
+ */
+export function randomInt(min: number, max: number, rng: RngFn = secureRandom): number {
   return Math.floor(rng() * (max - min + 1)) + min;
 }
 
 /**
  * Generates a random vibrant RGB color.
  */
-export function generateRandomRgb(rng: RngFn = Math.random): RGB {
+export function generateRandomRgb(rng: RngFn = secureRandom): RGB {
   // Use HSL generation with reasonable saturation and lightness to ensure attractive colors
   const h = Math.floor(rng() * 360);
   const s = randomInt(40, 95, rng);
