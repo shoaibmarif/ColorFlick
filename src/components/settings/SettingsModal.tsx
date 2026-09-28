@@ -12,10 +12,8 @@ import {
   Trash2,
   AlertTriangle,
   FastForward,
-  Type,
   Keyboard,
   Sparkles,
-  Sliders,
 } from 'lucide-react';
 
 interface SettingsModalProps {
@@ -100,7 +98,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         {/* Section 2: Audio Controls */}
-        <div className="space-y-2.5 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/70 dark:border-slate-800">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/70 dark:border-slate-800">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="p-2 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400">
@@ -121,28 +119,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               label="Toggle sound effects"
             />
           </div>
-
-          {settings.soundEnabled && (
-            <div className="pt-2 flex items-center gap-3 border-t border-slate-200/60 dark:border-slate-700/60">
-              <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
-                <Sliders className="w-3.5 h-3.5" />
-                <span>Volume</span>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.05}
-                value={settings.soundVolume}
-                onChange={(e) => onUpdateSettings({ soundVolume: Number(e.target.value) })}
-                className="flex-1 h-2 rounded-lg bg-slate-200 dark:bg-slate-700 accent-brand-600 cursor-pointer"
-                aria-label="Sound volume"
-              />
-              <span className="font-mono text-xs font-black text-slate-700 dark:text-slate-200 w-10 text-right">
-                {Math.round(settings.soundVolume * 100)}%
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Section 3: Colorblind Assistance */}
@@ -255,28 +231,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 checked={settings.keyboardNavigation}
                 onChange={(val) => onUpdateSettings({ keyboardNavigation: val })}
                 label="Toggle keyboard shortcuts"
-              />
-            </div>
-
-            {/* High Contrast */}
-            <div className="flex items-center justify-between gap-3 py-1.5 border-t border-slate-200/60 dark:border-slate-700/60">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex-shrink-0">
-                  <Type className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="text-xs font-black text-slate-800 dark:text-slate-200 block">
-                    High Contrast Swatch Borders
-                  </span>
-                  <span className="text-[11px] text-slate-400 dark:text-slate-500">
-                    Thicker accessible outlines on all swatches and cards
-                  </span>
-                </div>
-              </div>
-              <ToggleSwitch
-                checked={settings.highContrast}
-                onChange={(val) => onUpdateSettings({ highContrast: val })}
-                label="Toggle high contrast borders"
               />
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Palette,
@@ -52,6 +53,18 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
     setActiveDropdown(null);
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  // Lock body scroll when mobile menu drawer is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   // Close dropdown when clicking outside or pressing Escape
   useEffect(() => {
@@ -473,133 +486,220 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
         </div>
       </div>
 
-      {/* Mobile Full-Featured Navigation Drawer */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl overflow-y-auto px-4 py-6 border-t border-slate-200 dark:border-slate-800 space-y-6">
-          {/* Game Modes Section */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-              Game Modes
-            </h4>
-            <div className="grid grid-cols-2 gap-2">
-              {gameModesList.map((m) => (
-                <Link
-                  key={m.to}
-                  to={m.to}
-                  className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
-                >
-                  {m.icon}
-                  <span className="truncate">{m.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+      {/* Mobile Navigation Side Drawer (Rendered via Portal to prevent any backdrop-filter or container clipping) */}
+      {isMobileMenuOpen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[1000] lg:hidden flex justify-end"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile Navigation Menu"
+          >
+            {/* Backdrop overlay */}
+            <div
+              className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm animate-fadeInOverlay cursor-pointer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
 
-          {/* Formats Section */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-              Challenge Formats
-            </h4>
-            <div className="grid grid-cols-2 gap-2">
-              {formatsList.map((f) => (
+            {/* Slide-in Drawer Container */}
+            <aside className="relative w-[85vw] max-w-sm h-full bg-white dark:bg-slate-900 shadow-2xl flex flex-col z-10 animate-slideLeft border-l border-slate-200/80 dark:border-slate-800">
+              {/* Drawer Header */}
+              <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 shrink-0">
                 <Link
-                  key={f.to}
-                  to={f.to}
-                  className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 cursor-pointer"
+                  aria-label="ChromaLabs Home"
                 >
-                  <div className="flex items-center gap-2 truncate">
-                    {f.icon}
-                    <span className="truncate">{f.label}</span>
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-500 via-brand-500 to-sky-400 p-0.5 shadow-sm flex items-center justify-center">
+                    <div className="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
+                      <Palette className="w-4 h-4 text-white" />
+                    </div>
                   </div>
-                  {f.badge && (
-                    <span className="px-1.5 py-0.2 rounded text-[9px] bg-amber-500 text-white font-mono">
-                      {f.badge}
+                  <div className="flex flex-col">
+                    <span className="font-black text-sm tracking-tight text-slate-900 dark:text-white leading-none">
+                      CHROMA<span className="text-brand-600 dark:text-brand-400">LABS</span>
                     </span>
-                  )}
+                    <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase">
+                      Precision Color Arcade
+                    </span>
+                  </div>
                 </Link>
-              ))}
-            </div>
-          </div>
 
-          {/* Tools Section */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-              Color Tools
-            </h4>
-            <div className="grid grid-cols-2 gap-2">
-              {toolsList.map((t) => (
+                <button
+                  type="button"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  aria-label="Close navigation menu"
+                  className="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Drawer Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6">
+                {/* Game Modes */}
+                <div className="space-y-2">
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+                    Game Modes
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {gameModesList.map((m) => (
+                      <Link
+                        key={m.to}
+                        to={m.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50 dark:hover:bg-brand-950/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
+                      >
+                        {m.icon}
+                        <span className="truncate">{m.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Challenge Formats */}
+                <div className="space-y-2">
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+                    Challenge Formats
+                  </h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {formatsList.map((f) => (
+                      <Link
+                        key={f.to}
+                        to={f.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50 dark:hover:bg-brand-950/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2.5 truncate">
+                          {f.icon}
+                          <div className="truncate text-left">
+                            <span className="block truncate font-bold">{f.label}</span>
+                            <span className="block text-[10px] text-slate-500 font-normal truncate">{f.desc}</span>
+                          </div>
+                        </div>
+                        {f.badge && (
+                          <span className="shrink-0 px-1.5 py-0.5 rounded text-[9px] bg-amber-500 text-white font-mono font-bold">
+                            {f.badge}
+                          </span>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Color Tools */}
+                <div className="space-y-2">
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+                    Color Tools
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {toolsList.map((t) => (
+                      <Link
+                        key={t.to}
+                        to={t.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50 dark:hover:bg-brand-950/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
+                      >
+                        {t.icon}
+                        <span className="truncate">{t.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Learn & Guides */}
+                <div className="space-y-2">
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+                    Learn & Guides
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {guidesList.map((g) => (
+                      <Link
+                        key={g.to}
+                        to={g.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50 dark:hover:bg-brand-950/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
+                      >
+                        {g.icon}
+                        <span className="truncate">{g.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Platform & Info */}
+                <div className="space-y-2">
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+                    Platform & Info
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {platformList.map((p) => (
+                      <Link
+                        key={p.to}
+                        to={p.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50 dark:hover:bg-brand-950/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
+                      >
+                        {p.icon}
+                        <span className="truncate">{p.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Developer / Shoaib Arif Profile Links */}
+                <div className="space-y-2 pb-6">
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
+                    Developer
+                  </h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {developerLinks.map((d) => (
+                      <a
+                        key={d.href}
+                        href={d.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2.5 p-2.5 bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50 dark:hover:bg-brand-950/40 rounded-xl border border-slate-200/70 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 transition-colors cursor-pointer"
+                      >
+                        {d.icon}
+                        <div className="truncate">
+                          <span className="block truncate font-bold text-slate-900 dark:text-white">{d.label}</span>
+                          <span className="block text-[10px] text-slate-500 font-normal truncate">{d.desc}</span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Drawer Quick Actions Footer */}
+              <div className="p-3.5 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex items-center gap-2 shrink-0">
                 <Link
-                  key={t.to}
-                  to={t.to}
-                  className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
+                  to="/daily-color-challenge"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer"
                 >
-                  {t.icon}
-                  <span className="truncate">{t.label}</span>
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Daily Challenge</span>
                 </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Learn & Guides Section */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-              Learn & Guides
-            </h4>
-            <div className="grid grid-cols-2 gap-2">
-              {guidesList.map((g) => (
-                <Link
-                  key={g.to}
-                  to={g.to}
-                  className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onOpenSettings();
+                  }}
+                  className="p-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl transition-colors cursor-pointer"
+                  aria-label="Game Settings"
                 >
-                  {g.icon}
-                  <span className="truncate">{g.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Platform & About Section */}
-          <div className="space-y-2">
-            <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-              Platform & Info
-            </h4>
-            <div className="grid grid-cols-2 gap-2">
-              {platformList.map((p) => (
-                <Link
-                  key={p.to}
-                  to={p.to}
-                  className="flex items-center gap-2 p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
-                >
-                  {p.icon}
-                  <span className="truncate">{p.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Developer Section */}
-          <div className="space-y-2 pb-8">
-            <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 px-1">
-              Developer
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {developerLinks.map((d) => (
-                <a
-                  key={d.href}
-                  href={d.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
-                >
-                  {d.icon}
-                  <span className="truncate">{d.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+                  <Settings className="w-4 h-4" />
+                </button>
+              </div>
+            </aside>
+          </div>,
+          document.body
+        )}
     </header>
   );
 };

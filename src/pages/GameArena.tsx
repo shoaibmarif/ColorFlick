@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { SeoMeta } from '../components/ui/SeoMeta';
 import { GameBoard } from '../components/game/GameBoard';
+import { GameModeDescription } from '../components/game/GameModeDescription';
 import { GameMode, GameFormat, Difficulty } from '../types/game';
 import { useSettings } from '../hooks/useSettings';
 import { ArrowLeft } from 'lucide-react';
@@ -134,6 +135,9 @@ export const GameArena: React.FC<GameArenaProps> = ({
           settings={settings}
         />
       </div>
+
+      {/* Game Mode Information & Educational Description */}
+      <GameModeDescription mode={activeMode} difficulty={activeDifficulty} />
     </div>
   );
 };

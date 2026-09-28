@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RoundResult, GameMode, GameFormat, Difficulty } from '../../types/game';
 import { formatScore } from '../../utils/scoring';
-import { shareGameResult } from '../../utils/share';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { Trophy, Flame, Zap, Target, Share2, RotateCcw, BarChart3, Check } from 'lucide-react';
+import { Trophy, Flame, Zap, Target, RotateCcw } from 'lucide-react';
 
 interface GameResultModalProps {
   isOpen: boolean;
   onClose: () => void;
   onRestart: () => void;
-  onViewStats: () => void;
-  mode: GameMode;
-  format: GameFormat;
-  difficulty: Difficulty;
+  onViewStats?: () => void;
+  mode?: GameMode;
+  format?: GameFormat;
+  difficulty?: Difficulty;
   score: number;
   rounds: RoundResult[];
   isNewPersonalBest?: boolean;
@@ -23,14 +22,10 @@ export const GameResultModal: React.FC<GameResultModalProps> = ({
   isOpen,
   onClose,
   onRestart,
-  onViewStats,
-  mode,
   score,
   rounds,
   isNewPersonalBest = false,
 }) => {
-  const [copied, setCopied] = useState(false);
-
   const totalRounds = rounds.length;
   const correctCount = rounds.filter((r) => r.isCorrect).length;
   const accuracy = totalRounds > 0 ? Math.round((correctCount / totalRounds) * 100) : 0;
@@ -51,20 +46,6 @@ export const GameResultModal: React.FC<GameResultModalProps> = ({
   });
 
   const avgResponseTimeSec = totalRounds > 0 ? (totalTimeMs / totalRounds / 1000).toFixed(1) : '0.0';
-
-  const handleShare = async () => {
-    const res = await shareGameResult({
-      modeName: mode.replace('-', ' ').toUpperCase(),
-      score,
-      accuracy,
-      bestStreak,
-      roundCount: totalRounds,
-    });
-    if (res.method === 'clipboard' || res.success) {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    }
-  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Challenge Complete" maxWidth="md">
@@ -123,32 +104,11 @@ export const GameResultModal: React.FC<GameResultModalProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-3 pt-2">
+        <div className="pt-2">
           <Button onClick={onRestart} variant="primary" size="lg" className="w-full gap-2">
             <RotateCcw className="w-5 h-5" />
             <span>Play Again</span>
           </Button>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Button onClick={handleShare} variant="secondary" size="md" className="gap-2">
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4 text-emerald-500" />
-                  <span className="text-emerald-600 dark:text-emerald-400">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-4 h-4" />
-                  <span>Share</span>
-                </>
-              )}
-            </Button>
-
-            <Button onClick={onViewStats} variant="outline" size="md" className="gap-2">
-              <BarChart3 className="w-4 h-4" />
-              <span>Statistics</span>
-            </Button>
-          </div>
         </div>
       </div>
     </Modal>

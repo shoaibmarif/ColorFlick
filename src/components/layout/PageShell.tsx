@@ -44,9 +44,7 @@ export const PageShell: React.FC<PageShellProps> = ({ children }) => {
       </a>
 
       {/* Desktop & Tablet Top Header */}
-      <div className="relative z-30">
-        <Header onOpenSettings={() => setIsSettingsOpen(true)} />
-      </div>
+      <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
       {/* Main Content Area */}
       <main id="main-content" className="relative z-10 flex-1 w-full max-w-6xl mx-auto px-3.5 sm:px-6 py-6 sm:py-8">
