@@ -9,9 +9,9 @@ export interface ShareResultOptions {
 export async function shareGameResult(
   opts: ShareResultOptions
 ): Promise<{ success: boolean; method: 'share' | 'clipboard' | 'failed' }> {
-  const url = typeof window !== 'undefined' ? window.location.origin : 'https://colorguess.game';
+  const url = typeof window !== 'undefined' ? window.location.origin : 'https://colorwise.netlify.app';
   const text = [
-    `🎨 Color Guessing Game`,
+    `🎨 ColorWise`,
     `Mode: ${opts.modeName}`,
     `Score: ${opts.score.toLocaleString()}`,
     `Accuracy: ${opts.accuracy}% (${opts.roundCount} rounds)`,
@@ -24,7 +24,7 @@ export async function shareGameResult(
   if (typeof navigator !== 'undefined' && navigator.share) {
     try {
       await navigator.share({
-        title: 'Color Guessing Game Score',
+        title: 'ColorWise Score',
         text,
         url,
       });

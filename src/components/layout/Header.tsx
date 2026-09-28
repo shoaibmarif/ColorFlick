@@ -148,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
         <Link
           to="/"
           className="flex items-center gap-2.5 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 select-none"
-          aria-label="Chroma Color Guessing Platform Home"
+          aria-label="ColorWise Platform Home"
         >
           <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 via-brand-500 to-sky-400 p-0.5 shadow-md flex items-center justify-center">
             <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center">
@@ -157,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           </div>
           <div className="flex flex-col">
             <span className="font-black text-base tracking-tight text-slate-900 dark:text-white leading-none">
-              CHROMA<span className="text-brand-600 dark:text-brand-400">LABS</span>
+              COLOR<span className="text-brand-600 dark:text-brand-400">WISE</span>
             </span>
             <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase">
               Precision Color Arcade
@@ -510,7 +510,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center gap-2.5 cursor-pointer"
-                  aria-label="ChromaLabs Home"
+                  aria-label="ColorWise Home"
                 >
                   <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-500 via-brand-500 to-sky-400 p-0.5 shadow-sm flex items-center justify-center">
                     <div className="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
@@ -519,7 +519,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-black text-sm tracking-tight text-slate-900 dark:text-white leading-none">
-                      CHROMA<span className="text-brand-600 dark:text-brand-400">LABS</span>
+                      COLOR<span className="text-brand-600 dark:text-brand-400">WISE</span>
                     </span>
                     <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase">
                       Precision Color Arcade

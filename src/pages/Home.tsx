@@ -29,17 +29,17 @@ export const HomePage: React.FC = () => {
     '@graph': [
       {
         '@type': 'WebSite',
-        '@id': 'https://colorguess.game/#website',
-        url: 'https://colorguess.game/',
-        name: 'Color Guessing Game Platform',
+        '@id': 'https://colorwise.netlify.app/#website',
+        url: 'https://colorwise.netlify.app/',
+        name: 'ColorWise - Precision Color Challenge Platform',
         description:
-          'Test your color recognition skills with a free online color guessing game featuring RGB, HEX, matching, timed challenges, and daily puzzles.',
+          'Test your color recognition skills with ColorWise, a free online color guessing game featuring RGB, HEX, matching, timed challenges, and daily puzzles.',
       },
       {
         '@type': 'WebApplication',
-        '@id': 'https://colorguess.game/#webapp',
-        url: 'https://colorguess.game/',
-        name: 'Color Guessing Game Platform',
+        '@id': 'https://colorwise.netlify.app/#webapp',
+        url: 'https://colorwise.netlify.app/',
+        name: 'ColorWise',
         applicationCategory: 'GameApplication',
         operatingSystem: 'All',
         browserRequirements: 'Requires JavaScript. Requires HTML5.',
@@ -55,8 +55,8 @@ export const HomePage: React.FC = () => {
   return (
     <div className="space-y-10 sm:space-y-14">
       <SeoMeta
-        title="Color Guessing Game - Free Online Color Quiz & Spectrum Challenge"
-        description="Test your color recognition skills with a free online color guessing game featuring RGB, HEX, color matching, timed challenges, daily challenges, and statistics."
+        title="ColorWise - Precision Color Guessing Game & Palette Challenge"
+        description="Test your color recognition skills with ColorWise, a free online color guessing game featuring RGB, HEX, color matching, timed challenges, daily challenges, and statistics."
         canonicalPath="/"
         structuredData={jsonLd}
       />
@@ -65,7 +65,7 @@ export const HomePage: React.FC = () => {
       <section className="text-center max-w-3xl mx-auto space-y-4 pt-2 sm:pt-4 px-2">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-500/10 dark:bg-brand-500/20 text-brand-700 dark:text-brand-300 rounded-full text-xs font-black border border-brand-500/30 backdrop-blur-md shadow-xs animate-fade-in">
           <Sparkles className="w-3.5 h-3.5 text-brand-500 animate-spin" />
-          <span className="tracking-wide">CHROMA LABS • PRECISION COLOR ENGINE</span>
+          <span className="tracking-wide">COLORWISE • PRECISION COLOR ENGINE</span>
         </div>
 
         <h1 className="text-3xl xs:text-4xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.1]">
@@ -147,7 +147,7 @@ export const HomePage: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <h2 className="text-xs font-black uppercase tracking-wider text-slate-600 dark:text-slate-300">
-                CHROMA ARENA
+                COLORWISE ARENA
               </h2>
             </div>
             <DifficultySelector
@@ -368,7 +368,7 @@ export const HomePage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
             Frequently Asked Questions
           </h2>
-          <p className="text-xs text-slate-500">Quick answers about how Chroma runs on your device.</p>
+          <p className="text-xs text-slate-500">Quick answers about how ColorWise runs on your device.</p>
         </div>
 
         <div className="space-y-3">
@@ -388,7 +388,7 @@ export const HomePage: React.FC = () => {
               <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p className="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              No. Chroma runs 100% in your browser. All statistics, streaks, and achievements are saved strictly in your device's <code>localStorage</code>. No personal accounts, tracking cookies, or server backends are used.
+              No. ColorWise runs 100% in your browser. All statistics, streaks, and achievements are saved strictly in your device's <code>localStorage</code>. No personal accounts, tracking cookies, or server backends are used.
             </p>
           </details>
 

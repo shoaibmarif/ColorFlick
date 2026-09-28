@@ -15,7 +15,7 @@ export const HowToPlayPage: React.FC = () => {
 
       <div className="space-y-3">
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-          How to Play ColorGuess
+          How to Play ColorWise
         </h1>
         <p className="text-sm text-slate-600 dark:text-slate-300">
           A guide to the rules, scoring formulas, game modes, and keyboard controls.

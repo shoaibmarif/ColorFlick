@@ -37,13 +37,13 @@ export const AboutPage: React.FC = () => {
       <section className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <h2 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
           <Palette className="w-5 h-5 text-brand-600" />
-          <span>Why We Built ColorGuess</span>
+          <span>Why We Built ColorWise</span>
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
           Understanding and distinguishing color is foundational for digital art, UI design, web development, and accessibility. However, most color quizzes are either overly simplistic single-trick demos or cluttered with advertisements and mandatory signups.
         </p>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          We built <strong>ColorGuess</strong> as a clean, production-grade game platform that combines multiple challenge types—from visual matching to developer-oriented RGB and HEX puzzles—while remaining blazing fast, fully accessible, and completely respectful of user privacy.
+          We built <strong>ColorWise</strong> as a clean, production-grade game platform that combines multiple challenge types—from visual matching to developer-oriented RGB and HEX puzzles—while remaining blazing fast, fully accessible, and completely respectful of user privacy.
         </p>
       </section>
 
@@ -138,7 +138,7 @@ export const AboutPage: React.FC = () => {
       <div className="text-center pt-4">
         <Link to="/color-guessing-game">
           <Button variant="primary" size="lg">
-            Start Playing ColorGuess
+            Start Playing ColorWise
           </Button>
         </Link>
       </div>

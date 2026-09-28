@@ -40,7 +40,7 @@ export const SeoMeta: React.FC<SeoMetaProps> = ({
     }
 
     // Update Canonical Link
-    const baseUrl = 'https://colorguess.game';
+    const baseUrl = 'https://colorwise.netlify.app';
     const fullCanonicalUrl = `${baseUrl}${canonicalPath}`;
 
     let linkCanonical = document.querySelector('link[rel="canonical"]');

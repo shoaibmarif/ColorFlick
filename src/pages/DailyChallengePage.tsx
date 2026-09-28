@@ -67,7 +67,7 @@ export const DailyChallengePage: React.FC = () => {
     '@type': 'WebApplication',
     name: `Daily Color Challenge - ${formattedDate}`,
     description: "Play today's official Daily Color Challenge. 10 deterministic seeded rounds generated fresh daily at midnight for players worldwide.",
-    url: 'https://colorguess.game/daily-color-challenge',
+    url: 'https://colorwise.netlify.app/daily-color-challenge',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     genre: ['Puzzle', 'Daily Challenge', 'Trivia', 'Color Theory'],

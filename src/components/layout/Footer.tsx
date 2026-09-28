@@ -232,7 +232,7 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-2">
             <Palette className="w-4 h-4 text-brand-600" />
             <span className="font-bold text-slate-700 dark:text-slate-300">
-              Chroma Labs
+              ColorWise
             </span>
             <span>— Developed by</span>
             <a

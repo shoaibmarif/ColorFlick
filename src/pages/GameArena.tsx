@@ -139,7 +139,7 @@ export const GameArena: React.FC<GameArenaProps> = ({
     '@type': 'WebApplication',
     name: pageTitle,
     description: pageDesc,
-    url: `https://colorguess.game${path}`,
+    url: `https://colorwise.netlify.app${path}`,
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     genre: ['Puzzle', 'Educational', 'Trivia', 'Color Theory'],
