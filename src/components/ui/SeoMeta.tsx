@@ -4,7 +4,6 @@ interface SeoMetaProps {
   title: string;
   description: string;
   canonicalPath: string;
-  keywords?: string[];
   structuredData?: Record<string, unknown>;
 }
 
@@ -12,7 +11,6 @@ export const SeoMeta: React.FC<SeoMetaProps> = ({
   title,
   description,
   canonicalPath,
-  keywords,
   structuredData,
 }) => {
   useEffect(() => {
@@ -27,17 +25,6 @@ export const SeoMeta: React.FC<SeoMetaProps> = ({
       document.head.appendChild(metaDesc);
     }
     metaDesc.setAttribute('content', description);
-
-    // Update Meta Keywords
-    if (keywords && keywords.length > 0) {
-      let metaKw = document.querySelector('meta[name="keywords"]');
-      if (!metaKw) {
-        metaKw = document.createElement('meta');
-        metaKw.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKw);
-      }
-      metaKw.setAttribute('content', keywords.join(', '));
-    }
 
     // Update Canonical Link
     const baseUrl = 'https://colorguess.game';
@@ -95,7 +82,7 @@ export const SeoMeta: React.FC<SeoMetaProps> = ({
       }
       script.textContent = JSON.stringify(structuredData);
     }
-  }, [title, description, canonicalPath, keywords, structuredData]);
+  }, [title, description, canonicalPath, structuredData]);
 
   return null;
 };

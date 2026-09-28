@@ -52,10 +52,6 @@ export const App: React.FC = () => {
           <Route path="/hex-color-guessing-game" element={<GameArena forcedMode="hex-guess" />} />
           <Route path="/color-picker-game" element={<GameArena forcedMode="color-picker" />} />
           <Route path="/color-matching-game" element={<GameArena forcedMode="color-match" />} />
-          <Route path="/color-name-game" element={<GameArena forcedMode="color-name" />} />
-          <Route path="/closest-color-game" element={<GameArena forcedMode="closest-color" />} />
-          <Route path="/light-dark-game" element={<GameArena forcedMode="light-dark" />} />
-          <Route path="/light-vs-dark-game" element={<GameArena forcedMode="light-dark" />} />
           <Route path="/guess-the-color" element={<GameArena />} />
           <Route path="/color-challenge" element={<GameArena />} />
           <Route path="/color-quiz" element={<GameArena />} />

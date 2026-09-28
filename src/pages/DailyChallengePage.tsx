@@ -10,7 +10,7 @@ import { ColorChoice } from '../components/colors/ColorChoice';
 import { RoundFeedback } from '../components/game/RoundFeedback';
 import { ScoreDisplay } from '../components/game/ScoreDisplay';
 import { Button } from '../components/ui/Button';
-import { Calendar, Flame, Trophy, Share2, Check, ArrowRight } from 'lucide-react';
+import { Calendar, Flame, Trophy, Share2, Check, ArrowRight, ShieldCheck, Zap, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const DailyChallengePage: React.FC = () => {
@@ -52,12 +52,46 @@ export const DailyChallengePage: React.FC = () => {
     }
   };
 
+  const dailyKeywords = [
+    'daily color challenge',
+    'daily color game',
+    'daily color puzzle',
+    'color acuity test today',
+    'daily visual perception game',
+    'wordle for colors',
+    'daily color guessing',
+  ];
+
+  const dailyStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: `Daily Color Challenge - ${formattedDate}`,
+    description: "Play today's official Daily Color Challenge. 10 deterministic seeded rounds generated fresh daily at midnight for players worldwide.",
+    url: 'https://colorguess.game/daily-color-challenge',
+    applicationCategory: 'GameApplication',
+    operatingSystem: 'Any',
+    genre: ['Puzzle', 'Daily Challenge', 'Trivia', 'Color Theory'],
+    isAccessibleForFree: true,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    author: {
+      '@type': 'Person',
+      name: 'Shoaib Arif',
+      url: 'https://shoaibarif.vercel.app/',
+    },
+  };
+
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <SeoMeta
         title={`Daily Color Challenge - ${formattedDate}`}
         description="Play today's official Daily Color Challenge. 10 seeded rounds generated fresh daily for players worldwide."
         canonicalPath="/daily-color-challenge"
+        keywords={dailyKeywords}
+        structuredData={dailyStructuredData}
       />
 
       {/* Header Banner */}
@@ -184,6 +218,75 @@ export const DailyChallengePage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Daily Challenge Rules & Educational Guide */}
+      <section
+        aria-labelledby="daily-challenge-guide"
+        className="bg-white dark:bg-slate-800/90 rounded-3xl p-5 sm:p-7 border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-5"
+      >
+        <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-700/60">
+          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <Calendar className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 id="daily-challenge-guide" className="text-base font-black text-slate-900 dark:text-white">
+              About the Daily Color Challenge
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              10 seeded rounds generated fresh daily with deterministic global equality
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Deterministic Seed</span>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              The questions for each day are generated using a cryptographically uniform pseudorandom seed (<code className="font-mono text-[10px] bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded">{todayStr}</code>). Every player across the globe sees the exact same sequence.
+            </p>
+          </div>
+
+          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              <Flame className="w-4 h-4" />
+              <span>Career Streaks</span>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Complete each day's challenge to extend your daily streak. Missing a day resets the counter. All records are persisted securely in your browser's LocalStorage.
+            </p>
+          </div>
+
+          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-sky-600 dark:text-sky-400">
+              <Zap className="w-4 h-4" />
+              <span>Midnight UTC Reset</span>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              A fresh seeded challenge unlocks automatically every night at 00:00 local midnight. You get one official tracked attempt per calendar day.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between text-xs pt-1">
+          <Link
+            to="/how-to-play"
+            className="inline-flex items-center gap-1.5 font-bold text-brand-600 dark:text-brand-400 hover:underline cursor-pointer"
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>How to Play & Scoring Breakdown</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+          <Link
+            to="/color-guessing-game"
+            className="inline-flex items-center gap-1.5 font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+          >
+            <span>Play Unlimited Exact Match</span>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 };

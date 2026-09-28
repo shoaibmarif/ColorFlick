@@ -42,6 +42,8 @@ export const GameArena: React.FC<GameArenaProps> = ({
     activeMode = 'warm-cool';
   } else if (path.includes('closest-color')) {
     activeMode = 'closest-color';
+  } else if (path.includes('light-dark') || path.includes('light-vs-dark')) {
+    activeMode = 'light-dark';
   }
 
   if (path.includes('color-game-timed')) {
@@ -67,6 +69,10 @@ export const GameArena: React.FC<GameArenaProps> = ({
     '/hex-color-guessing-game': 'HEX Color Guessing Game - CSS Hexadecimal Code Challenge',
     '/color-picker-game': 'Color Picker Game - Manual Palette Color Recreation Challenge',
     '/color-matching-game': 'Color Matching Game - Tune HSL Sliders to Match Colors',
+    '/color-name-game': 'Color Name Game - Guess Common and Descriptive Color Names',
+    '/closest-color-game': 'Closest Color Game - Identify the Perceptually Nearest Color Swatch',
+    '/light-dark-game': 'Light vs Dark Game - Relative Luminance & Contrast Challenge',
+    '/light-vs-dark-game': 'Light vs Dark Color Game - WCAG Luminance Quiz',
     '/guess-the-color': 'Guess the Color - Quick Color Acuity Challenge',
     '/color-challenge': 'Color Challenge Platform - Multi-Mode Color Tests',
     '/color-quiz': 'Online Color Quiz - Test Your Color Recognition',
@@ -79,29 +85,77 @@ export const GameArena: React.FC<GameArenaProps> = ({
   };
 
   const descriptions: Record<string, string> = {
-    '/color-guessing-game': 'Play the exact color match game online. Choose the swatch that matches the target across varying difficulty tiers.',
-    '/color-guessing-game-online': 'Play free online color guessing games with instant feedback, streaks, and personal records.',
-    '/color-game': 'Test your eye for color with an interactive browser-based color game.',
-    '/color-match-game': 'Match target colors and build high streaks across multiple game formats.',
+    '/color-guessing-game': 'Play the exact color match game online. Choose the swatch that matches the target across varying difficulty tiers with instant visual feedback.',
+    '/color-guessing-game-online': 'Play free online color guessing games with instant feedback, streaks, and personal records directly in your browser.',
+    '/color-game': 'Test your eye for color with an interactive browser-based color game featuring 9 modes and 4 difficulty tiers.',
+    '/color-match-game': 'Match target colors and build high streaks across multiple game formats with live similarity calculations.',
     '/rgb-color-game': 'Challenge your color mixing skills. Adjust red, green, and blue sliders to recreate the target color.',
-    '/rgb-color-guessing-game': 'Fine-tune RGB channel sliders and test your knowledge of additive digital color mixing.',
+    '/rgb-color-guessing-game': 'Fine-tune RGB channel sliders from 0 to 255 and test your knowledge of additive digital color mixing.',
     '/hex-color-game': 'Test your CSS and web design skills by predicting the 6-digit or 3-digit hexadecimal color code of target swatches.',
     '/hex-color-guessing-game': 'Decipher hex codes and improve your CSS color proficiency in this interactive quiz.',
-    '/color-picker-game': 'Manually recreate target swatches using an interactive color picker and live OKLab similarity tracking.',
+    '/color-picker-game': 'Manually recreate target swatches using an interactive 2D color picker and live OKLab similarity tracking.',
     '/color-matching-game': 'Adjust Hue, Saturation, and Lightness sliders live to match the target color with maximum precision.',
-    '/guess-the-color': 'Fast-paced color guessing gameplay with immediate accuracy feedback.',
-    '/color-challenge': 'Explore 9 diverse color game modes and test your visual perception limits.',
-    '/color-quiz': 'Fun and educational color quiz suitable for designers, artists, and casual players.',
+    '/color-name-game': 'Identify the correct CSS and standardized descriptive color name for target swatches.',
+    '/closest-color-game': 'Determine which color swatch is perceptually closest to the target using OKLab Delta-E metrics.',
+    '/light-dark-game': 'Classify whether target colors are light or dark according to official WCAG 2.1 relative luminance formulas.',
+    '/light-vs-dark-game': 'Test your understanding of digital relative luminance and accessibility contrast thresholds.',
+    '/guess-the-color': 'Fast-paced color guessing gameplay with immediate accuracy feedback, streaks, and keyboard controls.',
+    '/color-challenge': 'Explore 9 diverse color game modes and test your visual perception limits with personal best tracking.',
+    '/color-quiz': 'Fun and educational color quiz suitable for designers, artists, frontend developers, and casual players.',
     '/color-test': 'Measure your color perception and discrimination abilities on a calibrated perceptual scale.',
-    '/color-game-timed': 'Answer as many color questions as possible within 30, 60, or 120 seconds.',
+    '/color-game-timed': 'Answer as many color questions as possible within 30, 60, or 120 seconds in rapid-fire mode.',
     '/color-game-practice': 'Relaxed, untimed color learning environment with helpful hints and explanations.',
-    '/color-game-for-beginners': 'Beginner-friendly color guessing with large differences and assistive hints.',
-    '/color-theory-game': 'Classify color temperatures and relative luminances according to WCAG 2.1 formulas.',
+    '/color-game-for-beginners': 'Beginner-friendly color guessing with large differences, 3 choices, and assistive hints.',
+    '/color-theory-game': 'Classify color temperatures and relative luminances according to WCAG 2.1 formulas and color wheel angles.',
     '/color-theory-quiz': 'Interactive quiz testing knowledge of warm vs cool hues, luminance, and color harmonies.',
   };
 
-  const pageTitle = titles[path] || `${activeMode.replace('-', ' ')} Challenge - Color Guessing Game`;
-  const pageDesc = descriptions[path] || 'Test your color recognition skills online.';
+  const keywordsByMode: Record<GameMode, string[]> = {
+    'exact-color': ['color guessing game', 'exact color match', 'visual acuity test', 'color perception challenge', 'spot the color', 'hex color match'],
+    'rgb-guess': ['rgb color game', 'rgb guessing game', 'additive color mixing', 'red green blue sliders', 'digital color quiz', 'rgb color theory'],
+    'hex-guess': ['hex color game', 'hexadecimal color quiz', 'css hex code challenge', 'web design color quiz', 'predict hex code', 'hex color picker'],
+    'color-name': ['color name game', 'guess color name', 'color vocabulary test', 'css color names', 'color shades quiz', 'identify color by name'],
+    'warm-cool': ['warm vs cool color game', 'color temperature quiz', 'color theory game', 'warm cool neutral colors', 'chromatic temperature test'],
+    'light-dark': ['light vs dark color game', 'relative luminance test', 'wcag luminance quiz', 'perceptual luminance challenge', 'accessibility contrast game'],
+    'closest-color': ['closest color game', 'oklab color distance test', 'perceptual delta-e challenge', 'nearest color swatch', 'color discrimination test'],
+    'color-picker': ['color picker game', 'recreate target color', 'manual palette game', 'color matching test', 'online color picker challenge'],
+    'color-match': ['color matching game', 'hsl slider challenge', 'hue saturation lightness game', 'color match quiz', 'match the color online'],
+  };
+
+  let pageTitle = titles[path];
+  if (!pageTitle) {
+    if (difficultyParam) {
+      pageTitle = `Color Guessing Game (${difficultyParam.toUpperCase()}) - Visual Acuity Challenge`;
+    } else {
+      pageTitle = `${activeMode.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase())} Challenge - Color Guessing Game`;
+    }
+  }
+
+  const pageDesc = descriptions[path] || `Play the ${activeMode.replace('-', ' ')} game online. Sharpen your color vision, test acuity, and track streaks.`;
+  const pageKeywords = keywordsByMode[activeMode] || ['color game', 'color guessing game', 'color theory'];
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: pageTitle,
+    description: pageDesc,
+    url: `https://colorguess.game${path}`,
+    applicationCategory: 'GameApplication',
+    operatingSystem: 'Any',
+    genre: ['Puzzle', 'Educational', 'Trivia', 'Color Theory'],
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    author: {
+      '@type': 'Person',
+      name: 'Shoaib Arif',
+      url: 'https://shoaibarif.vercel.app/',
+    },
+  };
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -109,6 +163,8 @@ export const GameArena: React.FC<GameArenaProps> = ({
         title={pageTitle}
         description={pageDesc}
         canonicalPath={path}
+        keywords={pageKeywords}
+        structuredData={structuredData}
       />
 
       {/* Breadcrumb Navigation */}
@@ -137,7 +193,11 @@ export const GameArena: React.FC<GameArenaProps> = ({
       </div>
 
       {/* Game Mode Information & Educational Description */}
-      <GameModeDescription mode={activeMode} difficulty={activeDifficulty} />
+      <GameModeDescription
+        mode={activeMode}
+        difficulty={activeDifficulty}
+        format={activeFormat}
+      />
     </div>
   );
 };
