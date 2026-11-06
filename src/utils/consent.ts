@@ -30,7 +30,15 @@ export function openConsentSettings() {
   window.dispatchEvent(new Event(CONSENT_EVENT));
 }
 
-/** Sends a custom event to Google Analytics, if it has loaded. */
+/**
+ * Pushes a custom event to the Google Tag Manager data layer, e.g.
+ * { event: 'game_completed', mode: 'hex-guess', score: 1200 }.
+ * In GTM, use a "Custom Event" trigger with the event name to forward it to
+ * Google Analytics or any other tag. Consent Mode still applies.
+ */
 export function sendToAnalytics(event: string, params?: Record<string, unknown>) {
-  gtag()?.('event', event, params);
+  if (typeof window === 'undefined') return;
+  const w = window as unknown as { dataLayer?: unknown[] };
+  w.dataLayer = w.dataLayer || [];
+  w.dataLayer.push({ event, ...params });
 }

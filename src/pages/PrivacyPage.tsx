@@ -30,7 +30,7 @@ export const PrivacyPage: React.FC = () => (
 
       <h2>Analytics and cookies</h2>
       <p>
-        We use Google Analytics, loaded directly and through Google Tag Manager, to understand, in
+        We use Google Analytics, loaded through Google Tag Manager, to understand, in
         aggregate, how many people visit, which pages they use and which game modes are popular (for example, “a game was completed in HEX mode”).
       </p>
       <p>

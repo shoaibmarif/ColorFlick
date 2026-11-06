@@ -1,5 +1,4 @@
-import { SCORING_SUMMARY } from './modeGuides';
-import { SCORING } from '../utils/scoring';
+import { SCORING, DIFFICULTY_BONUSES } from '../utils/scoring';
 
 export interface FaqItem {
   question: string;
@@ -24,7 +23,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     question: 'How is my score calculated?',
-    answer: `Each correct answer is worth ${SCORING_SUMMARY.map((x) => x.replace(/\.$/, '')).join('; ').replace(/^\d+ points for every correct answer; /, `${SCORING.base} points, plus `)}.`,
+    answer: `Every correct answer is worth ${SCORING.base} points, plus a difficulty bonus (${(['easy', 'medium', 'hard', 'expert'] as const).map((d) => `${d[0].toUpperCase()}${d.slice(1)} +${DIFFICULTY_BONUSES[d]}`).join(', ')}). Answer quickly for a speed bonus of up to ${SCORING.maxSpeedBonus} points — full marks within ${SCORING.fullSpeedMs / 1000} second, nothing after ${SCORING.zeroSpeedMs / 1000}. Each correct answer in a row adds ${SCORING.streakBonusPerLevel} more, up to ${SCORING.maxStreakBonus}. In slider and typing modes the total is scaled by how close your guess was. Wrong answers score nothing and reset your streak.`,
   },
   {
     question: 'How do you decide how close two colors are?',

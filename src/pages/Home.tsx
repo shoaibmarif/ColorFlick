@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { SeoMeta } from '../components/ui/SeoMeta';
+import { Accordion } from '../components/ui/Accordion';
 import { ButtonLink } from '../components/ui/Button';
 import { Onboarding } from '../components/game/Onboarding';
 import { TINTS } from '../components/ui/ColorStripe';
@@ -307,18 +308,8 @@ export const HomePage: React.FC = () => {
         <h2 id="faq-heading" className="text-2xl font-semibold sm:text-3xl">
           Questions
         </h2>
-        <div className="mt-6 divide-y divide-zinc-200 border-y border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
-          {FAQ_ITEMS.slice(0, 4).map((item) => (
-            <details key={item.question} className="group py-4">
-              <summary className="flex list-none items-center justify-between gap-4 font-medium [&::-webkit-details-marker]:hidden">
-                {item.question}
-                <span className="text-zinc-400 transition-transform group-open:rotate-45" aria-hidden="true">
-                  +
-                </span>
-              </summary>
-              <p className="mt-3 text-[15px] leading-7 text-zinc-600 dark:text-zinc-400">{item.answer}</p>
-            </details>
-          ))}
+        <div className="mt-6">
+          <Accordion items={FAQ_ITEMS.slice(0, 4)} variant="lines" />
         </div>
         <Link to="/faq" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400">
           All questions <ArrowRight className="h-4 w-4" aria-hidden="true" />
