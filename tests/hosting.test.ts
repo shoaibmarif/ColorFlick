@@ -17,3 +17,17 @@ describe('vercel.json', () => {
     for (const to of Object.values(REDIRECTS)) expect(live.has(to)).toBe(true);
   });
 });
+
+describe('vercel.json page routing', () => {
+  it('serves every prerendered page at its clean URL', () => {
+    const rewrites = new Map(vercel.rewrites.map((r: { source: string; destination: string }) => [r.source, r.destination]));
+    for (const r of ROUTES) {
+      if (r.path === '/') continue;
+      expect(rewrites.get(r.path)).toBe(`${r.path}.html`);
+    }
+  });
+
+  it('does not redirect .html files (Search Console verification file must load directly)', () => {
+    expect(vercel.cleanUrls).toBe(false);
+  });
+});

@@ -61,31 +61,31 @@ export const ColorPickerChallenge: React.FC<ColorPickerChallengeProps> = ({
             aria-label="Target color swatch"
           />
           <span className="text-xs font-mono text-zinc-400 italic">
-            Code hidden until guess
+            Code shown after you guess
           </span>
         </div>
 
         {/* Player Pick Card */}
         <div className="flex flex-col items-center space-y-2 p-3 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700">
           <span className="text-xs font-semibold text-brand-600 dark:text-brand-400">
-            Your Match
+            Your color
           </span>
           <div
             className="w-full h-24 sm:h-28 rounded-xl shadow-inner border border-black/10 ring-1 ring-black/5 relative flex items-center justify-center cursor-pointer group"
             style={{ backgroundColor: playerHex }}
-            title="Click to open system color picker"
+            title="Open color picker"
           >
             <input
               type="color"
               value={playerHex}
               onChange={(e) => setPlayerHex(e.target.value.toUpperCase())}
               disabled={disabled}
-              aria-label="Color Picker Palette"
+              aria-label="Color picker"
               className="absolute inset-0 opacity-0 w-full h-full cursor-pointer disabled:cursor-not-allowed"
             />
             <div className="px-2.5 py-1 bg-black/40 text-white rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center gap-1">
               <Eye className="w-3.5 h-3.5" />
-              <span>Tap to Pick</span>
+              <span>Tap to pick</span>
             </div>
           </div>
           <span className="text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-200">
@@ -97,7 +97,7 @@ export const ColorPickerChallenge: React.FC<ColorPickerChallengeProps> = ({
       {/* Live Similarity Meter */}
       <div className="space-y-1.5 p-3.5 bg-zinc-100 dark:bg-zinc-900/40 rounded-2xl border border-zinc-200 dark:border-zinc-700/60">
         <div className="flex justify-between items-center text-xs font-semibold">
-          <span className="text-zinc-600 dark:text-zinc-400">Live Perceptual Similarity</span>
+          <span className="text-zinc-600 dark:text-zinc-400">How close you are</span>
           <span className={`font-mono text-sm font-semibold ${
             liveSimilarity >= 90
               ? 'text-emerald-500'
@@ -150,7 +150,7 @@ export const ColorPickerChallenge: React.FC<ColorPickerChallengeProps> = ({
             disabled={disabled}
             className="w-5 h-5 rounded cursor-pointer border-0 p-0"
           />
-          <span>Open Eyedropper / Palette</span>
+          <span>Open color picker</span>
         </label>
 
         <div className="flex gap-2">
@@ -180,7 +180,7 @@ export const ColorPickerChallenge: React.FC<ColorPickerChallengeProps> = ({
           className="w-full py-3 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-brand-400"
         >
           <Check className="w-5 h-5" />
-          <span>Lock In Guess</span>
+          <span>Submit guess</span>
         </button>
       </div>
     </form>

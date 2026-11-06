@@ -45,7 +45,7 @@ export const RgbControls: React.FC<RgbControlsProps> = ({ onSubmit, disabled = f
           />
           <div>
             <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-              Your Mix
+              Your mix
             </span>
             <div className="font-mono text-sm font-semibold text-zinc-900 dark:text-white">
               {currentHex}
@@ -71,7 +71,7 @@ export const RgbControls: React.FC<RgbControlsProps> = ({ onSubmit, disabled = f
           <div key={key} className="space-y-1">
             <div className="flex justify-between items-center text-xs font-semibold">
               <span style={{ color: barColor }} className="font-semibold">
-                {label} (0–255)
+                {label} (0-255)
               </span>
               <input
                 type="number"
@@ -105,7 +105,7 @@ export const RgbControls: React.FC<RgbControlsProps> = ({ onSubmit, disabled = f
         className="w-full py-3 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-brand-400"
       >
         <Check className="w-5 h-5" />
-        <span>Submit Guess</span>
+        <span>Submit guess</span>
       </button>
     </form>
   );

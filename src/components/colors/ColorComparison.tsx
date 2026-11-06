@@ -35,7 +35,7 @@ export const ColorComparison: React.FC<ColorComparisonProps> = ({
         {/* Player Swatch */}
         <div>
           <span className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 mb-1">
-            Your Color
+            Your color
           </span>
           <div
             className="w-full h-20 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-semibold shadow-md ring-1 ring-black/10"
@@ -50,7 +50,7 @@ export const ColorComparison: React.FC<ColorComparisonProps> = ({
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs font-semibold">
           <span className="text-zinc-600 dark:text-zinc-300">
-            Perceptual Match: <span className="text-brand-600 dark:text-brand-400">{similarity}%</span>
+            Match: <span className="text-brand-600 dark:text-brand-400">{similarity}%</span>
           </span>
           <span className="text-zinc-500 dark:text-zinc-400">
             Difference: {differencePercentage.toFixed(1)}%

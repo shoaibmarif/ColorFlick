@@ -16,7 +16,7 @@ interface AccordionProps {
 
 /**
  * Animated FAQ accordion. Answers slide open/closed (height + fade) instead of
- * popping in. Collapsed answers stay in the DOM — readable by search engines —
+ * popping in. Collapsed answers stay in the DOM - readable by search engines -
  * but are inert, so keyboard and screen-reader users only reach open ones.
  */
 export const Accordion: React.FC<AccordionProps> = ({ items, variant = 'cards', single = false }) => {

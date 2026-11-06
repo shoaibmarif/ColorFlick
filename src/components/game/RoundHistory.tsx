@@ -20,7 +20,7 @@ export const RoundHistory: React.FC<RoundHistoryProps> = ({ history }) => {
         aria-expanded={isOpen}
       >
         <span className="flex items-center gap-2">
-          <span>Round History</span>
+          <span>This game so far</span>
           <span className="bg-zinc-200 dark:bg-zinc-700 px-2 py-0.5 rounded-full text-xs font-mono">
             {history.length}
           </span>

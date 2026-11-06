@@ -44,12 +44,12 @@ export interface FamilyAccuracy {
   family: ColorFamily;
   rounds: number;
   correct: number;
-  accuracy: number; // 0–100
+  accuracy: number; // 0-100
 }
 
 /**
  * Accuracy per color family, weakest first. Families with fewer than
- * `minRounds` rounds are left out — too little data to say anything.
+ * `minRounds` rounds are left out - too little data to say anything.
  */
 export function accuracyByFamily(rounds: Pick<RoundResult, 'targetHex' | 'isCorrect'>[], minRounds = 3): FamilyAccuracy[] {
   const acc = new Map<ColorFamily, { rounds: number; correct: number }>();

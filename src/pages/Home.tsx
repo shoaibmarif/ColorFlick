@@ -56,19 +56,19 @@ const TOOLS = [
     icon: Palette,
     to: "/color-converter",
     title: "Color converter",
-    body: "Convert between HEX, RGB and HSL, with tints, shades and the complement.",
+    body: "Paste a color in any format and get the others, plus lighter and darker versions.",
   },
   {
     icon: Contrast,
     to: "/color-contrast-checker",
     title: "Contrast checker",
-    body: "Check text and background colors against WCAG AA and AAA.",
+    body: "Find out if your text is readable on its background before someone has to squint.",
   },
   {
     icon: Ruler,
     to: "/color-distance",
     title: "Color difference",
-    body: "See how far apart two colors look to the eye, measured in OKLab.",
+    body: "Compare two colors and see how different they really look.",
   },
 ];
 
@@ -109,7 +109,7 @@ export const HomePage: React.FC = () => {
               className="h-2 w-2 rounded-full bg-mint-500"
               aria-hidden="true"
             />
-            Free · No sign-up · New challenge every day
+            Free to play, no account needed
           </p>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.1] sm:text-6xl">
             How good is your eye for{" "}
@@ -123,9 +123,10 @@ export const HomePage: React.FC = () => {
             ?
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            ColorFlick is a playground for people who love colors. Spot the
-            matching swatch, guess hex codes, mix colors by hand — and come back
-            for a new puzzle every day.
+            Most of us think we're pretty good with colors, until two almost
+            identical swatches sit next to each other. ColorFlick is a little
+            game for finding out. Pick the matching swatch, guess the hex code,
+            or mix the color yourself.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <a
@@ -190,11 +191,12 @@ export const HomePage: React.FC = () => {
       >
         <div className="max-w-2xl">
           <h2 id="modes-heading" className="text-2xl font-semibold sm:text-3xl">
-            Nine ways to play
+            Pick a mode
           </h2>
           <p className="mt-3 text-zinc-600 dark:text-zinc-400">
-            Some modes train your eye, others teach you how color codes work.
-            Each one has four difficulty levels.
+            Some are pure eye tests. Others teach you to read color codes, which
+            comes in handy if you design or build websites. Every mode has four
+            levels, from relaxed to properly tough.
           </p>
         </div>
         <ul className="mt-8 grid gap-px overflow-hidden rounded-xl border border-zinc-200 bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
@@ -268,11 +270,12 @@ export const HomePage: React.FC = () => {
               Daily challenge
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
-              Ten rounds. Same colors for everyone.
+              A new puzzle every day
             </h2>
             <p className="mt-3 text-brand-50">
-              A new set of colors arrives every day at midnight. Play once, keep
-              your streak going and share your result grid with friends.
+              Ten rounds, and everyone gets the same colors, so you can compare
+              scores with friends. It resets at midnight. Come back tomorrow to
+              keep your streak going.
             </p>
           </div>
           <Link
@@ -295,19 +298,20 @@ export const HomePage: React.FC = () => {
             id="science-heading"
             className="text-2xl font-semibold sm:text-3xl"
           >
-            Scored the way your eyes see
+            Fair scoring, even when it's close
           </h2>
           <p className="mt-3 text-zinc-600 dark:text-zinc-400">
-            Two colors can be equally far apart in RGB numbers yet look very
-            different to a person. ColorFlick measures closeness in OKLab, a
-            color space designed around human vision, so a near miss is scored
-            as a near miss.
+            Color codes can be misleading. Two pairs of colors can be the same
+            "distance" apart in RGB numbers, yet one pair looks almost identical
+            and the other is obviously different. So we compare colors in OKLab,
+            which is built around how people actually see. If your guess looks
+            close, it scores as close.
           </p>
           <Link
             to="/color-theory-guide"
             className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400"
           >
-            Read the color theory guide{" "}
+            How we measure color{" "}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
@@ -318,11 +322,11 @@ export const HomePage: React.FC = () => {
                 className="h-2.5 w-2.5 rounded-full bg-coral-500"
                 aria-hidden="true"
               />
-              Perceptual distance
+              Judged by eye
             </dt>
             <dd className="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-              Guesses are compared with OKLab ΔE, which tracks how different two
-              colors actually look.
+              Every guess is scored by how different it looks, not by raw
+              numbers.
             </dd>
           </div>
           <div>
@@ -331,11 +335,11 @@ export const HomePage: React.FC = () => {
                 className="h-2.5 w-2.5 rounded-full bg-sun-400"
                 aria-hidden="true"
               />
-              Real luminance
+              Light means light
             </dt>
             <dd className="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-              Light-versus-dark rounds use the WCAG 2.1 relative luminance
-              formula, the same one used for accessibility checks.
+              The light or dark mode uses the same brightness formula web
+              designers use to check text contrast.
             </dd>
           </div>
           <div>
@@ -347,8 +351,8 @@ export const HomePage: React.FC = () => {
               Color-blind friendly
             </dt>
             <dd className="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-              Right and wrong answers are shown with icons and labels, not only
-              red and green.
+              Answers are marked with icons and words too, not just red and
+              green.
             </dd>
           </div>
         </dl>
@@ -363,8 +367,8 @@ export const HomePage: React.FC = () => {
           Color tools
         </h2>
         <p className="mt-3 max-w-2xl text-zinc-600 dark:text-zinc-400">
-          Free utilities for designers and developers. Everything runs in your
-          browser.
+          A few handy tools for working with color. Free, and nothing to
+          install.
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           {TOOLS.map((t, i) => (
@@ -399,7 +403,7 @@ export const HomePage: React.FC = () => {
         className="mx-auto mt-24 max-w-3xl"
       >
         <h2 id="faq-heading" className="text-2xl font-semibold sm:text-3xl">
-          Questions
+          Common questions
         </h2>
         <div className="mt-6">
           <Accordion items={FAQ_ITEMS.slice(0, 4)} variant="lines" />

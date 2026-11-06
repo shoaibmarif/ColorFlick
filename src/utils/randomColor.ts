@@ -77,7 +77,7 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
     minPairDelta: 0.15,
     closestBand: [0.04, 0.1],
     closestMargin: 0.2,
-    summary: 'Three clearly different colors.',
+    summary: 'Three colors that are easy to tell apart.',
   },
   medium: {
     choiceCount: 6,
@@ -97,7 +97,7 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
     minPairDelta: 0.035,
     closestBand: [0.035, 0.09],
     closestMargin: 0.07,
-    summary: 'Eight close shades that differ slightly in hue or lightness.',
+    summary: 'Eight close shades. You’ll need to look carefully.',
   },
   expert: {
     choiceCount: 9,
@@ -107,7 +107,7 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
     minPairDelta: 0.025,
     closestBand: [0.03, 0.07],
     closestMargin: 0.04,
-    summary: 'Nine near-identical shades, just above what the eye can tell apart.',
+    summary: 'Nine shades that are almost identical. Good luck.',
   },
 };
 

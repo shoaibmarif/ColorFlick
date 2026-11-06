@@ -44,13 +44,13 @@ export function isAmbiguousWarmCool(hue: number): boolean {
 export function getWarmCoolExplanation(rgb: RGB, category: WarmCoolCategory): string {
   const hsl = rgbToHsl(rgb);
   if (category === 'Neutral') {
-    if (hsl.s <= 14) return `Neutral: Very low saturation (${hsl.s}%), appearing grayscale.`;
-    if (hsl.l <= 10 || hsl.l >= 92) return `Neutral: Extreme lightness (${hsl.l}%), washing out hue perception.`;
-    return `Neutral: Hue angle of ${hsl.h}° lies right on the boundary between warm and cool spectrums.`;
+    if (hsl.s <= 14) return `Neutral. With only ${hsl.s}% saturation it's basically a gray, so it doesn't lean warm or cool.`;
+    if (hsl.l <= 10 || hsl.l >= 92) return `Neutral. At ${hsl.l}% lightness it's so ${hsl.l <= 10 ? 'dark' : 'pale'} that the hue barely shows.`;
+    return `Neutral. A hue of ${hsl.h}° sits right on the line between warm and cool.`;
   }
   if (category === 'Warm') {
-    return `Warm: Hue of ${hsl.h}° (red-yellow/magenta range evokes sunlight and fire).`;
+    return `Warm. A hue of ${hsl.h}° is in the reds, oranges and yellows: think fire and sunlight.`;
   }
-  return `Cool: Hue of ${hsl.h}° (green-blue-violet range evokes water, foliage, and sky).`;
+  return `Cool. A hue of ${hsl.h}° is in the greens, blues and purples: think water, leaves and sky.`;
 }
 

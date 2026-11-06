@@ -16,7 +16,7 @@ export const KeyboardShortcutsHint: React.FC<KeyboardShortcutsHintProps> = ({
       <span>Keyboard:</span>
       {!isAnswered ? (
         <span className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-700 font-mono text-xs">
-          1–{choicesCount}
+          1-{choicesCount}
         </span>
       ) : (
         <span className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-700 font-mono text-xs">

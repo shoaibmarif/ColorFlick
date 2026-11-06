@@ -12,7 +12,7 @@ const CHANNELS = [
     tint: 'bg-coral-100 text-coral-700 dark:bg-coral-900/40 dark:text-coral-200',
     title: 'Email',
     value: SITE.author.email,
-    body: 'The quickest way to reach me — questions, ideas, feedback or just hello.',
+    body: 'The quickest way to reach me. Questions, ideas, feedback, or just hello.',
   },
   {
     href: SITE.author.linkedin,
@@ -28,7 +28,7 @@ const CHANNELS = [
     tint: 'bg-mint-100 text-mint-700 dark:bg-mint-900/40 dark:text-mint-200',
     title: 'Portfolio',
     value: 'shoaibarif.vercel.app',
-    body: 'See my other projects and work.',
+    body: 'See what else I’ve been working on.',
   },
   {
     href: SITE.issues,

@@ -28,7 +28,7 @@ export const Toast: React.FC<ToastProps> = ({ achievement, onDismiss }) => {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 text-amber-400 dark:text-amber-600 text-xs font-semibold">
           <Award className="w-3.5 h-3.5" />
-          <span>Achievement Unlocked!</span>
+          <span>Achievement unlocked</span>
         </div>
         <p className="font-semibold text-sm truncate">{achievement.title}</p>
         <p className="text-xs text-zinc-300 dark:text-zinc-600 line-clamp-1">

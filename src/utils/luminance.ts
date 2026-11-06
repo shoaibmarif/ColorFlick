@@ -35,8 +35,8 @@ export function getLuminanceExplanation(rgb: RGB, category: LightDarkCategory, t
   const roundedLum = (lum * 100).toFixed(1);
   const thresholdPct = (threshold * 100).toFixed(0);
   if (category === 'Light') {
-    return `Light: Relative luminance is ${roundedLum}% (>= ${thresholdPct}% perceptual threshold by WCAG 2.1 gamma expansion).`;
+    return `Light. Its luminance is ${roundedLum}%, above our ${thresholdPct}% line, so dark text reads well on it.`;
   }
-  return `Dark: Relative luminance is ${roundedLum}% (< ${thresholdPct}% threshold). Requires light text for readability.`;
+  return `Dark. Its luminance is ${roundedLum}%, below our ${thresholdPct}% line, so it needs light text on top.`;
 }
 

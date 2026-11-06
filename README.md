@@ -1,59 +1,66 @@
 # ColorFlick
 
-**A free color guessing game for people who love playing with colors.**
+A free color guessing game for people who like playing with colors.
 
-🎨 Play it at **[colorflick.vercel.app](https://colorflick.vercel.app)**
+Play it at **[colorflick.vercel.app](https://colorflick.vercel.app)**
 
-![ColorFlick — How good is your eye for color?](public/og-image.png)
+![ColorFlick: How good is your eye for color?](public/og-image.png)
 
-## Why this project exists
+## About
 
-ColorFlick is a **just-for-fun platform for anyone who enjoys colors** — designers training their
-eye, developers who want to read hex codes at a glance, students learning color theory, or anyone
-looking for a relaxing daily puzzle.
+ColorFlick started as a simple idea: a place where people can have fun with colors. It's for
+designers who want to sharpen their eye, developers who'd like to read hex codes without a
+converter, students learning color theory, or anyone who enjoys a quick daily puzzle.
 
-There are no accounts, no ads and no paywalls. Open the page and play. Your scores, streaks and
-achievements are stored only in your own browser.
+It's free, there are no ads, and you don't need an account. Scores, streaks and achievements are
+saved in your own browser.
 
-## What you can do
+## What's in it
 
-**Play — nine game modes, four difficulty levels**
+### Game modes
+
+There are nine modes, each with four difficulty levels:
 
 | Mode | What you do |
 | --- | --- |
-| Color guessing game | Find the swatch that exactly matches the target |
+| Color guessing game | Find the swatch that matches the target |
 | RGB mixer | Recreate a color with red, green and blue sliders |
 | HEX code | Look at a color and type its hex code |
 | HSL matcher | Match a color with hue, saturation and lightness sliders |
 | Color picker | Recreate a color by eye with a color picker |
 | Color name | Pick the right name for a color |
-| Warm or cool | Sort colors into warm, cool or neutral |
+| Warm or cool | Decide whether a color is warm, cool or neutral |
 | Light or dark | Decide whether a color is light or dark |
 | Closest color | Pick the swatch that looks nearest to the target |
 
-Formats: standard (10 rounds), quick challenge (gets harder as you go), timed, endless, survival
-and practice.
+You can play them in different formats: a standard 10-round game, a quick challenge that gets
+harder as you go, timed, endless (three lives), survival (one mistake and you're out) or practice.
 
-**Daily challenge** — ten rounds that are the same for everyone each day, a daily streak, a
-spoiler-free result grid to share (🟩🟩🟥🟩…), a countdown to the next puzzle, and a calendar to
-replay the last five weeks.
+### Daily challenge
 
-**Your progress** — accuracy over your recent games, which color families you find hardest, and
-16 achievements to unlock.
+Ten rounds a day, the same for everyone. You get a streak for playing on consecutive days, a
+countdown to the next puzzle, a spoiler-free result grid to share (🟩🟩🟥🟩…), and a calendar
+for replaying the last five weeks.
 
-**Color tools** — a HEX/RGB/HSL converter, a WCAG contrast checker, an OKLab color-difference
-calculator and a list of named web colors.
+### Stats and progress
 
-**Learn** — short guides to color theory, RGB, HEX and HSL.
+Your accuracy over recent games, which color families trip you up most, and 16 achievements.
 
-### Fair by design
+### Tools and guides
 
-- Closeness is measured in **OKLab**, a color space built around human vision, so a near miss is
-  scored as a near miss.
-- In every round, every wrong swatch is **guaranteed to be visibly different** from the target and
-  from the other swatches — even on Expert. This is covered by automated tests.
-- Right and wrong answers are always shown with an icon and a label, never by color alone, and
-  there are color-blind and high-contrast settings.
+A color converter (HEX, RGB, HSL, HSV, OKLab), a WCAG contrast checker, a color difference
+calculator and a list of named web colors. There are also short guides to RGB, HEX, HSL and
+basic color theory.
+
+### How scoring stays fair
+
+Colors are compared in OKLab, a color space built around how people actually see, rather than
+by raw RGB numbers. Every wrong swatch in a round is also checked to make sure it's visibly
+different from the target and from the others, so even Expert never turns into a coin flip.
+There are tests for this in `tests/randomColor.test.ts`.
+
+Right and wrong answers are always shown with an icon and a label as well as color, and
+Settings has color-blind and high-contrast options.
 
 ## Run it locally
 
@@ -112,11 +119,11 @@ React 19 · TypeScript · Vite · Tailwind CSS · React Router · Vitest. Hosted
 
 The site deploys to Vercel with no extra setup: import the repository, and Vercel picks up the
 build command and output folder from `vercel.json`. If you use a different domain, change `url`
-in `src/seo/site.ts` — canonical URLs, the sitemap and social tags all follow from it.
+in `src/seo/site.ts` - canonical URLs, the sitemap and social tags all follow from it.
 
 ## Contributing
 
-Ideas for new modes, bug reports and pull requests are all welcome — please
+Ideas for new modes, bug reports and pull requests are all welcome - please
 [open an issue](https://github.com/shoaibmarif/colorflick/issues) first for anything big.
 Run `npm test` and `npm run build` before sending a pull request.
 

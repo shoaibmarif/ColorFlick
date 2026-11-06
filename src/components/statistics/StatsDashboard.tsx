@@ -36,7 +36,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
   const fastestSec =
     stats.fastestResponseMs !== null
       ? (stats.fastestResponseMs / 1000).toFixed(2)
-      : '—';
+      : ' - ';
 
   // Determine Favorite Mode (mode with highest gamesPlayed)
   const favoriteMode = useMemo(() => {
@@ -127,11 +127,11 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             No games played yet
           </h2>
           <p className="text-sm text-zinc-500 max-w-md mx-auto">
-            Start your first color challenge to track accuracy, reaction speed, streaks, and unlock achievements!
+            Play a game and your accuracy, speed, streaks and achievements will start showing up here.
           </p>
           {onPlayNow && (
             <Button onClick={onPlayNow} variant="primary" size="md">
-              Play First Game
+              Play your first game
             </Button>
           )}
         </div>
@@ -155,7 +155,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             <div className="p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-card flex flex-col justify-between">
               <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1.5">
                 <Trophy className="w-4 h-4 text-amber-500" />
-                High Score
+                High score
               </span>
               <div className="mt-2 font-mono text-2xl sm:text-3xl font-semibold text-zinc-900 dark:text-white">
                 {formatScore(stats.highestScore)}
@@ -168,7 +168,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             <div className="p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-card flex flex-col justify-between">
               <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1.5">
                 <Flame className="w-4 h-4 text-rose-500" />
-                Best Streak
+                Best streak
               </span>
               <div className="mt-2 font-mono text-2xl sm:text-3xl font-semibold text-zinc-900 dark:text-white">
                 {stats.bestStreak}
@@ -181,7 +181,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             <div className="p-4 bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-card flex flex-col justify-between">
               <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1.5">
                 <Zap className="w-4 h-4 text-sky-500" />
-                Avg Speed
+                Avg. answer time
               </span>
               <div className="mt-2 font-mono text-2xl sm:text-3xl font-semibold text-zinc-900 dark:text-white">
                 {avgResponseTimeSec}s
@@ -200,7 +200,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
               </div>
               <div>
                 <h3 className="font-semibold text-sm text-zinc-900 dark:text-white">
-                  Daily Challenge Streak
+                  Daily challenge streak
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   {stats.dailyCompletedCount} challenges finished • Longest: {stats.longestDailyStreak} days
@@ -217,36 +217,36 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             <div className="flex items-center gap-2">
               <PieChart className="w-5 h-5 text-brand-600 dark:text-brand-400" />
               <h3 className="text-base font-semibold text-zinc-900 dark:text-white">
-                Color Perception Analysis
+                How you see color
               </h3>
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Aggregated sensory data calculated locally from your completed rounds and perceptual distance scores.
+              Worked out from every round you've played on this device.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
               <div className="p-3.5 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-700">
-                <span className="text-xs font-semibold text-zinc-400">Avg Match Similarity</span>
+                <span className="text-xs font-semibold text-zinc-400">Average match</span>
                 <p className="font-mono text-2xl font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
                   {colorStats.avgSimilarity}%
                 </p>
-                <span className="text-xs text-zinc-400">Calculated in OKLab space</span>
+                <span className="text-xs text-zinc-400">How close your slider and picker guesses get</span>
               </div>
 
               <div className="p-3.5 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-700">
-                <span className="text-xs font-semibold text-zinc-400">Warm / Cool Accuracy</span>
+                <span className="text-xs font-semibold text-zinc-400">Warm or cool</span>
                 <p className="font-mono text-2xl font-semibold text-amber-600 dark:text-amber-400 mt-1">
                   {colorStats.warmCoolAccuracy}%
                 </p>
-                <span className="text-xs text-zinc-400">Color temperature acuity</span>
+                <span className="text-xs text-zinc-400">Correct answers in that mode</span>
               </div>
 
               <div className="p-3.5 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-700">
-                <span className="text-xs font-semibold text-zinc-400">Light / Dark Accuracy</span>
+                <span className="text-xs font-semibold text-zinc-400">Light or dark</span>
                 <p className="font-mono text-2xl font-semibold text-sky-600 dark:text-sky-400 mt-1">
                   {colorStats.lightDarkAccuracy}%
                 </p>
-                <span className="text-xs text-zinc-400">Relative luminance acuity</span>
+                <span className="text-xs text-zinc-400">Correct answers in that mode</span>
               </div>
             </div>
           </div>
@@ -254,7 +254,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
           {/* Mode-Specific Stats Tab */}
           <div className="space-y-4">
             <h3 className="text-base font-semibold text-zinc-900 dark:text-white">
-              Performance by Game Mode
+              By game mode
             </h3>
 
             {/* Mode Sub-Navigation */}
@@ -295,7 +295,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
                 </p>
               </div>
               <div>
-                <span className="text-xs font-semibold text-zinc-400">Mode Best</span>
+                <span className="text-xs font-semibold text-zinc-400">Best score</span>
                 <p className="font-mono text-xl font-semibold text-zinc-900 dark:text-white">
                   {formatScore(modeStat.highestScore)}
                 </p>
@@ -309,7 +309,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
               <div className="flex items-center gap-2">
                 <History className="w-5 h-5 text-brand-600 dark:text-brand-400" />
                 <h3 className="text-base font-semibold text-zinc-900 dark:text-white">
-                  Recent Game History
+                  Recent games
                 </h3>
               </div>
               {historyList.length > 0 && !showClearHistoryConfirm && (
@@ -319,12 +319,12 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
                   className="flex items-center gap-1 text-xs text-rose-500 hover:text-rose-600 font-semibold transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  <span>Clear History</span>
+                  <span>Clear history</span>
                 </button>
               )}
             </div>
 
-            {/* Clear History Confirmation Box */}
+            {/* Clear history Confirmation Box */}
             {showClearHistoryConfirm && (
               <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 rounded-2xl border border-rose-200 dark:border-rose-900 flex items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300 font-semibold">
@@ -344,7 +344,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
                     onClick={handleClearHistory}
                     className="px-2.5 py-1 bg-rose-600 text-white rounded-lg font-semibold shadow-card hover:bg-rose-700"
                   >
-                    Yes, Clear
+                    Yes, clear it
                   </button>
                 </div>
               </div>
@@ -352,7 +352,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
 
             {historyList.length === 0 ? (
               <div className="text-center py-6 bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-400">
-                No past sessions saved yet. Finish a challenge to see history!
+                Nothing here yet. Finish a game and it'll appear here.
               </div>
             ) : (
               <div className="space-y-2 max-h-64 overflow-y-auto pr-1">

@@ -37,7 +37,7 @@ export const TermsPage: React.FC = () => (
         </a>
         . Any reuse of the code is governed by the license published in that repository; where no
         license is published, all rights are reserved by the author. The {SITE.name} name and logo
-        identify this project — please don’t use them in a way that suggests your project is this one.
+        identify this project - please don’t use them in a way that suggests your project is this one.
       </p>
 
       <h2>4. Your data</h2>

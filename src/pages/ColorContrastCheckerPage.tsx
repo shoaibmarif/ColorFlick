@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { SeoMeta } from '../components/ui/SeoMeta';
 import { PageHeader } from '../components/layout/PageHeader';
 import { hexToRgb } from '../utils/colorConversion';
 import { calculateContrastRatio } from '../utils/contrast';
-import { Check, X, ArrowLeftRight, BookOpen } from 'lucide-react';
+import { Check, X, ArrowLeftRight } from 'lucide-react';
 
 export const ColorContrastCheckerPage: React.FC = () => {
   const [fgHex, setFgHex] = useState<string>('#FFFFFF');
@@ -44,7 +45,7 @@ export const ColorContrastCheckerPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center relative">
           {/* Foreground Input */}
           <div className="p-4 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700 space-y-2">
-            <span className="text-xs font-semibold text-zinc-500">Text / Foreground</span>
+            <span className="text-xs font-semibold text-zinc-500">Text color</span>
             <div className="flex items-center gap-3">
               <input
                 type="color"
@@ -118,17 +119,17 @@ export const ColorContrastCheckerPage: React.FC = () => {
           style={{ backgroundColor: bgHex, color: fgHex }}
         >
           <h3 className="text-xl sm:text-2xl font-semibold tracking-tight" style={{ color: fgHex }}>
-            Large Headline (18pt / 24px+)
+            Large heading
           </h3>
           <p className="text-sm font-normal leading-relaxed opacity-95" style={{ color: fgHex }}>
-            This is standard body copy text. Ensuring high contrast makes digital interfaces readable for people with varying visual acuity, color blindness, or when using mobile screens outdoors in direct sunlight.
+            This is what a paragraph of normal body text looks like with these colors. If it feels like hard work to read, your visitors will think so too.
           </p>
           <div className="pt-2 flex gap-3">
             <span
               className="px-3 py-1.5 rounded-lg text-xs font-semibold border"
               style={{ borderColor: fgHex, color: fgHex }}
             >
-              UI Button Component
+              Button
             </span>
           </div>
         </div>
@@ -137,7 +138,7 @@ export const ColorContrastCheckerPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           {/* Normal Text */}
           <div className="p-4 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 space-y-2">
-            <span className="text-xs font-semibold text-zinc-400 block">Normal Text (&lt; 18pt)</span>
+            <span className="text-xs font-semibold text-zinc-400 block">Normal text</span>
             <div className="space-y-1.5 text-xs font-semibold">
               <div className="flex items-center justify-between">
                 <span>WCAG AA (4.5:1)</span>
@@ -162,7 +163,7 @@ export const ColorContrastCheckerPage: React.FC = () => {
 
           {/* Large Text */}
           <div className="p-4 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 space-y-2">
-            <span className="text-xs font-semibold text-zinc-400 block">Large Text (&ge; 18pt / 14pt bold)</span>
+            <span className="text-xs font-semibold text-zinc-400 block">Large text</span>
             <div className="space-y-1.5 text-xs font-semibold">
               <div className="flex items-center justify-between">
                 <span>WCAG AA (3.0:1)</span>
@@ -187,7 +188,7 @@ export const ColorContrastCheckerPage: React.FC = () => {
 
           {/* UI Components */}
           <div className="p-4 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 space-y-2">
-            <span className="text-xs font-semibold text-zinc-400 block">UI & Graphical Elements</span>
+            <span className="text-xs font-semibold text-zinc-400 block">Icons and UI parts</span>
             <div className="space-y-1.5 text-xs font-semibold">
               <div className="flex items-center justify-between">
                 <span>WCAG AA (3.0:1)</span>
@@ -199,29 +200,46 @@ export const ColorContrastCheckerPage: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-zinc-400 font-normal pt-1">
-                Applies to form input borders, focus indicators, and icons.
+                For input borders, focus rings and icons.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Technical Background */}
-      <section className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-700 space-y-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-        <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-semibold text-base">
-          <BookOpen className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-          <h2>The Relative Luminance Contrast Formula</h2>
-        </div>
+      <article className="prose-page">
+        <h2>What the numbers mean</h2>
         <p>
-          According to the World Wide Web Consortium (W3C) WCAG 2.1 specification, contrast ratio is calculated as:
+          Contrast ratio runs from 1:1 (the same color twice) to 21:1 (black on white). The higher it is,
+          the easier text is to read, especially for people with low vision, on a phone in sunlight, or
+          on a cheap screen.
         </p>
-        <div className="p-3 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700 font-mono text-center text-xs font-semibold">
-          (L1 + 0.05) / (L2 + 0.05)
-        </div>
+        <ul>
+          <li><strong>4.5:1</strong> is the minimum for normal body text (WCAG level AA).</li>
+          <li><strong>3:1</strong> is enough for large text (about 24px, or 19px bold) and for icons, borders and other UI parts.</li>
+          <li><strong>7:1</strong> for body text meets the stricter AAA level.</li>
+        </ul>
+
+        <h2>How it's worked out</h2>
         <p>
-          Where <strong>L1</strong> is the relative luminance of the lighter color, and <strong>L2</strong> is the relative luminance of the darker color. The addition of 0.05 accounts for ambient flare light in typical reading environments.
+          We take the relative luminance of each color (how bright it actually looks, not just its
+          numbers; more on that in <Link to="/color-theory">color science basics</Link>) and compare them:
         </p>
-      </section>
+        <p>
+          <code>contrast = (lighter + 0.05) / (darker + 0.05)</code>
+        </p>
+        <p>
+          The 0.05 allows for a little glare from the room, so a pure black never counts as infinitely
+          dark.
+        </p>
+
+        <h2>If your colors fail</h2>
+        <p>
+          You rarely need to change the color itself. Darken the text or lighten the background a few
+          steps (adjusting lightness in <Link to="/color-converter">HSL</Link> is the easiest way), and
+          keep the hue the same so it still looks like your brand.
+        </p>
+      </article>
     </div>
   );
 };

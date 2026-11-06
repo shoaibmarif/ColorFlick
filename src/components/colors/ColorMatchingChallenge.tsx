@@ -43,7 +43,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
         {/* Target Color Block */}
         <div className="flex flex-col items-center space-y-2 p-3 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700">
           <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-            TARGET
+            Target
           </span>
           <div
             className="w-full h-28 sm:h-32 rounded-xl shadow-inner border border-black/10 ring-1 ring-black/5"
@@ -51,14 +51,14 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
             aria-label="Target color display"
           />
           <span className="text-xs font-mono text-zinc-400 italic">
-            HSL values hidden
+            Values shown after you guess
           </span>
         </div>
 
         {/* Player Color Block */}
         <div className="flex flex-col items-center space-y-2 p-3 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700">
           <span className="text-xs font-semibold text-brand-600 dark:text-brand-400">
-            YOUR COLOR
+            Your color
           </span>
           <div
             className="w-full h-28 sm:h-32 rounded-xl shadow-inner border border-black/10 ring-1 ring-black/5 transition-colors duration-75"
@@ -74,7 +74,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
       {/* Live Similarity Bar */}
       <div className="space-y-1.5 p-3.5 bg-zinc-100 dark:bg-zinc-900/40 rounded-2xl border border-zinc-200 dark:border-zinc-700/60">
         <div className="flex justify-between items-center text-xs font-semibold">
-          <span className="text-zinc-600 dark:text-zinc-400">Live Match Similarity</span>
+          <span className="text-zinc-600 dark:text-zinc-400">How close you are</span>
           <span className={`font-mono text-sm font-semibold ${
             liveSimilarity >= 90
               ? 'text-emerald-500'
@@ -100,7 +100,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
         {/* Hue Slider (0 - 360) */}
         <div className="space-y-1">
           <div className="flex justify-between items-center text-xs font-semibold">
-            <span className="text-zinc-700 dark:text-zinc-200">Hue (H)</span>
+            <span className="text-zinc-700 dark:text-zinc-200">Hue</span>
             <span className="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
               {hsl.h}°
             </span>
@@ -124,7 +124,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
         {/* Saturation Slider (0 - 100%) */}
         <div className="space-y-1">
           <div className="flex justify-between items-center text-xs font-semibold">
-            <span className="text-zinc-700 dark:text-zinc-200">Saturation (S)</span>
+            <span className="text-zinc-700 dark:text-zinc-200">Saturation</span>
             <span className="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
               {hsl.s}%
             </span>
@@ -147,7 +147,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
         {/* Lightness Slider (0 - 100%) */}
         <div className="space-y-1">
           <div className="flex justify-between items-center text-xs font-semibold">
-            <span className="text-zinc-700 dark:text-zinc-200">Lightness (L)</span>
+            <span className="text-zinc-700 dark:text-zinc-200">Lightness</span>
             <span className="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
               {hsl.l}%
             </span>
@@ -187,7 +187,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
           className="flex-1 py-3 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-brand-400"
         >
           <Check className="w-5 h-5" />
-          <span>Lock In Match</span>
+          <span>Submit guess</span>
         </button>
       </div>
     </form>

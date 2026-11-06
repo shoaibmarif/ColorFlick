@@ -1,118 +1,104 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { SeoMeta } from '../components/ui/SeoMeta';
 import { PageHeader } from '../components/layout/PageHeader';
-import { Link } from 'react-router-dom';
-import { SunMedium, Compass, ArrowRight } from 'lucide-react';
 import { ButtonLink } from '../components/ui/Button';
 
-export const ColorTheoryPage: React.FC = () => {
-  return (
-    <div className="max-w-3xl mx-auto space-y-10">
-      <SeoMeta canonicalPath="/color-theory" />
+/** Same HSL lightness (50%), very different apparent brightness. */
+const SAME_LIGHTNESS = [
+  { name: 'Yellow', hex: '#FFFF00' },
+  { name: 'Green', hex: '#00FF00' },
+  { name: 'Red', hex: '#FF0000' },
+  { name: 'Blue', hex: '#0000FF' },
+];
 
-      <PageHeader title="Color science basics" intro="The ideas behind how we describe and measure color on screens." />
+export const ColorTheoryPage: React.FC = () => (
+  <div className="mx-auto max-w-3xl">
+    <SeoMeta canonicalPath="/color-theory" />
+    <PageHeader
+      title="Color science basics"
+      intro="A short tour of how we actually see color, and why the numbers on a screen don't always agree with our eyes."
+    />
 
-      {/* Section 1: The Three Dimensions of Color */}
-      <section className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-          The Three Dimensions: Hue, Saturation & Lightness
-        </h2>
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          While computers represent color as mixtures of Red, Green, and Blue light, human perception naturally distinguishes colors along three distinct psychological axes:
-        </p>
+    <article className="prose-page">
+      <h2>Your eyes aren't equally sensitive</h2>
+      <p>
+        We see color with three kinds of cone cells in the eye, roughly tuned to long, medium and short
+        wavelengths of light. They don't pull equal weight. We're very sensitive to yellows and greens,
+        and much less sensitive to blue.
+      </p>
+      <p>
+        You can see it for yourself. All four colors below have exactly the same lightness in HSL (50%),
+        yet yellow looks bright and blue looks dark:
+      </p>
+    </article>
 
-        <div className="space-y-3 pt-2 text-xs">
-          <div className="p-4 bg-zinc-50 dark:bg-zinc-700/40 rounded-2xl border border-zinc-200 dark:border-zinc-700 space-y-1">
-            <h3 className="font-semibold text-sm text-zinc-900 dark:text-white">
-              1. Hue (0° – 360°)
-            </h3>
-            <p className="text-zinc-600 dark:text-zinc-300">
-              The pure pigment or color family on the 360-degree color wheel. 0° is pure red, 120° is green, and 240° is blue.
-            </p>
-          </div>
+    <ul className="mb-8 grid grid-cols-4 gap-2">
+      {SAME_LIGHTNESS.map((c) => (
+        <li key={c.name} className="text-center">
+          <span className="block h-16 rounded-lg ring-1 ring-inset ring-black/10" style={{ backgroundColor: c.hex }} />
+          <span className="mt-1 block text-xs text-zinc-500">{c.name}</span>
+        </li>
+      ))}
+    </ul>
 
-          <div className="p-4 bg-zinc-50 dark:bg-zinc-700/40 rounded-2xl border border-zinc-200 dark:border-zinc-700 space-y-1">
-            <h3 className="font-semibold text-sm text-zinc-900 dark:text-white">
-              2. Saturation (0% – 100%)
-            </h3>
-            <p className="text-zinc-600 dark:text-zinc-300">
-              The purity or vividness of the color. 0% is completely washed out grayscale; 100% is vibrant and intensely chromatic.
-            </p>
-          </div>
+    <article className="prose-page">
+      <h2>Measuring brightness properly</h2>
+      <p>
+        To capture how bright a color really looks, the web's accessibility guidelines (WCAG) use a
+        measure called <strong>relative luminance</strong>. It weights green most heavily, then red, and
+        blue least of all:
+      </p>
+      <p>
+        <code>luminance = 0.2126 × red + 0.7152 × green + 0.0722 × blue</code>
+      </p>
+      <p>
+        (The red, green and blue values are first converted to linear light, which undoes the
+        brightness curve screens apply.) This is the formula behind contrast ratios, and it's what the
+        light-or-dark game mode uses to decide the answer. Try it on your own colors in the{' '}
+        <Link to="/color-contrast-checker">contrast checker</Link>.
+      </p>
 
-          <div className="p-4 bg-zinc-50 dark:bg-zinc-700/40 rounded-2xl border border-zinc-200 dark:border-zinc-700 space-y-1">
-            <h3 className="font-semibold text-sm text-zinc-900 dark:text-white">
-              3. Lightness (0% – 100%)
-            </h3>
-            <p className="text-zinc-600 dark:text-zinc-300">
-              The perceived brightness. 0% lightness is absolute black, while 100% is pure white, regardless of hue.
-            </p>
-          </div>
-        </div>
-      </section>
+      <h2>Why "distance" between colors is tricky</h2>
+      <p>
+        The obvious way to compare two colors is to treat red, green and blue like x, y and z and
+        measure the gap. The trouble is that a gap of 30 in the green channel is easy to spot, while
+        the same gap in blue can be almost invisible. Equal numbers, unequal differences.
+      </p>
+      <p>
+        Color scientists have spent decades on color spaces that fix this. ColorFlick uses{' '}
+        <strong>OKLab</strong>, published by Björn Ottosson in 2020. In OKLab, equal distances look
+        roughly equally different to people, whatever the color. That's how we score your guesses and how
+        we make sure no two swatches in a round are too similar to tell apart. The{' '}
+        <Link to="/color-distance">color difference calculator</Link> lets you compare both methods side
+        by side.
+      </p>
 
-      {/* Section 2: Warm vs Cool */}
-      <section className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
-          <SunMedium className="w-5 h-5 text-amber-500" />
-          <span>Warm vs. Cool Colors</span>
-        </h2>
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          Color temperature evokes psychological and physiological sensations. In color theory, colors are categorized into warm and cool groups:
-        </p>
+      <h2>Not everyone sees the same colors</h2>
+      <p>
+        Around 1 in 12 men and 1 in 200 women have some form of color vision deficiency, most often
+        trouble telling certain reds and greens apart. That's why ColorFlick never relies on color alone
+        to say whether you were right: every answer also gets an icon and a label. There are color-blind
+        assistance options in Settings, too.
+      </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs">
-          <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800 space-y-2">
-            <h3 className="font-semibold text-amber-900 dark:text-amber-200 text-sm">
-              Warm Colors (0°–80° & 315°–360°)
-            </h3>
-            <p className="text-amber-800 dark:text-amber-300">
-              Reds, oranges, sunny yellows, and warm magentas. Associated with fire, sunlight, warmth, and active energy.
-            </p>
-          </div>
+      <h2>Screens and rooms matter</h2>
+      <p>
+        The same code can look different on two screens. Brightness, calibration and features like Night
+        Shift or True Tone all shift what you see, and so does the light in the room. For a fair game,
+        turn off blue-light filters and avoid playing in strongly colored light.
+      </p>
 
-          <div className="p-4 bg-sky-50 dark:bg-sky-950/30 rounded-2xl border border-sky-200 dark:border-sky-800 space-y-2">
-            <h3 className="font-semibold text-sky-900 dark:text-sky-200 text-sm">
-              Cool Colors (80°–315°)
-            </h3>
-            <p className="text-sky-800 dark:text-sky-300">
-              Greens, teals, cyans, deep blues, and violets. Associated with water, ice, foliage, tranquility, and calmness.
-            </p>
-          </div>
-        </div>
-        <p className="text-xs text-zinc-500">
-          <em>Note:</em> In our Warm/Cool game mode, ambiguous transitional hues (such as chartreuse ~75°–85°) are programmatically filtered out to ensure completely fair, unambiguous challenges.
-        </p>
-      </section>
+      <h2>Keep going</h2>
+      <ul>
+        <li><Link to="/understanding-rgb">How RGB works</Link></li>
+        <li><Link to="/understanding-hsl">How HSL works</Link></li>
+        <li><Link to="/color-theory-guide">Color schemes and warm vs cool</Link></li>
+      </ul>
+    </article>
 
-      {/* Section 3: Why OKLab? */}
-      <section className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
-          <Compass className="w-5 h-5 text-brand-600" />
-          <span>Why OKLab Color Space?</span>
-        </h2>
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          Standard RGB color distance is computed using Euclidean distance √((ΔR)² + (ΔG)² + (ΔB)²). However, raw RGB distances do not correspond to how human retinas perceive differences:
-        </p>
-        <div className="p-4 bg-zinc-50 dark:bg-zinc-700/40 rounded-2xl border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-600 dark:text-zinc-300 space-y-2">
-          <p>
-            Human cone cells (L, M, S) are disproportionately sensitive to changes in green and yellow wavelengths compared to blue wavelengths.
-          </p>
-          <p>
-            The <strong>OKLab color space</strong> (developed by Björn Ottosson in 2020) maps colors into a perceptually uniform coordinate system (L, a, b). In OKLab, a Euclidean distance of 0.05 between two blues appears identically distinct to the human eye as 0.05 between two greens.
-          </p>
-        </div>
-      </section>
-
-      <div className="flex justify-between items-center pt-4">
-        <Link to="/rgb-vs-hex" className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
-          ← RGB vs HEX Guide
-        </Link>
-        <ButtonLink to="/color-guessing-game" variant="primary" size="md" className="gap-2">
-            <span>Play Game</span>
-            <ArrowRight className="w-4 h-4" />
-          </ButtonLink>
-      </div>
+    <div className="mt-10">
+      <ButtonLink to="/color-guessing-game">Put your eyes to the test</ButtonLink>
     </div>
-  );
-};
+  </div>
+);

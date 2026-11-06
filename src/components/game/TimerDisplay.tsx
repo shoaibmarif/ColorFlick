@@ -23,7 +23,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
       <div className="flex justify-between items-center text-xs font-semibold">
         <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
           <Clock className={`w-3.5 h-3.5 ${isLow ? 'text-rose-500' : 'text-zinc-400'}`} />
-          <span>Time Remaining</span>
+          <span>Time left</span>
         </div>
         <span
           className={`font-mono text-sm ${

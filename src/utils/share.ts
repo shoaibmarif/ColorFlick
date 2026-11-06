@@ -12,7 +12,7 @@ export interface ShareResultOptions {
 /** Shares the result of a regular (non-daily) game. */
 export async function shareGameResult(opts: ShareResultOptions) {
   const text = [
-    `${SITE.name} — ${opts.modeName}`,
+    `${SITE.name} - ${opts.modeName}`,
     `${opts.score.toLocaleString()} points · ${opts.accuracy}% accuracy over ${opts.roundCount} rounds`,
     opts.bestStreak > 1 ? `Best streak: ${opts.bestStreak}` : '',
     'Can you beat it?',
@@ -22,7 +22,7 @@ export async function shareGameResult(opts: ShareResultOptions) {
   return shareText(text, `${SITE.url}/`, `My ${SITE.name} score`);
 }
 
-/** Emoji grid for a finished daily challenge, e.g. 🟩🟩🟥🟩… — no spoilers. */
+/** Emoji grid for a finished daily challenge, e.g. 🟩🟩🟥🟩… - no spoilers. */
 export function dailyShareText(opts: {
   dateLabel: string;
   results: boolean[];

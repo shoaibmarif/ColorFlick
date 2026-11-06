@@ -9,7 +9,7 @@ const RECENT_GAMES = 20;
 const formatDay = (iso: string) =>
   new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-/** Accuracy for each of the last games — single series, so no legend. */
+/** Accuracy for each of the last games - single series, so no legend. */
 const RecentAccuracy: React.FC<{ games: { date: string; accuracy: number; mode: string; score: number }[] }> = ({
   games,
 }) => {

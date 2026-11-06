@@ -27,8 +27,8 @@ export const PrivacyPage: React.FC = () => (
         daily challenge results and achievements are saved in your browser’s{" "}
         <code>localStorage</code>. This data stays on your device and is not
         sent to us. You can delete it at any time from{" "}
-        <strong>Settings → Reset all data</strong>, or by clearing this site’s
-        data in your browser.
+        <strong>Settings → Your data → Reset</strong>, or by clearing this
+        site’s data in your browser.
       </p>
 
       <h2>Analytics and cookies</h2>

@@ -7,7 +7,7 @@
  *    static HTML file per route (correct <head> for crawlers and link
  *    previews) and generates sitemap.xml.
  *
- * Keep titles under ~60 characters and descriptions around 140–160.
+ * Keep titles under ~60 characters and descriptions around 140-160.
  */
 export type ChangeFreq = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
@@ -33,9 +33,9 @@ const r = (m: RouteMeta) => m;
 export const ROUTES: RouteMeta[] = [
   r({
     path: '/',
-    title: 'ColorFlick — Free Color Guessing Game & Daily Color Challenge',
+    title: 'ColorFlick - Free Color Guessing Game & Daily Color Challenge',
     description:
-      'Test your eye for color. Match swatches, guess HEX and RGB codes, mix colors with sliders and play a new daily challenge. Free, no sign-up, works offline.',
+      'Test your eye for color. Match swatches, guess HEX and RGB codes, mix colors with sliders and play a new puzzle every day. Free, and no sign-up.',
     label: 'Home',
     heading: 'A color guessing game for sharp eyes',
     changefreq: 'daily',
@@ -45,7 +45,7 @@ export const ROUTES: RouteMeta[] = [
   // ── Games ────────────────────────────────────────────────────────────────
   r({
     path: '/color-guessing-game',
-    title: 'Color Guessing Game — Find the Matching Swatch',
+    title: 'Color Guessing Game - Find the Matching Swatch',
     description:
       'Play a free color guessing game online. Spot the swatch that exactly matches the target across four difficulty levels, with instant feedback and streaks.',
     label: 'Color guessing game',
@@ -56,7 +56,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/daily-color-challenge',
-    title: 'Daily Color Challenge — A New Color Puzzle Every Day',
+    title: 'Daily Color Challenge - A New Color Puzzle Every Day',
     description:
       'Ten new color rounds every day, identical for every player. Play today’s daily color challenge, keep your streak alive and share your score.',
     label: 'Daily challenge',
@@ -67,7 +67,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/rgb-color-game',
-    title: 'RGB Color Game — Mix Red, Green and Blue to Match',
+    title: 'RGB Color Game - Mix Red, Green and Blue to Match',
     description:
       'Recreate the target color by dragging red, green and blue sliders from 0 to 255. A hands-on way to learn additive RGB color mixing.',
     label: 'RGB color game',
@@ -78,7 +78,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/hex-color-game',
-    title: 'HEX Color Game — Guess the Hex Code of a Color',
+    title: 'HEX Color Game - Guess the Hex Code of a Color',
     description:
       'Look at a swatch and type its hex code. Practise reading CSS colors like #3B82F6 and get scored on how close your guess is.',
     label: 'HEX color game',
@@ -89,7 +89,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-picker-game',
-    title: 'Color Picker Game — Recreate the Color by Eye',
+    title: 'Color Picker Game - Recreate the Color by Eye',
     description:
       'Use a color picker to recreate the target color from memory and see how close you got, measured with the perceptual OKLab color space.',
     label: 'Color picker game',
@@ -100,7 +100,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-matching-game',
-    title: 'Color Matching Game — Match Colors with HSL Sliders',
+    title: 'Color Matching Game - Match Colors with HSL Sliders',
     description:
       'Adjust hue, saturation and lightness until your swatch matches the target. A relaxed color matching game that teaches how HSL works.',
     label: 'Color matching game',
@@ -111,7 +111,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-theory-game',
-    title: 'Color Theory Game — Warm, Cool or Neutral?',
+    title: 'Color Theory Game - Warm, Cool or Neutral?',
     description:
       'Sort colors into warm, cool and neutral. A quick color theory quiz for designers, artists and students learning color temperature.',
     label: 'Color theory game',
@@ -122,7 +122,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-game-timed',
-    title: 'Timed Color Game — How Many Colors in 60 Seconds?',
+    title: 'Timed Color Game - How Many Colors in 60 Seconds?',
     description:
       'Answer as many color questions as you can before the clock runs out. Choose 30, 60 or 120 seconds and chase your best score.',
     label: 'Timed mode',
@@ -133,7 +133,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-game-practice',
-    title: 'Color Game Practice Mode — Untimed, With Hints',
+    title: 'Color Game Practice Mode - Untimed, With Hints',
     description:
       'Practise color recognition with no timer and no pressure. Hints and explanations help you understand every answer.',
     label: 'Practice mode',
@@ -156,7 +156,7 @@ export const ROUTES: RouteMeta[] = [
   ...(['easy', 'medium', 'hard', 'expert'] as const).map((d) =>
     r({
       path: `/color-guessing-game/${d}`,
-      title: `Color Guessing Game — ${d[0].toUpperCase()}${d.slice(1)} Difficulty`,
+      title: `Color Guessing Game - ${d[0].toUpperCase()}${d.slice(1)} Difficulty`,
       description: {
         easy: 'Easy color guessing: three choices with clearly different hues. Ideal for warming up or playing with kids.',
         medium: 'Medium color guessing: six choices from the same color family. The standard ColorFlick challenge.',
@@ -174,7 +174,7 @@ export const ROUTES: RouteMeta[] = [
   // ── Tools ────────────────────────────────────────────────────────────────
   r({
     path: '/color-converter',
-    title: 'Color Converter — HEX, RGB and HSL',
+    title: 'Color Converter - HEX, RGB and HSL',
     description:
       'Convert colors between HEX, RGB and HSL instantly. Preview tints, shades and the complementary color, then copy any value in one click.',
     label: 'Color converter',
@@ -187,7 +187,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/rgb-to-hex',
     title: 'RGB to HEX Converter',
     description:
-      'Convert RGB values (0–255) to a hex color code instantly. Free online RGB to HEX converter with live preview and one-click copy.',
+      'Convert RGB values (0-255) to a hex color code instantly. Free online RGB to HEX converter with live preview and one-click copy.',
     label: 'RGB to HEX',
     heading: 'RGB to HEX converter',
     changefreq: 'monthly',
@@ -207,7 +207,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-contrast-checker',
-    title: 'Color Contrast Checker — WCAG AA & AAA',
+    title: 'Color Contrast Checker - WCAG AA & AAA',
     description:
       'Check the contrast ratio between text and background colors against WCAG 2.1 AA and AAA for normal text, large text and UI components.',
     label: 'Contrast checker',
@@ -229,7 +229,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-codes',
-    title: 'Web Color Codes — Named CSS Colors with HEX, RGB, HSL',
+    title: 'Web Color Codes - Named CSS Colors with HEX, RGB, HSL',
     description:
       'A searchable list of named CSS colors with their HEX, RGB and HSL values. Click any value to copy it.',
     label: 'Color codes',
@@ -242,7 +242,7 @@ export const ROUTES: RouteMeta[] = [
   // ── Learn ────────────────────────────────────────────────────────────────
   r({
     path: '/how-to-play',
-    title: 'How to Play — Rules, Scoring and Shortcuts',
+    title: 'How to Play - Rules, Scoring and Shortcuts',
     description:
       'How ColorFlick works: the game modes, how points and streak bonuses are calculated, difficulty levels and keyboard shortcuts.',
     label: 'How to play',
@@ -253,7 +253,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-theory-guide',
-    title: 'Color Theory Guide — Color Wheel, Harmonies and Temperature',
+    title: 'Color Theory Guide - Color Wheel, Harmonies and Temperature',
     description:
       'A practical introduction to color theory: the color wheel, complementary and analogous harmonies, warm and cool colors, and lightness.',
     label: 'Color theory guide',
@@ -264,9 +264,9 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/color-theory',
-    title: 'Color Science Basics — HSL, Luminance and OKLab',
+    title: 'Color Science Basics: How We Really See Color',
     description:
-      'Hue, saturation and lightness, relative luminance and perceptual color spaces explained in plain language, with examples.',
+      'Why yellow looks brighter than blue, how screen brightness is measured, and why comparing colors by their RGB numbers can mislead you.',
     label: 'Color science basics',
     heading: 'Color science basics',
     changefreq: 'monthly',
@@ -277,7 +277,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/understanding-rgb',
     title: 'RGB Color Model Explained',
     description:
-      'How red, green and blue light combine to make 16.7 million screen colors, what the 0–255 values mean, and how to read rgb() in CSS.',
+      'How red, green and blue light combine to make 16.7 million screen colors, what the 0-255 values mean, and how to read rgb() in CSS.',
     label: 'Understanding RGB',
     heading: 'The RGB color model, explained',
     changefreq: 'monthly',
@@ -297,9 +297,9 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/understanding-hsl',
-    title: 'HSL Colors Explained — Hue, Saturation, Lightness',
+    title: 'HSL Colors Explained - Hue, Saturation, Lightness',
     description:
-      'Why designers like HSL: hue from 0–360°, saturation and lightness from 0–100%, and how to build palettes by changing one value at a time.',
+      'Why designers like HSL: hue from 0-360°, saturation and lightness from 0-100%, and how to build palettes by changing one value at a time.',
     label: 'Understanding HSL',
     heading: 'HSL colors, explained',
     changefreq: 'monthly',
@@ -308,7 +308,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/rgb-vs-hex',
-    title: 'RGB vs HEX — What’s the Difference?',
+    title: 'RGB vs HEX - What’s the Difference?',
     description:
       'RGB and HEX describe the same colors in different notation. Learn how they map to each other and when to use which in CSS.',
     label: 'RGB vs HEX',
@@ -319,7 +319,7 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/faq',
-    title: 'FAQ — Color Guessing Game Questions Answered',
+    title: 'FAQ - Color Guessing Game Questions Answered',
     description:
       'Answers to common questions about ColorFlick: game rules, scoring, the daily challenge, privacy, accessibility and color science.',
     label: 'FAQ',
@@ -356,7 +356,7 @@ export const ROUTES: RouteMeta[] = [
   r({
     path: '/contact',
     title: 'Contact',
-    description: 'Report a bug, suggest a feature or say hello to the people behind ColorFlick.',
+    description: 'Report a bug, suggest a feature or just say hello. Email, LinkedIn and GitHub links for ColorFlick.',
     label: 'Contact',
     heading: 'Contact',
     changefreq: 'yearly',

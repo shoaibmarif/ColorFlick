@@ -35,7 +35,7 @@ export const RoundFeedback: React.FC<RoundFeedbackProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-base">
-                {result.isCorrect ? 'Correct!' : 'Not quite!'}
+                {result.isCorrect ? 'Nice, that’s right' : 'Not quite'}
               </span>
               {result.isCorrect && (
                 <span className="bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 font-mono text-xs font-semibold px-2 py-0.5 rounded-md">
@@ -47,16 +47,16 @@ export const RoundFeedback: React.FC<RoundFeedbackProps> = ({
             {/* Detailed comparison if available */}
             {result.differencePercentage !== undefined ? (
               <p className="text-xs text-zinc-600 dark:text-zinc-300">
-                Perceptual difference: <strong>{result.differencePercentage.toFixed(1)}%</strong>
+                Difference: <strong>{result.differencePercentage.toFixed(1)}%</strong>
               </p>
             ) : !result.isCorrect ? (
               <div className="text-xs space-y-0.5 text-zinc-600 dark:text-zinc-300">
                 <p>
-                  Target was: <span className="font-mono font-semibold">{result.targetCategory || result.targetHex}</span>
+                  The answer was <span className="font-mono font-semibold">{result.targetCategory || result.targetHex}</span>
                 </p>
                 {result.playerAnswerLabel && (
                   <p>
-                    Your choice: <span className="font-mono font-medium">{result.playerAnswerLabel}</span>
+                    You picked <span className="font-mono font-medium">{result.playerAnswerLabel}</span>
                   </p>
                 )}
               </div>

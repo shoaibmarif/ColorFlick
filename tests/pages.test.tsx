@@ -31,7 +31,7 @@ describe('every page renders', () => {
       expect(h1.textContent?.length).toBeGreaterThan(0);
       // <SeoMeta> sets the title from the route registry.
       await new Promise((r) => setTimeout(r, 0));
-      expect(document.title).toContain(route.title.split(' — ')[0].split(' | ')[0]);
+      expect(document.title).toContain(route.title.split(' - ')[0].split(' | ')[0]);
       expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toMatch(
         new RegExp(`${route.path === '/' ? '/$' : route.path.replace(/\//g, '\\/') + '$'}`)
       );

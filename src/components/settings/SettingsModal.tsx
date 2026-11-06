@@ -64,12 +64,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Platform Settings" maxWidth="lg">
+    <Modal isOpen={isOpen} onClose={onClose} title="Settings" maxWidth="lg">
       <div className="space-y-6">
-        {/* Section 1: Interface Theme */}
+        {/* Section 1: Theme */}
         <div className="space-y-2.5">
           <label className="block text-xs font-semibold text-zinc-400 dark:text-zinc-500">
-            Interface Theme
+            Theme
           </label>
           <div className="grid grid-cols-3 gap-2.5 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60">
             {[
@@ -106,10 +106,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </div>
               <div>
                 <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 block">
-                  Audio & Sound Effects
+                  Sound
                 </span>
                 <span className="text-xs text-zinc-400">
-                  Web Audio API feedback for clicks, streaks, and correct matches
+                  Little sounds for right answers, streaks and achievements
                 </span>
               </div>
             </div>
@@ -126,7 +126,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="flex items-center gap-1.5 px-1">
             <Eye className="w-4 h-4 text-emerald-500" />
             <label className="text-xs font-semibold text-zinc-400 dark:text-zinc-500">
-              Colorblind Assistance Mode
+              Color-blind assistance
             </label>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60">
@@ -157,14 +157,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             })}
           </div>
           <p className="text-xs text-zinc-400 dark:text-zinc-500 px-1 leading-relaxed">
-            Adapts cards with identifiable text labels, contrasting borders, and distinct pattern markers so color is never the sole indicator.
+            Adds labels, stronger borders and patterns so you never have to rely on color alone to read an answer.
           </p>
         </div>
 
-        {/* Section 4: Gameplay & Interaction Toggles */}
+        {/* Section 4: Gameplay Toggles */}
         <div className="space-y-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
           <label className="block text-xs font-semibold text-zinc-400 dark:text-zinc-500 px-1">
-            Gameplay & Interaction
+            Gameplay
           </label>
 
           <div className="space-y-2 bg-zinc-50 dark:bg-zinc-800/40 p-3 sm:p-4 rounded-2xl border border-zinc-200/70 dark:border-zinc-800">
@@ -176,10 +176,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
                 <div>
                   <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 block">
-                    Auto-Advance Rounds
+                    Go to the next round automatically
                   </span>
                   <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                    Automatically move to the next question after feedback
+                    Skips the Next button about a second after each answer
                   </span>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </div>
 
-            {/* Reduced Motion */}
+            {/* Reduce motion */}
             <div className="flex items-center justify-between gap-3 py-1.5 border-t border-zinc-200/60 dark:border-zinc-700/60">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex-shrink-0">
@@ -198,10 +198,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
                 <div>
                   <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 block">
-                    Reduced Motion
+                    Reduce motion
                   </span>
                   <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                    Disables scale bounces and rapid animations
+                    Turns off animations and transitions
                   </span>
                 </div>
               </div>
@@ -220,10 +220,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
                 <div>
                   <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 block">
-                    Keyboard Shortcuts (1–9, Enter, Space)
+                    Keyboard shortcuts
                   </span>
                   <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                    Enables rapid single-key answering on desktop
+                    Pick swatches with 1 to 9, move on with Enter or Space
                   </span>
                 </div>
               </div>
@@ -242,10 +242,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between p-3.5 bg-rose-500/5 dark:bg-rose-500/10 border border-rose-500/20 rounded-2xl">
               <div>
                 <span className="text-xs font-semibold text-rose-700 dark:text-rose-400 block">
-                  Local Storage & Progress
+                  Your data
                 </span>
                 <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Clear career statistics, streaks, and unlocked achievements
+                  Deletes your stats, streaks and achievements from this browser
                 </span>
               </div>
               <Button
@@ -255,17 +255,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="text-rose-600 hover:text-rose-700 dark:text-rose-400 gap-1.5 hover:bg-rose-100/50 dark:hover:bg-rose-950/40 text-xs font-semibold"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Reset Data</span>
+                <span>Reset</span>
               </Button>
             </div>
           ) : (
             <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 rounded-2xl space-y-3 animate-in fade-in duration-150">
               <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300 font-semibold text-xs">
                 <AlertTriangle className="w-4 h-4" />
-                <span>Reset all local statistics, history, and achievements?</span>
+                <span>Delete all your progress?</span>
               </div>
               <p className="text-xs text-rose-600 dark:text-rose-400">
-                This cannot be undone. All your locally saved progress will be permanently erased.
+                Your stats, game history, streaks and achievements will be gone for good. This can't be undone.
               </p>
               <div className="flex gap-2 pt-1">
                 <Button
@@ -277,7 +277,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   Cancel
                 </Button>
                 <Button onClick={handleReset} variant="danger" size="sm" className="flex-1 text-xs font-semibold bg-rose-600 hover:bg-rose-700">
-                  Confirm Reset
+                  Yes, delete it
                 </Button>
               </div>
             </div>

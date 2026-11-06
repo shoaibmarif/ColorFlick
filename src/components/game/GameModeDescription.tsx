@@ -19,7 +19,7 @@ export interface GameModeDescriptionProps {
 
 const FORMAT_NOTES: Partial<Record<GameFormat, string>> = {
   timed: 'Timed mode: answer as many rounds as you can before the clock runs out. Choose 30, 60 or 120 seconds.',
-  practice: 'Practice mode: no timer and no end — play as long as you like.',
+  practice: 'Practice mode: no timer and no end - play as long as you like.',
   endless: 'Endless mode: you have three lives. Each wrong answer costs one.',
   survival: 'Survival mode: one wrong answer ends the game, and it gets harder as you go.',
   'quick-challenge': 'Quick challenge: a short game that starts easy and finishes on Expert.',

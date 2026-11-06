@@ -30,8 +30,8 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2">
             <Logo />
             <p className="mt-3 max-w-xs text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-              A free, open-source color game for anyone who loves playing with colors. No account, no
-              ads — your progress stays in your browser.
+              A free color game for anyone who likes playing with colors. No account and no ads, and your
+              progress stays in your browser.
             </p>
             <ul className="mt-5 flex gap-2">
               {SOCIAL.map(({ href, label, Icon }) => (

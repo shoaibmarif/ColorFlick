@@ -139,29 +139,29 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
   const questionPrompt =
     engine.mode === 'exact-color'
-      ? 'Which color exactly matches the target?'
+      ? 'Which swatch matches the target?'
       : engine.mode === 'closest-color'
-      ? 'Which color is visually closest to the target?'
+      ? 'Which swatch looks closest?'
       : engine.mode === 'color-name'
-      ? 'What is the standard name of this color?'
+      ? 'What would you call this color?'
       : engine.mode === 'warm-cool'
-      ? 'Is this color warm, cool, or neutral?'
+      ? 'Warm, cool or neutral?'
       : engine.mode === 'light-dark'
-      ? 'Is this color light or dark by WCAG luminance?'
+      ? 'Light or dark?'
       : engine.mode === 'color-picker'
-      ? 'Use the palette & sliders to match the target:'
+      ? 'Recreate this color with the picker'
       : engine.mode === 'color-match'
-      ? 'Fine-tune Hue, Saturation & Lightness:'
+      ? 'Match it with the HSL sliders'
       : engine.mode === 'rgb-guess'
-      ? 'Recreate the target color using RGB sliders:'
-      : 'Enter the hexadecimal code for this color:';
+      ? 'Mix this color with the RGB sliders'
+      : 'What’s the hex code for this color?';
 
   return (
     <section aria-label="Color game arena" className="w-full flex flex-col items-center">
       {/* Format-Specific Configuration Sub-Bar */}
       {engine.format === 'timed' && engine.roundStatus === 'guessing' && engine.roundNumber === 1 && (
         <div className="flex items-center gap-2 mb-3 bg-sky-50 dark:bg-sky-950/40 px-3.5 py-1.5 rounded-full border border-sky-200 dark:border-sky-800 text-xs">
-          <span className="font-semibold text-sky-700 dark:text-sky-300">Sprint Duration:</span>
+          <span className="font-semibold text-sky-700 dark:text-sky-300">Time limit:</span>
           {[30, 60, 120].map((sec) => (
             <button
               key={sec}
@@ -185,7 +185,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
       {engine.format === 'quick-challenge' && engine.roundStatus === 'guessing' && engine.roundNumber === 1 && (
         <div className="flex items-center gap-2 mb-3 bg-amber-50 dark:bg-amber-950/40 px-3.5 py-1.5 rounded-full border border-amber-200 dark:border-amber-800 text-xs">
-          <span className="font-semibold text-amber-700 dark:text-amber-300">Challenge Length:</span>
+          <span className="font-semibold text-amber-700 dark:text-amber-300">Rounds:</span>
           {[5, 10, 20].map((rounds) => (
             <button
               key={rounds}
@@ -200,7 +200,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                   : 'text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50'
               }`}
             >
-              {rounds} Rounds
+              {rounds}
             </button>
           ))}
         </div>

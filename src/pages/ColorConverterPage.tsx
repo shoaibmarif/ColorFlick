@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { SeoMeta } from '../components/ui/SeoMeta';
 import { PageHeader } from '../components/layout/PageHeader';
 import { getRouteMeta } from '../seo/routes';
@@ -12,7 +13,7 @@ import {
   rgbToOklab,
   normalizeHex,
 } from '../utils/colorConversion';
-import { Copy, Check, BookOpen } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 
 interface ColorConverterPageProps {
   initialFormat?: 'rgb' | 'hex' | 'all';
@@ -57,7 +58,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
           <div
             className="w-28 h-28 rounded-2xl shadow-inner border border-black/10 ring-1 ring-black/5 relative group cursor-pointer flex-shrink-0"
             style={{ backgroundColor: validHex }}
-            title="Click to pick color"
+            title="Pick a color"
           >
             <input
               type="color"
@@ -70,7 +71,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
 
           <div className="space-y-2 flex-1 w-full text-center sm:text-left">
             <label className="text-xs font-semibold text-zinc-500">
-              Input Color (HEX, 3 or 6 digits)
+              Your color
             </label>
             <div className="flex items-center gap-3">
               <input
@@ -89,7 +90,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
               />
             </div>
             <p className="text-xs text-zinc-400">
-              Try typing shorthand (e.g., <code className="font-mono text-brand-600 dark:text-brand-400">#F00</code>), full 6-digit, or use the native color picker.
+              Type a hex code (shorthand like <code className="font-mono text-brand-600 dark:text-brand-400">#F00</code>) works too) or use the picker.
             </p>
           </div>
         </div>
@@ -172,7 +173,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
           <div className="p-4 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 flex items-center justify-between sm:col-span-2">
             <div>
               <span className="text-xs font-semibold text-zinc-400 block">
-                OKLab (Perceptually Uniform L, a, b)
+                OKLab
               </span>
               <span className="font-mono text-sm sm:text-base font-semibold text-zinc-900 dark:text-white">
                 oklab({oklab.L.toFixed(3)}, {oklab.a.toFixed(3)}, {oklab.b.toFixed(3)})
@@ -197,7 +198,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
         {/* Harmonies & Shades Preview */}
         <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-700/60">
           <h3 className="text-xs font-semibold text-zinc-500">
-            Harmonies & Tints
+            Related colors
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
             <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 rounded-xl border border-zinc-200 dark:border-zinc-700 space-y-1.5 text-center">
@@ -206,13 +207,13 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
                 className="w-full h-10 rounded-lg shadow-inner cursor-pointer"
                 style={{ backgroundColor: complementaryHex }}
                 onClick={() => setHexInput(complementaryHex)}
-                title="Click to load complementary color"
+                title="Use this color"
               />
               <span className="font-mono font-semibold text-xs">{complementaryHex}</span>
             </div>
 
             <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 rounded-xl border border-zinc-200 dark:border-zinc-700 space-y-1.5 text-center">
-              <span className="text-xs font-semibold text-zinc-400">Lighter Tint (+20% L)</span>
+              <span className="text-xs font-semibold text-zinc-400">Lighter</span>
               <div
                 className="w-full h-10 rounded-lg shadow-inner"
                 style={{ backgroundColor: `hsl(${hsl.h}, ${hsl.s}%, ${Math.min(100, hsl.l + 20)}%)` }}
@@ -223,7 +224,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
             </div>
 
             <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 rounded-xl border border-zinc-200 dark:border-zinc-700 space-y-1.5 text-center">
-              <span className="text-xs font-semibold text-zinc-400">Darker Shade (-20% L)</span>
+              <span className="text-xs font-semibold text-zinc-400">Darker</span>
               <div
                 className="w-full h-10 rounded-lg shadow-inner"
                 style={{ backgroundColor: `hsl(${hsl.h}, ${hsl.s}%, ${Math.max(0, hsl.l - 20)}%)` }}
@@ -234,7 +235,7 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
             </div>
 
             <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 rounded-xl border border-zinc-200 dark:border-zinc-700 space-y-1.5 text-center">
-              <span className="text-xs font-semibold text-zinc-400">Desaturated (-50% S)</span>
+              <span className="text-xs font-semibold text-zinc-400">Muted</span>
               <div
                 className="w-full h-10 rounded-lg shadow-inner"
                 style={{ backgroundColor: `hsl(${hsl.h}, ${Math.max(0, hsl.s - 50)}%, ${hsl.l}%)` }}
@@ -247,30 +248,40 @@ export const ColorConverterPage: React.FC<ColorConverterPageProps> = ({ initialF
         </div>
       </section>
 
-      {/* Educational Article Section */}
-      <section className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-700 space-y-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-        <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-semibold text-base">
-          <BookOpen className="w-5 h-5 text-brand-600 dark:text-brand-400" />
-          <h2>How Color Conversion Mathematics Works</h2>
-        </div>
+      <article className="prose-page">
+        <h2>Which format should you use?</h2>
         <p>
-          Digital screens produce color by mixing red, green and blue light. Each color space serves a distinct conceptual purpose:
+          All of these describe the same color; they just suit different jobs.
         </p>
-        <ul className="space-y-2 list-disc list-inside">
+        <ul>
           <li>
-            <strong>HEX (Hexadecimal):</strong> A base-16 shorthand representation of the 8-bit RGB channels (00 to FF, which is 0 to 255 in decimal).
+            <strong>HEX</strong> (<code>#4F46E5</code>) is compact and the default in most design tools.
+            Handy for copying brand colors around. <Link to="/understanding-hex-colors">How hex works</Link>.
           </li>
           <li>
-            <strong>RGB (Red, Green, Blue):</strong> The primary additive hardware color model for display monitors and mobile screens.
+            <strong>RGB</strong> (<code>rgb(79, 70, 229)</code>) spells out the red, green and blue values,
+            which makes it easier to read and to add transparency.{' '}
+            <Link to="/understanding-rgb">How RGB works</Link>.
           </li>
           <li>
-            <strong>HSL (Hue, Saturation, Lightness):</strong> A cylindrical coordinate model created to align with intuitive human descriptions of color purity and tone.
+            <strong>HSL</strong> is the one to reach for when you want a lighter, darker or more muted
+            version of a color, since you only change one number.{' '}
+            <Link to="/understanding-hsl">How HSL works</Link>.
           </li>
           <li>
-            <strong>OKLab:</strong> A color space designed by Björn Ottosson in 2020 to be perceptually uniform, meaning Euclidean distance in OKLab corresponds directly to how human eyes perceive color difference.
+            <strong>HSV</strong> (sometimes called HSB) is what many color pickers use under the hood.
+          </li>
+          <li>
+            <strong>OKLab</strong> is built around how people actually see color. It's useful for
+            comparing colors or building smooth gradients, and it's what ColorFlick uses to score your
+            guesses.
           </li>
         </ul>
-      </section>
+        <p>
+          Values are rounded to whole numbers, so converting back and forth can occasionally shift a
+          color by one step. You won't see the difference.
+        </p>
+      </article>
     </div>
   );
 };

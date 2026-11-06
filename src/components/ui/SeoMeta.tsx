@@ -6,7 +6,7 @@ import { SITE } from '../../seo/site';
 interface SeoMetaProps {
   /** Path of the canonical URL. Title/description come from src/seo/routes.ts. */
   canonicalPath: string;
-  /** Overrides — only needed for pages that are not in the route registry. */
+  /** Overrides - only needed for pages that are not in the route registry. */
   title?: string;
   description?: string;
   noindex?: boolean;

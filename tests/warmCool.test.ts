@@ -24,13 +24,13 @@ describe('warmCool classification', () => {
 
   it('generates educational explanations for each category', () => {
     const warmExpl = getWarmCoolExplanation({ r: 255, g: 0, b: 0 }, 'Warm');
-    expect(warmExpl).toContain('Warm:');
+    expect(warmExpl).toContain('Warm.');
 
     const coolExpl = getWarmCoolExplanation({ r: 0, g: 0, b: 255 }, 'Cool');
-    expect(coolExpl).toContain('Cool:');
+    expect(coolExpl).toContain('Cool.');
 
     const neutralExpl = getWarmCoolExplanation({ r: 128, g: 128, b: 128 }, 'Neutral');
-    expect(neutralExpl).toContain('Neutral:');
+    expect(neutralExpl).toContain('Neutral.');
   });
 
   it('identifies ambiguous transition hue zones', () => {

@@ -14,7 +14,7 @@ export const SITE = {
   ogImage: '/og-image.png',
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  ogImageAlt: 'ColorFlick — a free color guessing game with daily challenges',
+  ogImageAlt: 'ColorFlick - a free color guessing game with daily challenges',
   author: {
     name: 'Shoaib Arif',
     url: 'https://shoaibarif.vercel.app/',

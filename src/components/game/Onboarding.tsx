@@ -5,9 +5,9 @@ import { Storage } from '../../storage/localStorage';
 import { TINTS } from '../ui/ColorStripe';
 
 const STEPS = [
-  { title: 'Look at the target', body: 'The big swatch at the top is the color you are looking for.' },
-  { title: 'Pick its match', body: 'Click or tap the swatch that matches — or press its number key.' },
-  { title: 'Build a streak', body: 'Answer fast and keep getting it right for bonus points.' },
+  { title: 'Look at the target', body: 'The big swatch at the top is the color you’re after.' },
+  { title: 'Pick its match', body: 'Click or tap the swatch that matches. Number keys work too.' },
+  { title: 'Build a streak', body: 'Quick answers and long streaks earn bonus points.' },
 ];
 
 /** A short, dismissible "how it works" card shown on a player's first visit. */
@@ -33,7 +33,7 @@ export const Onboarding: React.FC = () => {
       >
         <X className="h-4 w-4" />
       </button>
-      <p className="pr-8 font-medium">New here? It takes ten seconds to learn.</p>
+      <p className="pr-8 font-medium">New here? Here’s the idea.</p>
       <ol className="mt-3 grid gap-3 sm:grid-cols-3">
         {STEPS.map((s, i) => (
           <li key={s.title} className="flex gap-3">

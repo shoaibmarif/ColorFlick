@@ -3,7 +3,7 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "redirects": [
     {
@@ -60,6 +60,140 @@
       "source": "/color-guessing-game-faq",
       "destination": "/faq",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/color-guessing-game",
+      "destination": "/color-guessing-game.html"
+    },
+    {
+      "source": "/daily-color-challenge",
+      "destination": "/daily-color-challenge.html"
+    },
+    {
+      "source": "/rgb-color-game",
+      "destination": "/rgb-color-game.html"
+    },
+    {
+      "source": "/hex-color-game",
+      "destination": "/hex-color-game.html"
+    },
+    {
+      "source": "/color-picker-game",
+      "destination": "/color-picker-game.html"
+    },
+    {
+      "source": "/color-matching-game",
+      "destination": "/color-matching-game.html"
+    },
+    {
+      "source": "/color-theory-game",
+      "destination": "/color-theory-game.html"
+    },
+    {
+      "source": "/color-game-timed",
+      "destination": "/color-game-timed.html"
+    },
+    {
+      "source": "/color-game-practice",
+      "destination": "/color-game-practice.html"
+    },
+    {
+      "source": "/color-game-for-beginners",
+      "destination": "/color-game-for-beginners.html"
+    },
+    {
+      "source": "/color-converter",
+      "destination": "/color-converter.html"
+    },
+    {
+      "source": "/rgb-to-hex",
+      "destination": "/rgb-to-hex.html"
+    },
+    {
+      "source": "/hex-to-rgb",
+      "destination": "/hex-to-rgb.html"
+    },
+    {
+      "source": "/color-contrast-checker",
+      "destination": "/color-contrast-checker.html"
+    },
+    {
+      "source": "/color-distance",
+      "destination": "/color-distance.html"
+    },
+    {
+      "source": "/color-codes",
+      "destination": "/color-codes.html"
+    },
+    {
+      "source": "/how-to-play",
+      "destination": "/how-to-play.html"
+    },
+    {
+      "source": "/color-theory-guide",
+      "destination": "/color-theory-guide.html"
+    },
+    {
+      "source": "/color-theory",
+      "destination": "/color-theory.html"
+    },
+    {
+      "source": "/understanding-rgb",
+      "destination": "/understanding-rgb.html"
+    },
+    {
+      "source": "/understanding-hex-colors",
+      "destination": "/understanding-hex-colors.html"
+    },
+    {
+      "source": "/understanding-hsl",
+      "destination": "/understanding-hsl.html"
+    },
+    {
+      "source": "/rgb-vs-hex",
+      "destination": "/rgb-vs-hex.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
+    },
+    {
+      "source": "/statistics",
+      "destination": "/statistics.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/color-guessing-game/easy",
+      "destination": "/color-guessing-game/easy.html"
+    },
+    {
+      "source": "/color-guessing-game/medium",
+      "destination": "/color-guessing-game/medium.html"
+    },
+    {
+      "source": "/color-guessing-game/hard",
+      "destination": "/color-guessing-game/hard.html"
+    },
+    {
+      "source": "/color-guessing-game/expert",
+      "destination": "/color-guessing-game/expert.html"
     }
   ],
   "headers": [

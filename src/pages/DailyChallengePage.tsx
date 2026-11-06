@@ -97,7 +97,7 @@ const DailyResult: React.FC<{
               key={i}
               className="relative aspect-square rounded-lg ring-1 ring-inset ring-black/10"
               style={{ backgroundColor: hex }}
-              title={`Round ${i + 1}: ${hex} — ${ok ? 'correct' : 'missed'}`}
+              title={`Round ${i + 1}: ${hex} - ${ok ? 'correct' : 'missed'}`}
             >
               <span
                 className={`absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full text-white ring-2 ring-white dark:ring-zinc-900 ${
@@ -134,7 +134,7 @@ const DailyResult: React.FC<{
       <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <Button onClick={handleShare} className="w-full sm:w-auto">
           {shared === 'idle' ? <Share2 className="h-4 w-4" /> : <Check className="h-4 w-4" />}
-          {shared === 'copied' ? 'Copied — paste it anywhere' : shared === 'shared' ? 'Shared' : 'Share result'}
+          {shared === 'copied' ? 'Copied - paste it anywhere' : shared === 'shared' ? 'Shared' : 'Share result'}
         </Button>
         {onReplay ? (
           <Button variant="secondary" onClick={onReplay} className="w-full sm:w-auto">
@@ -203,7 +203,7 @@ const DailyGame: React.FC<{ dateKey: string }> = ({ dateKey }) => {
     <div className="space-y-4">
       {!isToday && (
         <p className="rounded-lg bg-sun-50 px-3 py-2 text-center text-sm text-sun-900 dark:bg-sun-900/30 dark:text-sun-100">
-          Replaying {formatDateShort(dateKey)} — this won’t affect your streak.
+          Replaying {formatDateShort(dateKey)} - this won’t affect your streak.
         </p>
       )}
       <ScoreDisplay score={engine.score} roundNumber={engine.roundNumber} totalRounds={DAILY_ROUNDS} format="daily" />
@@ -242,7 +242,7 @@ const accuracyTint = (acc: number) =>
 const DailyCalendar: React.FC<{ selected: string }> = ({ selected }) => {
   const history = useDailyHistory();
   const today = todayKey();
-  // Align to whole weeks (Mon–Sun) ending this week.
+  // Align to whole weeks (Mon-Sun) ending this week.
   const todayDow = (fromDateKey(today).getDay() + 6) % 7; // 0 = Monday
   const end = addDays(today, 6 - todayDow);
   const days = Array.from({ length: ARCHIVE_DAYS }, (_, i) => addDays(end, i - ARCHIVE_DAYS + 1));
@@ -346,7 +346,7 @@ export const DailyChallengePage: React.FC = () => {
         <h2 id="daily-about">How the daily challenge works</h2>
         <p>
           Each day’s {DAILY_ROUNDS} rounds are generated from the date itself, so everyone who plays on the
-          same day sees the same colors in the same order. That makes scores directly comparable — share
+          same day sees the same colors in the same order. That makes scores directly comparable - share
           your result grid with friends.
         </p>
         <p>

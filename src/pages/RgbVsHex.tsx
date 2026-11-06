@@ -1,101 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SeoMeta } from '../components/ui/SeoMeta';
 import { PageHeader } from '../components/layout/PageHeader';
-import { Link } from 'react-router-dom';
-import { Hash, Sliders, ArrowRight } from 'lucide-react';
-import { ButtonLink } from '../components/ui/Button';
+import { LabCard, SwatchReadout } from '../components/learn/Lab';
+import { hexToRgb, normalizeHex } from '../utils/colorConversion';
+
+const SAMPLES = ['#3B82F6', '#F25F4C', '#1FB58F', '#F5B83D', '#111827'];
 
 export const RgbVsHexPage: React.FC = () => {
+  const [hex, setHex] = useState('#3B82F6');
+  const valid = normalizeHex(hex) || '#3B82F6';
+  const rgb = hexToRgb(valid) || { r: 59, g: 130, b: 246 };
+
   return (
-    <div className="max-w-3xl mx-auto space-y-10">
+    <div className="mx-auto max-w-3xl">
       <SeoMeta canonicalPath="/rgb-vs-hex" />
+      <PageHeader
+        title="RGB vs HEX"
+        intro="Short answer: they're the same colors written two different ways. Here's how they line up and when to use which."
+      />
 
-      <PageHeader title="RGB vs HEX" intro="Two notations for the same 16.7 million screen colors, and how to convert between them." />
-
-      {/* Side-by-side Overview */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-6 bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-3">
-          <div className="flex items-center gap-2 text-rose-500 font-semibold text-base">
-            <Sliders className="w-5 h-5" />
-            <span>RGB (Decimal)</span>
-          </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
-            RGB expresses color as three decimal numbers from <code>0</code> to <code>255</code> representing Red, Green, and Blue intensity.
-          </p>
-          <div className="font-mono text-xs p-3 bg-zinc-100 dark:bg-zinc-900 rounded-xl">
-            rgb(59, 130, 246)
-          </div>
+      <LabCard title="Same color, two spellings" cta={{ to: '/color-converter', label: 'Open the full color converter' }}>
+        <SwatchReadout color={valid} lines={[valid, `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`]} />
+        <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Example colors">
+          {SAMPLES.map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setHex(s)}
+              aria-pressed={valid === s}
+              className="flex items-center gap-2 rounded-lg border border-zinc-200 px-2.5 py-1.5 font-mono text-xs aria-pressed:border-zinc-900 dark:border-zinc-700 dark:aria-pressed:border-white"
+            >
+              <span className="h-4 w-4 rounded ring-1 ring-inset ring-black/10" style={{ backgroundColor: s }} />
+              {s}
+            </button>
+          ))}
         </div>
+      </LabCard>
 
-        <div className="p-6 bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-3">
-          <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 font-semibold text-base">
-            <Hash className="w-5 h-5" />
-            <span>HEX (Base-16)</span>
-          </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
-            HEX encodes the exact same three 8-bit bytes into base-16 characters (<code>0-9</code> and <code>A-F</code>).
-          </p>
-          <div className="font-mono text-xs p-3 bg-zinc-100 dark:bg-zinc-900 rounded-xl">
-            #3B82F6
-          </div>
-        </div>
-      </div>
-
-      {/* Hexadecimal Base-16 Explanation */}
-      <section className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-          How Hexadecimal Encoding Works
-        </h2>
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          Standard decimal numbers use base-10 (0 through 9). Hexadecimal uses base-16:
+      <article className="prose-page">
+        <h2>What's the same</h2>
+        <p>
+          Both describe a color by how much red, green and blue light it contains, each on a scale from 0
+          to 255. <code>rgb(59, 130, 246)</code> and <code>#3B82F6</code> are the same blue. Your browser
+          treats them identically; nothing is lost going from one to the other.
         </p>
-        <div className="p-4 bg-zinc-50 dark:bg-zinc-700/40 rounded-2xl font-mono text-xs text-center overflow-x-auto">
-          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A(10), B(11), C(12), D(13), E(14), F(15)
-        </div>
-        <p className="text-xs text-zinc-600 dark:text-zinc-300">
-          Each channel has 8 bits (2⁸ = 256 values). Because 16 × 16 = 256, exactly two hex digits can represent any number from 0 to 255. For instance:
+
+        <h2>What's different</h2>
+        <p>
+          RGB writes the three numbers in ordinary decimal. HEX writes them in base 16, two characters
+          each, and packs them into one short code. So <code>3B</code> is 59, <code>82</code> is 130 and{' '}
+          <code>F6</code> is 246. (If base 16 is new to you, the{' '}
+          <Link to="/understanding-hex-colors">hex guide</Link> walks through it.)
         </p>
-        <ul className="text-xs space-y-1.5 list-disc pl-5 text-zinc-600 dark:text-zinc-300">
-          <li><code>00</code> in hex = 0 in decimal (0% channel light)</li>
-          <li><code>80</code> in hex = 8 × 16 + 0 = 128 in decimal (~50% channel light)</li>
-          <li><code>FF</code> in hex = 15 × 16 + 15 = 255 in decimal (100% channel light)</li>
+
+        <h2>Converting by hand</h2>
+        <p>
+          <strong>HEX to RGB:</strong> take each pair, multiply the first character by 16 and add the
+          second. For <code>F6</code> that's 15 × 16 + 6 = 246.
+        </p>
+        <p>
+          <strong>RGB to HEX:</strong> divide the number by 16. The whole part is the first character,
+          the remainder is the second. 130 ÷ 16 = 8 remainder 2, so 130 becomes <code>82</code>.
+        </p>
+        <p>
+          In practice nobody does this for real work. Use the <Link to="/rgb-to-hex">RGB to HEX</Link> or{' '}
+          <Link to="/hex-to-rgb">HEX to RGB</Link> converter.
+        </p>
+
+        <h2>Which should you use?</h2>
+        <ul>
+          <li>
+            <strong>HEX</strong> is short, easy to copy and paste, and it's what most design tools show
+            you. It's the usual choice for fixed brand colors.
+          </li>
+          <li>
+            <strong>RGB</strong> is easier to read and tweak by eye, and with a fourth value,{' '}
+            <code>rgb(59 130 246 / 50%)</code>, it handles transparency clearly.
+          </li>
+          <li>
+            If you're adjusting colors a lot (lighter, darker, more muted), consider{' '}
+            <Link to="/understanding-hsl">HSL</Link>. It's much easier to reason about.
+          </li>
         </ul>
-      </section>
-
-      {/* Shorthand Hex */}
-      <section className="bg-white dark:bg-zinc-800 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm space-y-4">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-          The 3-Digit Shorthand Rule
-        </h2>
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          In CSS and web standards, whenever both digits of every channel are identical, you can write a 3-digit shorthand hex code. The browser doubles each digit:
-        </p>
-        <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-700/40 rounded-xl">
-            <code>#FFF</code> expands to <code>#FFFFFF</code> (White)
-          </div>
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-700/40 rounded-xl">
-            <code>#000</code> expands to <code>#000000</code> (Black)
-          </div>
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-700/40 rounded-xl">
-            <code>#F00</code> expands to <code>#FF0000</code> (Red)
-          </div>
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-700/40 rounded-xl">
-            <code>#08C</code> expands to <code>#0088CC</code> (Cyan)
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <div className="flex justify-between items-center pt-4">
-        <Link to="/color-codes" className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
-          Color Codes Reference →
-        </Link>
-        <ButtonLink to="/hex-color-game" variant="primary" size="md" className="gap-2">
-            <span>Play HEX Mode</span>
-            <ArrowRight className="w-4 h-4" />
-          </ButtonLink>
-      </div>
+        <p>Whichever you pick, try to stick to one style across a project. Mixed notation is harder to scan.</p>
+      </article>
     </div>
   );
 };

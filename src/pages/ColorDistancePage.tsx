@@ -3,7 +3,7 @@ import { SeoMeta } from '../components/ui/SeoMeta';
 import { PageHeader } from '../components/layout/PageHeader';
 import { hexToRgb, rgbToHex } from '../utils/colorConversion';
 import { oklabDistance, rgbEuclideanDistance, calculateSimilarityPercentage } from '../utils/colorDistance';
-import { BookOpen, Shuffle } from 'lucide-react';
+import { Shuffle } from 'lucide-react';
 
 export const ColorDistancePage: React.FC = () => {
   const [color1Hex, setColor1Hex] = useState<string>('#3B82F6');
@@ -85,7 +85,7 @@ export const ColorDistancePage: React.FC = () => {
             className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors"
           >
             <Shuffle className="w-4 h-4" />
-            <span>Generate Random Pair</span>
+            <span>Random pair</span>
           </button>
         </div>
 
@@ -112,43 +112,57 @@ export const ColorDistancePage: React.FC = () => {
 
           {/* OKLab Distance */}
           <div className="p-5 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700 text-center space-y-1">
-            <span className="text-xs font-semibold text-zinc-400">OKLab ΔE Distance</span>
+            <span className="text-xs font-semibold text-zinc-400">OKLab difference (ΔE)</span>
             <div className="font-mono text-3xl font-semibold text-zinc-900 dark:text-white">
               {oklabDist.toFixed(4)}
             </div>
-            <span className="text-xs text-zinc-400">Human eye perceptual scale [0 ~ 1.15]</span>
+            <span className="text-xs text-zinc-400">How different they look. 0 is identical.</span>
           </div>
 
           {/* Raw RGB Euclidean */}
           <div className="p-5 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700 text-center space-y-1">
-            <span className="text-xs font-semibold text-zinc-400">Raw RGB Distance</span>
+            <span className="text-xs font-semibold text-zinc-400">Plain RGB distance</span>
             <div className="font-mono text-3xl font-semibold text-zinc-500 dark:text-zinc-400">
               {rgbDist.toFixed(1)}
             </div>
-            <span className="text-xs text-zinc-400">Euclidean distance in 3D RGB cube [0–441]</span>
+            <span className="text-xs text-zinc-400">Straight-line gap in RGB, from 0 to 441</span>
           </div>
         </div>
       </section>
 
-      {/* Explanatory Guide */}
-      <section className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-700 space-y-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-        <div className="flex items-center gap-2 text-zinc-900 dark:text-white font-semibold text-base">
-          <BookOpen className="w-5 h-5 text-sky-600 dark:text-sky-400" />
-          <h2>Why Raw RGB Distance Fails Visual Fairness</h2>
-        </div>
+      <article className="prose-page">
+        <h2>Why plain RGB distance gets it wrong</h2>
         <p>
-          In a computer's memory, RGB colors are stored as 3 independent coordinates between 0 and 255. If you calculate Euclidean distance:
-        </p>
-        <div className="p-3 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700 font-mono text-center text-xs font-semibold">
-          Distance = √[ (R1 - R2)² + (G1 - G2)² + (B1 - B2)² ]
-        </div>
-        <p>
-          This assumes human eyes weigh red, green, and blue photons equally. In reality, human cone photoreceptors are dramatically more sensitive to green wavelengths (~555nm) than blue wavelengths. A shift of 30 units in green is immediately obvious to a player, while a shift of 30 units in blue is barely perceptible.
+          The simple way to compare two colors is to treat red, green and blue as coordinates and
+          measure the straight-line gap between them. It's easy to calculate, but it doesn't match what
+          you see. Our eyes are much more sensitive to changes in green than in blue, so a shift of 30 in
+          the green channel is obvious while the same shift in blue can be hard to spot. RGB distance
+          scores them the same.
         </p>
         <p>
-          The <strong>OKLab color space</strong> applies non-linear cone response transforms (LMS cone matrices) so that equal mathematical distances match equal human perceptual steps.
+          Try it above: pick two blues that look nearly identical, then two greens with the same RGB
+          distance. The OKLab number will tell the real story.
         </p>
-      </section>
+
+        <h2>What OKLab does differently</h2>
+        <p>
+          OKLab is a color space designed in 2020 by Björn Ottosson so that equal distances look roughly
+          equally different, whatever the color. It separates lightness from the color itself, then
+          stretches and squeezes the space to match human vision.
+        </p>
+
+        <h2>Reading the number</h2>
+        <ul>
+          <li><strong>Under 0.02:</strong> most people can't tell the two apart.</li>
+          <li><strong>0.02 to 0.05:</strong> a subtle difference, visible side by side.</li>
+          <li><strong>0.05 to 0.15:</strong> clearly different shades of a similar color.</li>
+          <li><strong>Above 0.15:</strong> obviously different colors.</li>
+        </ul>
+        <p>
+          ColorFlick uses these same steps. On Expert, the wrong swatches sit just above that 0.02 line,
+          which is why it's so hard. They're still never below it, though, so every round can be won.
+        </p>
+      </article>
     </div>
   );
 };

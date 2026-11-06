@@ -267,13 +267,13 @@ export function useGameEngine({
 
       // Check special combo events
       if (similarity >= 98) {
-        setComboBanner('✨ Perfect Match!');
+        setComboBanner('Perfect match');
       } else if (isCorrect && responseTimeMs <= 900) {
-        setComboBanner('⚡ Lightning Answer!');
+        setComboBanner('Lightning fast');
       } else if (currentStreak + 1 === 5) {
-        setComboBanner('🔥 5 Streak Bonus!');
+        setComboBanner('Five in a row');
       } else if (currentStreak + 1 === 10) {
-        setComboBanner('👑 10 Streak Master!');
+        setComboBanner('Ten in a row!');
       } else {
         setComboBanner(null);
       }

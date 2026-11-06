@@ -77,7 +77,7 @@ export const HexInput: React.FC<HexInputProps> = ({ onSubmit, disabled = false }
       )}
 
       <p className="text-zinc-500 dark:text-zinc-400 text-xs text-center">
-        Tip: You can enter standard 6-digit (e.g. <code>#4F46E5</code>) or 3-digit shorthand (e.g. <code>#FFF</code>).
+        Tip: 6-digit codes like <code>#4F46E5</code>) or 3-digit shorthand (e.g. <code>#FFF</code>).
       </p>
     </form>
   );

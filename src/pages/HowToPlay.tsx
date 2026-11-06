@@ -9,7 +9,7 @@ import { DIFFICULTY_CONFIGS } from '../utils/randomColor';
 import { DIFFICULTY_BONUSES } from '../utils/scoring';
 
 const SHORTCUTS: [string, string][] = [
-  ['1 – 9', 'Pick the swatch with that number'],
+  ['1 - 9', 'Pick the swatch with that number'],
   ['Enter or Space', 'Go to the next round'],
   ['Esc', 'Close a dialog or menu'],
   ['Tab', 'Move between controls'],
@@ -66,7 +66,7 @@ export const HowToPlayPage: React.FC = () => (
       </div>
       <p className="mt-3 text-sm">
         Every wrong swatch is guaranteed to be visibly different from the target and from the other
-        swatches — even on Expert.
+        swatches - even on Expert.
       </p>
 
       <h2>Scoring</h2>
@@ -79,17 +79,17 @@ export const HowToPlayPage: React.FC = () => (
 
       <h2>Formats</h2>
       <ul>
-        <li><strong>Standard</strong> — ten rounds at the difficulty you choose.</li>
-        <li><strong>Quick challenge</strong> — 5, 10 or 20 rounds that start easy and finish on Expert.</li>
-        <li><strong>Timed</strong> — as many rounds as you can in 30, 60 or 120 seconds.</li>
-        <li><strong>Endless</strong> — keep going until you lose three lives.</li>
-        <li><strong>Survival</strong> — one mistake ends the game; it gets harder as you go.</li>
-        <li><strong>Practice</strong> — no timer and no end.</li>
+        <li><strong>Standard</strong> - ten rounds at the difficulty you choose.</li>
+        <li><strong>Quick challenge</strong> - 5, 10 or 20 rounds that start easy and finish on Expert.</li>
+        <li><strong>Timed</strong> - as many rounds as you can in 30, 60 or 120 seconds.</li>
+        <li><strong>Endless</strong> - keep going until you lose three lives.</li>
+        <li><strong>Survival</strong> - one mistake ends the game; it gets harder as you go.</li>
+        <li><strong>Practice</strong> - no timer and no end.</li>
         <li>
           <strong>
             <Link to="/daily-color-challenge">Daily challenge</Link>
           </strong>{' '}
-          — ten rounds, the same for everyone, once a day.
+          - ten rounds, the same for everyone, once a day.
         </li>
       </ul>
 
