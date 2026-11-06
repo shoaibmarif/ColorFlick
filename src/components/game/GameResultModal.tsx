@@ -57,47 +57,47 @@ export const GameResultModal: React.FC<GameResultModalProps> = ({
           </div>
 
           {isNewPersonalBest && (
-            <span className="inline-block bg-gradient-to-r from-amber-500 to-rose-500 text-white font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider shadow-md mb-2 animate-bounce">
+            <span className="inline-block bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200 font-medium text-xs px-3 py-1 rounded-full mb-2">
               New Personal Best!
             </span>
           )}
 
-          <div className="font-mono text-4xl sm:text-5xl font-black text-slate-900 dark:text-white">
+          <div className="font-mono text-4xl sm:text-5xl font-semibold text-zinc-900 dark:text-white">
             {formatScore(score)}
           </div>
-          <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">
+          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 mt-1">
             Total Points Earned
           </span>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <div className="grid grid-cols-3 gap-3 bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-700">
           <div className="flex flex-col items-center p-2">
             <Target className="w-5 h-5 text-emerald-500 mb-1" />
-            <span className="font-mono text-lg font-bold text-slate-900 dark:text-white">
+            <span className="font-mono text-lg font-semibold text-zinc-900 dark:text-white">
               {accuracy}%
             </span>
-            <span className="text-[10px] uppercase font-bold text-slate-500">
+            <span className="text-xs font-semibold text-zinc-500">
               {correctCount}/{totalRounds} Correct
             </span>
           </div>
 
-          <div className="flex flex-col items-center p-2 border-x border-slate-200 dark:border-slate-700">
+          <div className="flex flex-col items-center p-2 border-x border-zinc-200 dark:border-zinc-700">
             <Flame className="w-5 h-5 text-amber-500 mb-1" />
-            <span className="font-mono text-lg font-bold text-slate-900 dark:text-white">
+            <span className="font-mono text-lg font-semibold text-zinc-900 dark:text-white">
               {bestStreak}
             </span>
-            <span className="text-[10px] uppercase font-bold text-slate-500">
+            <span className="text-xs font-semibold text-zinc-500">
               Best Streak
             </span>
           </div>
 
           <div className="flex flex-col items-center p-2">
             <Zap className="w-5 h-5 text-sky-500 mb-1" />
-            <span className="font-mono text-lg font-bold text-slate-900 dark:text-white">
+            <span className="font-mono text-lg font-semibold text-zinc-900 dark:text-white">
               {avgResponseTimeSec}s
             </span>
-            <span className="text-[10px] uppercase font-bold text-slate-500">
+            <span className="text-xs font-semibold text-zinc-500">
               Avg Speed
             </span>
           </div>

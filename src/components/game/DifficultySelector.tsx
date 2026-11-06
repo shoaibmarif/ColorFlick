@@ -7,51 +7,42 @@ interface DifficultySelectorProps {
   disabled?: boolean;
 }
 
-const DIFFICULTIES: { id: Difficulty; label: string; colorClass: string; badge: string }[] = [
-  { id: 'easy', label: 'Easy', colorClass: 'text-emerald-500', badge: '3-4 Choices' },
-  { id: 'medium', label: 'Medium', colorClass: 'text-sky-500', badge: '5-6 Choices' },
-  { id: 'hard', label: 'Hard', colorClass: 'text-amber-500', badge: '6-8 Choices' },
-  { id: 'expert', label: 'Expert', colorClass: 'text-rose-500', badge: '9 Choices' },
+const DIFFICULTIES: { id: Difficulty; label: string }[] = [
+  { id: 'easy', label: 'Easy' },
+  { id: 'medium', label: 'Medium' },
+  { id: 'hard', label: 'Hard' },
+  { id: 'expert', label: 'Expert' },
 ];
 
 export const DifficultySelector: React.FC<DifficultySelectorProps> = ({
   currentDifficulty,
   onSelectDifficulty,
   disabled = false,
-}) => {
-  return (
-    <div className="inline-flex p-1 bg-slate-200/70 dark:bg-slate-900/80 rounded-2xl border border-slate-300/60 dark:border-slate-800 shadow-inner">
-      {DIFFICULTIES.map((d) => {
-        const isActive = currentDifficulty === d.id;
-        return (
-          <button
-            key={d.id}
-            type="button"
-            disabled={disabled}
-            onClick={() => onSelectDifficulty(d.id)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 select-none ${
-              isActive
-                ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm scale-100 ring-1 ring-black/5 dark:ring-white/10'
-                : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100/50 dark:hover:bg-slate-800/40'
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full transition-transform ${
-                isActive ? 'scale-125' : 'opacity-40'
-              } ${
-                d.id === 'easy'
-                  ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]'
-                  : d.id === 'medium'
-                  ? 'bg-sky-500 shadow-[0_0_6px_rgba(14,165,233,0.7)]'
-                  : d.id === 'hard'
-                  ? 'bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.7)]'
-                  : 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.7)]'
-              }`}
-            />
-            <span>{d.label}</span>
-          </button>
-        );
-      })}
-    </div>
-  );
-};
+}) => (
+  <div
+    role="radiogroup"
+    aria-label="Difficulty"
+    className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100 p-0.5 dark:border-zinc-800 dark:bg-zinc-900"
+  >
+    {DIFFICULTIES.map((d) => {
+      const isActive = currentDifficulty === d.id;
+      return (
+        <button
+          key={d.id}
+          type="button"
+          role="radio"
+          aria-checked={isActive}
+          disabled={disabled}
+          onClick={() => onSelectDifficulty(d.id)}
+          className={`h-8 rounded-md px-3 text-sm font-medium transition-colors select-none ${
+            isActive
+              ? 'bg-white text-zinc-900 shadow-card dark:bg-zinc-700 dark:text-white'
+              : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+          }`}
+        >
+          {d.label}
+        </button>
+      );
+    })}
+  </div>
+);

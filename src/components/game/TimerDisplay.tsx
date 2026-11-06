@@ -20,23 +20,23 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 
   return (
     <div className="w-full space-y-1.5">
-      <div className="flex justify-between items-center text-xs font-bold">
-        <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-          <Clock className={`w-3.5 h-3.5 ${isLow ? 'text-rose-500 animate-spin' : 'text-slate-400'}`} />
+      <div className="flex justify-between items-center text-xs font-semibold">
+        <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
+          <Clock className={`w-3.5 h-3.5 ${isLow ? 'text-rose-500' : 'text-zinc-400'}`} />
           <span>Time Remaining</span>
         </div>
         <span
           className={`font-mono text-sm ${
             isLow
-              ? 'text-rose-600 dark:text-rose-400 font-extrabold animate-pulse'
-              : 'text-slate-900 dark:text-white'
+              ? 'text-rose-600 dark:text-rose-400 font-semibold'
+              : 'text-zinc-900 dark:text-white'
           }`}
         >
           {formattedTime}
         </span>
       </div>
 
-      <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
         <div
           className={`h-full transition-all duration-200 rounded-full ${
             remainingSeconds > totalDurationSeconds * 0.4

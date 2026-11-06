@@ -1,3 +1,5 @@
+import { SITE } from '../seo/site';
+
 export interface ShareResultOptions {
   modeName: string;
   score: number;
@@ -9,22 +11,20 @@ export interface ShareResultOptions {
 export async function shareGameResult(
   opts: ShareResultOptions
 ): Promise<{ success: boolean; method: 'share' | 'clipboard' | 'failed' }> {
-  const url = typeof window !== 'undefined' ? window.location.origin : 'https://colorwise.netlify.app';
+  const url = `${SITE.url}/`;
   const text = [
-    `🎨 ColorWise`,
-    `Mode: ${opts.modeName}`,
+    `${SITE.name} — ${opts.modeName}`,
     `Score: ${opts.score.toLocaleString()}`,
     `Accuracy: ${opts.accuracy}% (${opts.roundCount} rounds)`,
-    `Best Streak: 🔥 ${opts.bestStreak}`,
+    `Best streak: ${opts.bestStreak}`,
     ``,
-    `Can you beat my score?`,
-    url,
+    `Can you beat it?`,
   ].join('\n');
 
   if (typeof navigator !== 'undefined' && navigator.share) {
     try {
       await navigator.share({
-        title: 'ColorWise Score',
+        title: `My ${SITE.name} score`,
         text,
         url,
       });
@@ -39,7 +39,7 @@ export async function shareGameResult(
 
   if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(`${text}\n${url}`);
       return { success: true, method: 'clipboard' };
     } catch {
       return { success: false, method: 'failed' };

@@ -1,28 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { PageShell } from './components/layout/PageShell';
 import { HomePage } from './pages/Home';
-import { GameArena } from './pages/GameArena';
-import { DailyChallengePage } from './pages/DailyChallengePage';
-import { StatsPage } from './pages/StatsPage';
-import { HowToPlayPage } from './pages/HowToPlay';
-import { ColorTheoryPage } from './pages/ColorTheory';
-import { ColorTheoryGuidePage } from './pages/ColorTheoryGuidePage';
-import { RgbVsHexPage } from './pages/RgbVsHex';
-import { ColorCodesPage } from './pages/ColorCodes';
-import { UnderstandingRgbPage } from './pages/UnderstandingRgbPage';
-import { UnderstandingHexPage } from './pages/UnderstandingHexPage';
-import { UnderstandingHslPage } from './pages/UnderstandingHslPage';
-import { ColorConverterPage } from './pages/ColorConverterPage';
-import { ColorContrastCheckerPage } from './pages/ColorContrastCheckerPage';
-import { ColorDistancePage } from './pages/ColorDistancePage';
-import { FaqPage } from './pages/FaqPage';
-import { AboutPage } from './pages/AboutPage';
-import { PrivacyPage } from './pages/PrivacyPage';
-import { TermsPage } from './pages/TermsPage';
-import { ContactPage } from './pages/ContactPage';
+import { REDIRECTS } from './seo/routes';
 
-// Scroll restoration component
+// Route-level code splitting keeps the first load small (better Core Web Vitals).
+const named = <K extends string>(loader: () => Promise<Record<K, React.ComponentType<any>>>, key: K) =>
+  lazy(() => loader().then((m) => ({ default: m[key] })));
+
+const GameArena = named(() => import('./pages/GameArena'), 'GameArena');
+const DailyChallengePage = named(() => import('./pages/DailyChallengePage'), 'DailyChallengePage');
+const StatsPage = named(() => import('./pages/StatsPage'), 'StatsPage');
+const HowToPlayPage = named(() => import('./pages/HowToPlay'), 'HowToPlayPage');
+const ColorTheoryPage = named(() => import('./pages/ColorTheory'), 'ColorTheoryPage');
+const ColorTheoryGuidePage = named(() => import('./pages/ColorTheoryGuidePage'), 'ColorTheoryGuidePage');
+const RgbVsHexPage = named(() => import('./pages/RgbVsHex'), 'RgbVsHexPage');
+const ColorCodesPage = named(() => import('./pages/ColorCodes'), 'ColorCodesPage');
+const UnderstandingRgbPage = named(() => import('./pages/UnderstandingRgbPage'), 'UnderstandingRgbPage');
+const UnderstandingHexPage = named(() => import('./pages/UnderstandingHexPage'), 'UnderstandingHexPage');
+const UnderstandingHslPage = named(() => import('./pages/UnderstandingHslPage'), 'UnderstandingHslPage');
+const ColorConverterPage = named(() => import('./pages/ColorConverterPage'), 'ColorConverterPage');
+const ColorContrastCheckerPage = named(() => import('./pages/ColorContrastCheckerPage'), 'ColorContrastCheckerPage');
+const ColorDistancePage = named(() => import('./pages/ColorDistancePage'), 'ColorDistancePage');
+const FaqPage = named(() => import('./pages/FaqPage'), 'FaqPage');
+const AboutPage = named(() => import('./pages/AboutPage'), 'AboutPage');
+const PrivacyPage = named(() => import('./pages/PrivacyPage'), 'PrivacyPage');
+const TermsPage = named(() => import('./pages/TermsPage'), 'TermsPage');
+const ContactPage = named(() => import('./pages/ContactPage'), 'ContactPage');
+const NotFoundPage = named(() => import('./pages/NotFoundPage'), 'NotFoundPage');
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -31,71 +37,63 @@ function ScrollToTop() {
   return null;
 }
 
+const PageFallback = () => <div className="min-h-[60vh]" aria-busy="true" />;
+
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <PageShell>
-        <Routes>
-          {/* Main Homepage */}
-          <Route path="/" element={<HomePage />} />
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
 
-          {/* Core Game & Mode Specific Arenas */}
-          <Route path="/color-guessing-game" element={<GameArena />} />
-          <Route path="/color-guessing-game/:difficultyParam" element={<GameArena />} />
-          <Route path="/color-guessing-game-online" element={<GameArena />} />
-          <Route path="/color-game" element={<GameArena />} />
-          <Route path="/color-match-game" element={<GameArena forcedMode="color-match" />} />
-          <Route path="/rgb-color-game" element={<GameArena forcedMode="rgb-guess" />} />
-          <Route path="/rgb-color-guessing-game" element={<GameArena forcedMode="rgb-guess" />} />
-          <Route path="/hex-color-game" element={<GameArena forcedMode="hex-guess" />} />
-          <Route path="/hex-color-guessing-game" element={<GameArena forcedMode="hex-guess" />} />
-          <Route path="/color-picker-game" element={<GameArena forcedMode="color-picker" />} />
-          <Route path="/color-matching-game" element={<GameArena forcedMode="color-match" />} />
-          <Route path="/guess-the-color" element={<GameArena />} />
-          <Route path="/color-challenge" element={<GameArena />} />
-          <Route path="/color-quiz" element={<GameArena />} />
-          <Route path="/color-test" element={<GameArena />} />
+            {/* Games */}
+            <Route path="/color-guessing-game" element={<GameArena />} />
+            <Route path="/color-guessing-game/:difficultyParam" element={<GameArena />} />
+            <Route path="/rgb-color-game" element={<GameArena forcedMode="rgb-guess" />} />
+            <Route path="/hex-color-game" element={<GameArena forcedMode="hex-guess" />} />
+            <Route path="/color-picker-game" element={<GameArena forcedMode="color-picker" />} />
+            <Route path="/color-matching-game" element={<GameArena forcedMode="color-match" />} />
+            <Route path="/color-theory-game" element={<GameArena forcedMode="warm-cool" />} />
+            <Route path="/daily-color-challenge" element={<DailyChallengePage />} />
+            <Route path="/color-game-timed" element={<GameArena forcedFormat="timed" />} />
+            <Route path="/color-game-practice" element={<GameArena forcedFormat="practice" />} />
+            <Route path="/color-game-for-beginners" element={<GameArena forcedDifficulty="easy" />} />
 
-          {/* Formats & Variations */}
-          <Route path="/daily-color-challenge" element={<DailyChallengePage />} />
-          <Route path="/color-game-timed" element={<GameArena forcedFormat="timed" />} />
-          <Route path="/color-game-practice" element={<GameArena forcedFormat="practice" />} />
-          <Route path="/color-game-for-beginners" element={<GameArena forcedDifficulty="easy" />} />
-          <Route path="/color-theory-game" element={<GameArena forcedMode="warm-cool" />} />
-          <Route path="/color-theory-quiz" element={<GameArena forcedMode="warm-cool" />} />
+            {/* Tools */}
+            <Route path="/color-converter" element={<ColorConverterPage initialFormat="all" />} />
+            <Route path="/rgb-to-hex" element={<ColorConverterPage initialFormat="rgb" />} />
+            <Route path="/hex-to-rgb" element={<ColorConverterPage initialFormat="hex" />} />
+            <Route path="/color-contrast-checker" element={<ColorContrastCheckerPage />} />
+            <Route path="/color-distance" element={<ColorDistancePage />} />
+            <Route path="/color-codes" element={<ColorCodesPage />} />
 
-          {/* Interactive Tools */}
-          <Route path="/color-distance" element={<ColorDistancePage />} />
-          <Route path="/rgb-to-hex" element={<ColorConverterPage initialFormat="rgb" />} />
-          <Route path="/hex-to-rgb" element={<ColorConverterPage initialFormat="hex" />} />
-          <Route path="/color-converter" element={<ColorConverterPage initialFormat="all" />} />
-          <Route path="/color-contrast-checker" element={<ColorContrastCheckerPage />} />
+            {/* Learn */}
+            <Route path="/how-to-play" element={<HowToPlayPage />} />
+            <Route path="/color-theory-guide" element={<ColorTheoryGuidePage />} />
+            <Route path="/color-theory" element={<ColorTheoryPage />} />
+            <Route path="/understanding-rgb" element={<UnderstandingRgbPage />} />
+            <Route path="/understanding-hex-colors" element={<UnderstandingHexPage />} />
+            <Route path="/understanding-hsl" element={<UnderstandingHslPage />} />
+            <Route path="/rgb-vs-hex" element={<RgbVsHexPage />} />
+            <Route path="/faq" element={<FaqPage />} />
 
-          {/* Educational & Guides */}
-          <Route path="/how-to-play" element={<HowToPlayPage />} />
-          <Route path="/color-theory" element={<ColorTheoryPage />} />
-          <Route path="/color-theory-guide" element={<ColorTheoryGuidePage />} />
-          <Route path="/understanding-rgb" element={<UnderstandingRgbPage />} />
-          <Route path="/understanding-hex-colors" element={<UnderstandingHexPage />} />
-          <Route path="/understanding-hsl" element={<UnderstandingHslPage />} />
-          <Route path="/rgb-vs-hex" element={<RgbVsHexPage />} />
-          <Route path="/color-codes" element={<ColorCodesPage />} />
+            {/* Site */}
+            <Route path="/statistics" element={<StatsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
-          {/* Statistics & Community */}
-          <Route path="/statistics" element={<StatsPage />} />
+            {/* Retired duplicate URLs (also 301-redirected by the host) */}
+            {Object.entries(REDIRECTS).map(([from, to]) => (
+              <Route key={from} path={from} element={<Navigate to={to} replace />} />
+            ))}
 
-          {/* Platform & Compliance */}
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/faq" element={<FaqPage />} />
-          <Route path="/color-guessing-game-faq" element={<FaqPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-
-          {/* Catch-all fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </PageShell>
     </BrowserRouter>
   );

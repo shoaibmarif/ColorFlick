@@ -1,8 +1,36 @@
 import React from 'react';
+import { Link, LinkProps } from 'react-router-dom';
+
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'accent';
+type Size = 'sm' | 'md' | 'lg';
+
+const base =
+  'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-colors duration-150 select-none whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950 disabled:opacity-50 disabled:pointer-events-none';
+
+const sizes: Record<Size, string> = {
+  sm: 'h-8 px-3 text-sm',
+  md: 'h-10 px-4 text-sm',
+  lg: 'h-12 px-5 text-base',
+};
+
+const variants: Record<Variant, string> = {
+  primary:
+    'bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200',
+  accent: 'bg-brand-600 text-white hover:bg-brand-700',
+  secondary:
+    'bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800',
+  outline:
+    'border border-zinc-300 text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800',
+  ghost: 'text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800',
+  danger: 'bg-red-600 text-white hover:bg-red-700',
+};
+
+export const buttonClasses = (variant: Variant = 'primary', size: Size = 'md', extra = '') =>
+  `${base} ${sizes[size]} ${variants[variant]} ${extra}`.trim();
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: Variant;
+  size?: Size;
   children: React.ReactNode;
 }
 
@@ -10,39 +38,28 @@ export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
   className = '',
+  type = 'button',
   children,
-  disabled,
   ...props
-}) => {
-  const base =
-    'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-150 focus:outline-none focus:ring-4 select-none disabled:opacity-50 disabled:cursor-not-allowed';
+}) => (
+  <button type={type} className={buttonClasses(variant, size, className)} {...props}>
+    {children}
+  </button>
+);
 
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2.5 text-sm',
-    lg: 'px-6 py-3.5 text-base',
-  };
+interface ButtonLinkProps extends LinkProps {
+  variant?: Variant;
+  size?: Size;
+}
 
-  const variantClasses = {
-    primary:
-      'bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white shadow-md focus:ring-brand-400',
-    secondary:
-      'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-slate-400',
-    outline:
-      'border-2 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-slate-300',
-    ghost:
-      'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 focus:ring-slate-300',
-    danger:
-      'bg-rose-600 hover:bg-rose-700 text-white shadow-md focus:ring-rose-400',
-  };
-
-  return (
-    <button
-      className={`${base} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+export const ButtonLink: React.FC<ButtonLinkProps> = ({
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  children,
+  ...props
+}) => (
+  <Link className={buttonClasses(variant, size, className)} {...props}>
+    {children}
+  </Link>
+);

@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { seoPlugin } from './scripts/seoPlugin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), seoPlugin()],
   server: {
     port: 3000,
     host: true,
@@ -13,12 +14,10 @@ export default defineConfig({
     host: true,
   },
   build: {
-    chunkSizeWarningLimit: 800,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          icons: ['lucide-react'],
         },
       },
     },

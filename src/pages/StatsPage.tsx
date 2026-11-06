@@ -1,5 +1,6 @@
 import React from 'react';
 import { SeoMeta } from '../components/ui/SeoMeta';
+import { PageHeader } from '../components/layout/PageHeader';
 import { StatsDashboard } from '../components/statistics/StatsDashboard';
 import { useStats } from '../hooks/useStats';
 import { useNavigate } from 'react-router-dom';
@@ -10,20 +11,9 @@ export const StatsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <SeoMeta
-        title="Your Player Statistics & Achievements - Color Guessing Game"
-        description="View your personal color recognition statistics, accuracy percentage, best streaks, response speed, and unlocked achievements."
-        canonicalPath="/statistics"
-      />
+      <SeoMeta canonicalPath="/statistics" />
 
-      <div className="text-center max-w-xl mx-auto space-y-2">
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white">
-          Player Statistics
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-          All data is tracked securely and privately in your browser's local storage.
-        </p>
-      </div>
+      <PageHeader title="Your statistics" intro="Your results so far. Everything here is stored only in this browser." />
 
       <StatsDashboard
         stats={stats}

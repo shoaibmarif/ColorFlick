@@ -1,73 +1,60 @@
 import React from 'react';
 import { SeoMeta } from '../components/ui/SeoMeta';
-import { ShieldCheck, Lock, Database, EyeOff } from 'lucide-react';
+import { PageHeader } from '../components/layout/PageHeader';
+import { SITE } from '../seo/site';
 
-export const PrivacyPage: React.FC = () => {
-  return (
-    <div className="max-w-3xl mx-auto space-y-8">
-      <SeoMeta
-        title="Privacy Policy - Color Guessing Game"
-        description="Our privacy commitment: 100% client-side web application. No accounts, no backend database, no tracking cookies. All game data stays on your device."
-        canonicalPath="/privacy"
-      />
+export const PrivacyPage: React.FC = () => (
+  <div className="mx-auto max-w-3xl">
+    <SeoMeta canonicalPath="/privacy" />
+    <PageHeader title="Privacy policy" intro="Last updated 6 November 2026." />
 
-      <div className="space-y-3">
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-          Privacy Policy
-        </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
-          Last updated: September 20, 2026. Built with privacy-by-design at its core.
-        </p>
-      </div>
+    <article className="prose-page">
+      <p>
+        {SITE.name} is a game that runs in your browser. There are no accounts and no game server, so
+        we hold very little information about you. This page explains exactly what is collected.
+      </p>
 
-      <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-        {/* Section 1 */}
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <Lock className="w-4 h-4 text-emerald-500" />
-            <span>1. No Account or Personal Information Required</span>
-          </h2>
-          <p>
-            You can use Color Guessing Game completely anonymously. We do not require account registration, passwords, email addresses, phone numbers, or social media logins.
-          </p>
-        </section>
+      <h2>Information you don’t need to give us</h2>
+      <p>
+        You can play without registering. We never ask for your name, email address, phone number or
+        a social login.
+      </p>
 
-        {/* Section 2 */}
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <Database className="w-4 h-4 text-brand-500" />
-            <span>2. Local Storage Usage</span>
-          </h2>
-          <p>
-            The game stores your game preferences (sound volume, theme, high contrast settings), gameplay statistics (rounds played, accuracy, high scores), daily challenge status, and unlocked achievements strictly on your device using the browser's standard <code>localStorage</code> API under the <code>colorGuessing.*</code> namespace.
-          </p>
-          <p>
-            This data never leaves your browser and is never sent to any external server. You can wipe all stored data at any time via the Settings menu or by clearing your browser's site data.
-          </p>
-        </section>
+      <h2>Data stored on your device</h2>
+      <p>
+        Your settings (theme, sound, accessibility options), game statistics, daily challenge results
+        and achievements are saved in your browser’s <code>localStorage</code>. This data stays on
+        your device and is not sent to us. You can delete it at any time from <strong>Settings → Reset
+        all data</strong>, or by clearing this site’s data in your browser.
+      </p>
 
-        {/* Section 3 */}
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <EyeOff className="w-4 h-4 text-sky-500" />
-            <span>3. No Tracking Cookies or Third-Party Analytics</span>
-          </h2>
-          <p>
-            We do not use tracking cookies, behavioral ad pixels, or third-party behavioral profiling scripts. The entire game logic, color mathematics, audio generation, and seeded random number generation run locally in the client runtime.
-          </p>
-        </section>
+      <h2>Analytics</h2>
+      <p>
+        We use Google Analytics to understand, in aggregate, how many people visit and which pages
+        they use. Google Analytics sets cookies and collects information such as the pages you view,
+        your approximate location, device type and browser. We do not use it to build advertising
+        profiles and we do not sell data. You can opt out with a content blocker or Google’s{' '}
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
+          opt-out add-on
+        </a>
+        . See{' '}
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+          Google’s privacy policy
+        </a>{' '}
+        for details.
+      </p>
 
-        {/* Section 4 */}
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-amber-500" />
-            <span>4. Contact & Inquiries</span>
-          </h2>
-          <p>
-            If you contact us via email regarding bug reports, feature suggestions, or accessibility inquiries, your email address will only be used to respond directly to your inquiry and will never be shared, sold, or used for marketing lists.
-          </p>
-        </section>
-      </div>
-    </div>
-  );
-};
+      <h2>Hosting</h2>
+      <p>
+        The site is hosted on Netlify, which processes standard server logs (such as IP address and
+        requested URL) to deliver the site and protect it from abuse.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        If you get in touch with a question or bug report, we only use your details to reply. Questions
+        about this policy can be sent via the <a href="/contact">contact page</a>.
+      </p>
+    </article>
+  </div>
+);

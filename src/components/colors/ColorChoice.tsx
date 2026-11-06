@@ -26,18 +26,15 @@ export const ColorChoice: React.FC<ColorChoiceProps> = ({
   const isAnswered = roundStatus === 'answered' || roundStatus === 'completed';
   const isSelected = selectedId === choice.id;
 
-  // Tactile arcade 3D states
-  let stateClasses =
-    'shadow-[0_5px_0_0_rgba(0,0,0,0.16)] hover:shadow-[0_7px_0_0_rgba(0,0,0,0.2)] hover:-translate-y-0.5 active:translate-y-1 active:shadow-none ring-1 ring-black/10 dark:ring-white/10 cursor-pointer';
+  let stateClasses = 'ring-1 ring-inset ring-black/10 dark:ring-white/10 hover:ring-2 hover:ring-zinc-900/40 dark:hover:ring-white/50';
 
   if (isAnswered) {
     if (choice.isCorrect) {
-      stateClasses =
-        'ring-4 ring-emerald-500 shadow-[0_0_24px_rgba(16,185,129,0.5)] scale-[1.03] z-10 cursor-default';
+      stateClasses = 'ring-[3px] ring-emerald-600 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 z-10 cursor-default';
     } else if (isSelected && !choice.isCorrect) {
-      stateClasses = 'ring-4 ring-rose-500 opacity-80 cursor-default';
+      stateClasses = 'ring-[3px] ring-red-600 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 cursor-default';
     } else {
-      stateClasses = 'opacity-35 grayscale-[25%] cursor-default';
+      stateClasses = 'opacity-40 cursor-default';
     }
   }
 
@@ -55,52 +52,34 @@ export const ColorChoice: React.FC<ColorChoiceProps> = ({
       type="button"
       onClick={() => onSelect(choice.id)}
       disabled={disabled || isAnswered}
-      aria-label={`Choice ${index + 1}: ${choice.label || choice.hex}`}
-      style={{
-        backgroundColor: choice.hex,
-        ...patternStyle,
-      }}
-      className={`relative group w-full h-22 sm:h-26 md:h-28 rounded-2xl flex flex-col items-center justify-between p-2.5 sm:p-3 transition-all duration-150 focus:outline-none focus:ring-4 focus:ring-brand-400 select-none overflow-hidden ${stateClasses}`}
+      aria-label={`Choice ${index + 1}${choice.label ? `: ${choice.label}` : ''}${
+        isAnswered ? (choice.isCorrect ? ', correct answer' : isSelected ? ', your answer, incorrect' : '') : ''
+      }`}
+      style={{ backgroundColor: choice.hex, ...patternStyle }}
+      className={`relative flex h-24 w-full select-none flex-col justify-between rounded-xl p-2.5 transition-[box-shadow,opacity] duration-150 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-brand-500 sm:h-28 ${stateClasses}`}
     >
-      {/* Specular Glare & Inner Shading */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/20 via-transparent to-black/15 rounded-2xl" />
-
-      {/* Top Header: Shortcut Keycap & Status Indicator */}
-      <div className="relative z-10 w-full flex items-center justify-between pointer-events-none">
-        <kbd
-          className="px-2 py-0.5 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider bg-black/45 text-white backdrop-blur-md shadow-xs border border-white/20"
-        >
-          {index + 1}
-        </kbd>
-
-        {isAnswered && (
-          <div>
-            {choice.isCorrect ? (
-              <span className="flex items-center gap-1 bg-emerald-600 text-white px-2 py-0.5 rounded-full text-xs font-black shadow-md animate-pop">
-                <Check className="w-3.5 h-3.5 stroke-[3]" aria-hidden="true" />
-                <span>MATCH</span>
-              </span>
-            ) : isSelected ? (
-              <span className="flex items-center gap-1 bg-rose-600 text-white px-2 py-0.5 rounded-full text-xs font-black shadow-md animate-shake">
-                <X className="w-3.5 h-3.5 stroke-[3]" aria-hidden="true" />
-                <span>MISS</span>
-              </span>
-            ) : null}
-          </div>
+      <span className="flex w-full items-center justify-between">
+        <kbd className="rounded bg-black/55 px-1.5 py-0.5 text-xs font-medium text-white">{index + 1}</kbd>
+        {isAnswered && choice.isCorrect && (
+          <span className="flex items-center gap-1 rounded-full bg-emerald-600 px-2 py-0.5 text-xs font-medium text-white animate-pop">
+            <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" />
+            Match
+          </span>
         )}
-      </div>
+        {isAnswered && isSelected && !choice.isCorrect && (
+          <span className="flex items-center gap-1 rounded-full bg-red-600 px-2 py-0.5 text-xs font-medium text-white animate-shake">
+            <X className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" />
+            Miss
+          </span>
+        )}
+      </span>
 
-      {/* Center Label (Name, HEX or Category) */}
       {displayLabel && (
-        <div
-          className="relative z-10 font-extrabold text-xs sm:text-sm tracking-wide px-3 py-1 rounded-xl backdrop-blur-md bg-black/40 text-white shadow-md border border-white/15 text-center max-w-[92%] truncate"
-        >
+        <span className="mx-auto max-w-[92%] truncate rounded-md bg-black/55 px-2 py-0.5 text-center text-xs font-medium text-white sm:text-sm">
           {displayLabel}
-        </div>
+        </span>
       )}
-
-      {/* Bottom spacer for tactile balance */}
-      <div className="w-full h-1" />
+      <span />
     </button>
   );
 };

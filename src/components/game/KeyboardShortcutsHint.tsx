@@ -11,15 +11,15 @@ export const KeyboardShortcutsHint: React.FC<KeyboardShortcutsHintProps> = ({
   choicesCount,
 }) => {
   return (
-    <div className="hidden sm:flex items-center justify-center gap-2 mt-3 text-[11px] text-slate-400 dark:text-slate-500 font-medium select-none">
+    <div className="hidden sm:flex items-center justify-center gap-2 mt-3 text-xs text-zinc-400 dark:text-zinc-500 font-medium select-none">
       <Keyboard className="w-3.5 h-3.5" />
-      <span>Keyboard Shortcuts:</span>
+      <span>Keyboard:</span>
       {!isAnswered ? (
-        <span className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 font-mono text-[10px]">
+        <span className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-700 font-mono text-xs">
           1–{choicesCount}
         </span>
       ) : (
-        <span className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 font-mono text-[10px]">
+        <span className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-700 font-mono text-xs">
           Space / Enter (Next)
         </span>
       )}
