@@ -2,13 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <!--seo-head-->
     <meta name="application-name" content="ColorFlick" />
     <meta name="apple-mobile-web-app-title" content="ColorFlick" />
     <meta name="author" content="Shoaib Arif" />
-    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="theme-color"
+      content="#fafafa"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#09090b"
+      media="(prefers-color-scheme: dark)"
+    />
     <meta name="format-detection" content="telephone=no" />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -20,58 +31,96 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
 
     <!-- Apply the saved theme before first paint to avoid a light/dark flash. -->
     <script>
       (function () {
         try {
-          var s = JSON.parse(localStorage.getItem('colorGuessing.settings') || '{}');
-          var t = s.theme || 'light';
-          if (t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
+          var s = JSON.parse(
+            localStorage.getItem("colorGuessing.settings") || "{}",
+          );
+          var t = s.theme || "light";
+          if (
+            t === "dark" ||
+            (t === "system" &&
+              matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            document.documentElement.classList.add("dark");
           }
         } catch (e) {}
       })();
     </script>
 
-    <!-- Google Analytics with Consent Mode: no analytics cookies until the visitor accepts. -->
+    <!-- Consent Mode defaults: must run before Google Tag Manager loads.
+         Analytics is on by default; visitors can opt out from the cookie notice
+         or "Cookie settings" in the footer. Advertising storage is always off. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       (function () {
-        var granted = false;
+        var optedOut = false;
         try {
-          granted = localStorage.getItem('colorflick.consent') === 'granted';
+          optedOut = localStorage.getItem("colorflick.consent") === "denied";
         } catch (e) {}
-        gtag('consent', 'default', {
-          analytics_storage: granted ? 'granted' : 'denied',
-          ad_storage: 'denied',
-          ad_user_data: 'denied',
-          ad_personalization: 'denied',
-          wait_for_update: 500
+        gtag("consent", "default", {
+          analytics_storage: optedOut ? "denied" : "granted",
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
         });
       })();
-      gtag('js', new Date());
-      gtag('config', 'G-5E2CW60GBT');
+      gtag("js", new Date());
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5E2CW60GBT"></script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-NZ84NSLW");
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-NZ84NSLW"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root"><!--seo-body--></div>
     <noscript>
-      <p style="max-width: 40rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif">
-        ColorFlick is an interactive game and needs JavaScript to play. Please enable JavaScript in your browser.
+      <p
+        style="
+          max-width: 40rem;
+          margin: 2rem auto;
+          padding: 0 1rem;
+          font-family: system-ui, sans-serif;
+        "
+      >
+        ColorFlick is an interactive game and needs JavaScript to play. Please
+        enable JavaScript in your browser.
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      if ('serviceWorker' in navigator && location.protocol === 'https:') {
-        addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js').catch(function () {});
+      if ("serviceWorker" in navigator && location.protocol === "https:") {
+        addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js").catch(function () {});
         });
       }
     </script>
