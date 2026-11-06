@@ -37,12 +37,12 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto space-y-5 bg-white/80 dark:bg-slate-800/80 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md backdrop-blur-sm">
+    <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto space-y-5 bg-white/80 dark:bg-zinc-800/80 p-5 sm:p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-md">
       {/* Target vs Your Color Visual Split */}
       <div className="grid grid-cols-2 gap-3.5">
         {/* Target Color Block */}
-        <div className="flex flex-col items-center space-y-2 p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700">
-          <span className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        <div className="flex flex-col items-center space-y-2 p-3 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700">
+          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
             TARGET
           </span>
           <div
@@ -50,14 +50,14 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
             style={{ backgroundColor: targetHex }}
             aria-label="Target color display"
           />
-          <span className="text-[11px] font-mono text-slate-400 italic">
+          <span className="text-xs font-mono text-zinc-400 italic">
             HSL values hidden
           </span>
         </div>
 
         {/* Player Color Block */}
-        <div className="flex flex-col items-center space-y-2 p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700">
-          <span className="text-xs font-black uppercase tracking-wider text-brand-600 dark:text-brand-400">
+        <div className="flex flex-col items-center space-y-2 p-3 bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl border border-zinc-200 dark:border-zinc-700">
+          <span className="text-xs font-semibold text-brand-600 dark:text-brand-400">
             YOUR COLOR
           </span>
           <div
@@ -65,17 +65,17 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
             style={{ backgroundColor: playerHex }}
             aria-label="Your tuned color display"
           />
-          <span className="text-[11px] font-mono font-bold text-slate-700 dark:text-slate-200">
+          <span className="text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-200">
             {playerHex}
           </span>
         </div>
       </div>
 
       {/* Live Similarity Bar */}
-      <div className="space-y-1.5 p-3.5 bg-slate-100 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-700/60">
-        <div className="flex justify-between items-center text-xs font-bold">
-          <span className="text-slate-600 dark:text-slate-400">Live Match Similarity</span>
-          <span className={`font-mono text-sm font-black ${
+      <div className="space-y-1.5 p-3.5 bg-zinc-100 dark:bg-zinc-900/40 rounded-2xl border border-zinc-200 dark:border-zinc-700/60">
+        <div className="flex justify-between items-center text-xs font-semibold">
+          <span className="text-zinc-600 dark:text-zinc-400">Live Match Similarity</span>
+          <span className={`font-mono text-sm font-semibold ${
             liveSimilarity >= 90
               ? 'text-emerald-500'
               : liveSimilarity >= 75
@@ -87,7 +87,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
             {liveSimilarity.toFixed(1)}%
           </span>
         </div>
-        <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div className="w-full h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 transition-all duration-100"
             style={{ width: `${liveSimilarity}%` }}
@@ -99,9 +99,9 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
       <div className="space-y-3.5">
         {/* Hue Slider (0 - 360) */}
         <div className="space-y-1">
-          <div className="flex justify-between items-center text-xs font-bold">
-            <span className="text-slate-700 dark:text-slate-200">Hue (H)</span>
-            <span className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">
+          <div className="flex justify-between items-center text-xs font-semibold">
+            <span className="text-zinc-700 dark:text-zinc-200">Hue (H)</span>
+            <span className="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
               {hsl.h}°
             </span>
           </div>
@@ -123,9 +123,9 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
 
         {/* Saturation Slider (0 - 100%) */}
         <div className="space-y-1">
-          <div className="flex justify-between items-center text-xs font-bold">
-            <span className="text-slate-700 dark:text-slate-200">Saturation (S)</span>
-            <span className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">
+          <div className="flex justify-between items-center text-xs font-semibold">
+            <span className="text-zinc-700 dark:text-zinc-200">Saturation (S)</span>
+            <span className="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
               {hsl.s}%
             </span>
           </div>
@@ -146,9 +146,9 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
 
         {/* Lightness Slider (0 - 100%) */}
         <div className="space-y-1">
-          <div className="flex justify-between items-center text-xs font-bold">
-            <span className="text-slate-700 dark:text-slate-200">Lightness (L)</span>
-            <span className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">
+          <div className="flex justify-between items-center text-xs font-semibold">
+            <span className="text-zinc-700 dark:text-zinc-200">Lightness (L)</span>
+            <span className="font-mono text-xs bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
               {hsl.l}%
             </span>
           </div>
@@ -174,7 +174,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
           type="button"
           onClick={handleReset}
           disabled={disabled}
-          className="py-3 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+          className="py-3 px-4 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
           title="Reset sliders"
         >
           <RotateCcw className="w-4 h-4" />
@@ -184,7 +184,7 @@ export const ColorMatchingChallenge: React.FC<ColorMatchingChallengeProps> = ({
         <button
           type="submit"
           disabled={disabled}
-          className="flex-1 py-3 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-black rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-brand-400"
+          className="flex-1 py-3 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-4 focus:ring-brand-400"
         >
           <Check className="w-5 h-5" />
           <span>Lock In Match</span>

@@ -1,52 +1,37 @@
 import React from 'react';
 import { SeoMeta } from '../components/ui/SeoMeta';
+import { PageHeader } from '../components/layout/PageHeader';
+import { SITE } from '../seo/site';
 
-export const TermsPage: React.FC = () => {
-  return (
-    <div className="max-w-3xl mx-auto space-y-8">
-      <SeoMeta
-        title="Terms of Service - Color Guessing Game"
-        description="Terms of service and usage guidelines for Color Guessing Game."
-        canonicalPath="/terms"
-      />
+export const TermsPage: React.FC = () => (
+  <div className="mx-auto max-w-3xl">
+    <SeoMeta canonicalPath="/terms" />
+    <PageHeader title="Terms of use" intro="Last updated 6 November 2026." />
 
-      <div className="space-y-3">
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-          Terms of Service
-        </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
-          Last updated: September 20, 2026.
-        </p>
-      </div>
+    <article className="prose-page">
+      <p>By using {SITE.name} you agree to these terms. If you don’t agree, please don’t use the site.</p>
 
-      <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
-            1. Agreement to Terms
-          </h2>
-          <p>
-            By accessing and playing Color Guessing Game, you agree to these Terms of Service. If you do not agree with any part of these terms, you should discontinue use of the game.
-          </p>
-        </section>
+      <h2>Using the game</h2>
+      <p>
+        {SITE.name} is free for personal, educational and commercial use. Please don’t attempt to
+        disrupt the site, overload it with automated traffic, or misrepresent it as your own work.
+      </p>
 
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
-            2. Permitted Use & Entertainment
-          </h2>
-          <p>
-            The game is provided free of charge for personal educational, recreational, and training purposes. Because all game logic executes in the browser without an authoritative server, scores and streaks are client-side accomplishments and should not be treated as legally binding or official certifications.
-          </p>
-        </section>
+      <h2>Your data</h2>
+      <p>
+        Game progress is stored in your browser. We can’t recover it if you clear your browser data
+        or switch devices. See the <a href="/privacy">privacy policy</a> for details.
+      </p>
 
-        <section className="space-y-2">
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
-            3. Disclaimer of Warranties
-          </h2>
-          <p>
-            The application is provided "as is" without warranties of any kind. Color representation can vary depending on individual monitor calibrations, display panels, operating system color profiles, and ambient lighting conditions.
-          </p>
-        </section>
-      </div>
-    </div>
-  );
-};
+      <h2>No warranty</h2>
+      <p>
+        The site and its tools are provided “as is”, without warranties of any kind. Colors look
+        different on different screens and in different lighting, so don’t rely on {SITE.name} for
+        professional color calibration or accessibility certification.
+      </p>
+
+      <h2>Changes</h2>
+      <p>We may update these terms from time to time. The date at the top shows the latest version.</p>
+    </article>
+  </div>
+);

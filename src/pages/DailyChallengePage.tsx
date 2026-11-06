@@ -9,9 +9,14 @@ import { TargetColor } from '../components/colors/TargetColor';
 import { ColorChoice } from '../components/colors/ColorChoice';
 import { RoundFeedback } from '../components/game/RoundFeedback';
 import { ScoreDisplay } from '../components/game/ScoreDisplay';
-import { Button } from '../components/ui/Button';
-import { Calendar, Flame, Trophy, Share2, Check, ArrowRight, ShieldCheck, Zap, BookOpen } from 'lucide-react';
+import { Button, ButtonLink } from '../components/ui/Button';
+import { PageHeader } from '../components/layout/PageHeader';
+import { gameJsonLd } from '../seo/head';
+import { getRouteMeta } from '../seo/routes';
+import { Flame, Trophy, Share2, Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const DAILY_DESC = getRouteMeta('/daily-color-challenge')!.description;
 
 export const DailyChallengePage: React.FC = () => {
   const { todayStr, isCompletedToday, dailyResult, engine } = useDailyChallenge();
@@ -52,148 +57,71 @@ export const DailyChallengePage: React.FC = () => {
     }
   };
 
-  const dailyKeywords = [
-    'daily color challenge',
-    'daily color game',
-    'daily color puzzle',
-    'color acuity test today',
-    'daily visual perception game',
-    'wordle for colors',
-    'daily color guessing',
-  ];
-
-  const dailyStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: `Daily Color Challenge - ${formattedDate}`,
-    description: "Play today's official Daily Color Challenge. 10 deterministic seeded rounds generated fresh daily at midnight for players worldwide.",
-    url: 'https://colorwise.netlify.app/daily-color-challenge',
-    applicationCategory: 'GameApplication',
-    operatingSystem: 'Any',
-    genre: ['Puzzle', 'Daily Challenge', 'Trivia', 'Color Theory'],
-    isAccessibleForFree: true,
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    author: {
-      '@type': 'Person',
-      name: 'Shoaib Arif',
-      url: 'https://shoaibarif.vercel.app/',
-    },
-  };
-
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
-      <SeoMeta
-        title={`Daily Color Challenge - ${formattedDate}`}
-        description="Play today's official Daily Color Challenge. 10 seeded rounds generated fresh daily for players worldwide."
-        canonicalPath="/daily-color-challenge"
-        keywords={dailyKeywords}
-        structuredData={dailyStructuredData}
-      />
+    <div className="mx-auto max-w-2xl">
+      <SeoMeta canonicalPath="/daily-color-challenge" structuredData={gameJsonLd('/daily-color-challenge', 'Daily Color Challenge', DAILY_DESC)} />
 
-      {/* Header Banner */}
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-full text-xs font-bold border border-amber-500/20">
-          <Calendar className="w-3.5 h-3.5" />
-          <span>{formattedDate}</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-          Daily Color Challenge
-        </h1>
-
-        <div className="flex items-center justify-center gap-4 text-xs font-bold text-slate-500">
-          <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-extrabold">
-            <Flame className="w-4 h-4 fill-current" />
-            <span>{stats.dailyStreak} Day Streak</span>
+      <PageHeader title="Daily color challenge" intro={formattedDate}>
+        <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-zinc-600 dark:text-zinc-400">
+          <span className="inline-flex items-center gap-1.5">
+            <Flame className="h-4 w-4 text-amber-500" aria-hidden="true" />
+            {stats.dailyStreak}-day streak
           </span>
-          <span>•</span>
-          <span>10 Colors • One Attempt Per Day</span>
-        </div>
-      </div>
+          <span>10 rounds · one attempt per day</span>
+        </p>
+      </PageHeader>
 
-      {/* Daily Challenge Card */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-4 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-xl">
+      <div className="card p-4 shadow-card sm:p-6">
         {isCompletedToday && dailyResult ? (
-          /* Already Completed State */
-          <div className="space-y-6 text-center py-6">
-            <div className="w-20 h-20 bg-amber-100 dark:bg-amber-950/60 rounded-full flex items-center justify-center text-amber-500 mx-auto ring-8 ring-amber-500/10">
-              <Trophy className="w-10 h-10" />
-            </div>
+          <div className="py-6 text-center">
+            <Trophy className="mx-auto h-10 w-10 text-amber-500" aria-hidden="true" />
+            <p className="mt-4 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+              You’ve finished today’s challenge
+            </p>
+            <p className="mt-1 text-3xl font-semibold tabular-nums">{formatScore(dailyResult.score)} points</p>
 
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                Today's Challenge Completed!
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
-                Score: {formatScore(dailyResult.score)}
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <dl className="mx-auto mt-6 grid max-w-sm grid-cols-2 divide-x divide-zinc-200 rounded-xl border border-zinc-200 py-4 dark:divide-zinc-800 dark:border-zinc-800">
               <div>
-                <span className="text-[10px] font-bold uppercase text-slate-400">Accuracy</span>
-                <p className="font-mono text-xl font-bold text-slate-900 dark:text-white">
-                  {dailyResult.accuracy}%
-                </p>
-                <span className="text-[11px] text-slate-500">
-                  {dailyResult.correctAnswers} / {dailyResult.totalRounds} Correct
-                </span>
+                <dt className="text-xs text-zinc-500">Accuracy</dt>
+                <dd className="mt-1 text-xl font-semibold tabular-nums">{dailyResult.accuracy}%</dd>
+                <dd className="text-xs text-zinc-500">
+                  {dailyResult.correctAnswers} of {dailyResult.totalRounds} correct
+                </dd>
               </div>
-              <div className="border-l border-slate-200 dark:border-slate-700">
-                <span className="text-[10px] font-bold uppercase text-slate-400">Daily Streak</span>
-                <p className="font-mono text-xl font-bold text-amber-600 dark:text-amber-400">
-                  🔥 {stats.dailyStreak}
-                </p>
-                <span className="text-[11px] text-slate-500">
-                  Best: {stats.longestDailyStreak} Days
-                </span>
+              <div>
+                <dt className="text-xs text-zinc-500">Daily streak</dt>
+                <dd className="mt-1 text-xl font-semibold tabular-nums">{stats.dailyStreak}</dd>
+                <dd className="text-xs text-zinc-500">Best: {stats.longestDailyStreak} days</dd>
               </div>
-            </div>
+            </dl>
 
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Come back tomorrow at midnight for a brand new seeded puzzle. In the meantime, try endless and survival modes!
+            <p className="mx-auto mt-6 max-w-sm text-sm text-zinc-600 dark:text-zinc-400">
+              A new challenge unlocks at midnight. Until then, try another mode.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-              <Button onClick={handleShare} variant="secondary" size="md" className="w-full sm:w-auto gap-2">
-                {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
-                <span>{copied ? 'Result Copied!' : 'Share Score'}</span>
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button onClick={handleShare} variant="secondary" className="w-full sm:w-auto">
+                {copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Share2 className="h-4 w-4" />}
+                {copied ? 'Copied to clipboard' : 'Share your score'}
               </Button>
-              <Link to="/color-guessing-game" className="w-full sm:w-auto">
-                <Button variant="primary" size="md" className="w-full sm:w-auto gap-2">
-                  <span>Play Other Modes</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+              <ButtonLink to="/color-guessing-game" className="w-full sm:w-auto">
+                Play other modes
+                <ArrowRight className="h-4 w-4" />
+              </ButtonLink>
             </div>
           </div>
         ) : (
-          /* Active Playing State */
           <div className="space-y-4">
-            <div className="flex justify-between items-center mb-2">
-              <ScoreDisplay
-                score={engine.score}
-                roundNumber={engine.roundNumber}
-                totalRounds={10}
-                format="daily"
-              />
-              <span className="text-xs font-mono font-bold text-slate-400">
-                Daily Mode
-              </span>
-            </div>
+            <ScoreDisplay score={engine.score} roundNumber={engine.roundNumber} totalRounds={10} format="daily" />
 
             <TargetColor
               hex={engine.targetHex}
               showCode={settings.showColorCodes === 'always'}
-              helperText={`Question ${engine.roundNumber} of 10`}
+              helperText={`Round ${engine.roundNumber} of 10`}
               roundStatus={engine.roundStatus}
             />
 
-            <div className="grid grid-cols-2 gap-3 max-w-md mx-auto my-4">
+            <div className="mx-auto my-4 grid max-w-md grid-cols-2 gap-3">
               {engine.choices.map((c, idx) => (
                 <ColorChoice
                   key={c.id}
@@ -219,73 +147,22 @@ export const DailyChallengePage: React.FC = () => {
         )}
       </div>
 
-      {/* Daily Challenge Rules & Educational Guide */}
-      <section
-        aria-labelledby="daily-challenge-guide"
-        className="bg-white dark:bg-slate-800/90 rounded-3xl p-5 sm:p-7 border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-5"
-      >
-        <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-700/60">
-          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
-            <Calendar className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 id="daily-challenge-guide" className="text-base font-black text-slate-900 dark:text-white">
-              About the Daily Color Challenge
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              10 seeded rounds generated fresh daily with deterministic global equality
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Deterministic Seed</span>
-            </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              The questions for each day are generated using a cryptographically uniform pseudorandom seed (<code className="font-mono text-[10px] bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded">{todayStr}</code>). Every player across the globe sees the exact same sequence.
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              <Flame className="w-4 h-4" />
-              <span>Career Streaks</span>
-            </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Complete each day's challenge to extend your daily streak. Missing a day resets the counter. All records are persisted securely in your browser's LocalStorage.
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-sky-600 dark:text-sky-400">
-              <Zap className="w-4 h-4" />
-              <span>Midnight UTC Reset</span>
-            </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              A fresh seeded challenge unlocks automatically every night at 00:00 local midnight. You get one official tracked attempt per calendar day.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between text-xs pt-1">
-          <Link
-            to="/how-to-play"
-            className="inline-flex items-center gap-1.5 font-bold text-brand-600 dark:text-brand-400 hover:underline cursor-pointer"
-          >
-            <BookOpen className="w-4 h-4" />
-            <span>How to Play & Scoring Breakdown</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-          <Link
-            to="/color-guessing-game"
-            className="inline-flex items-center gap-1.5 font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
-          >
-            <span>Play Unlimited Exact Match</span>
-          </Link>
-        </div>
+      <section aria-labelledby="daily-about" className="prose-page mt-12">
+        <h2 id="daily-about">How the daily challenge works</h2>
+        <p>
+          Each day’s ten rounds are generated from the date itself (today’s key is{' '}
+          <code>{todayStr}</code>), so everyone who plays on the same day sees the same colors in the
+          same order. That makes scores directly comparable — share yours with friends.
+        </p>
+        <p>
+          You get one attempt per day, and a new challenge unlocks at midnight in your time zone.
+          Finish the challenge on consecutive days to build your streak; missing a day resets it.
+          Streaks and results are saved in your browser.
+        </p>
+        <p>
+          New here? Read <Link to="/how-to-play">how scoring works</Link>, or warm up with the{' '}
+          <Link to="/color-guessing-game">unlimited color guessing game</Link>.
+        </p>
       </section>
     </div>
   );

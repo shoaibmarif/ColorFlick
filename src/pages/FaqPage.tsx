@@ -1,9 +1,9 @@
 import React from 'react';
 import { SeoMeta } from '../components/ui/SeoMeta';
+import { PageHeader } from '../components/layout/PageHeader';
 import { FAQ_ITEMS } from '../data/faqData';
-import { HelpCircle, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Button } from '../components/ui/Button';
+import { ChevronDown } from 'lucide-react';
+import { ButtonLink } from '../components/ui/Button';
 
 export const FaqPage: React.FC = () => {
   const faqSchema = {
@@ -21,37 +21,22 @@ export const FaqPage: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
-      <SeoMeta
-        title="Frequently Asked Questions - Color Guessing Game FAQ"
-        description="Find answers to all frequently asked questions about Color Guessing Game rules, RGB vs HEX, scoring, privacy, and accessibility."
-        canonicalPath="/color-guessing-game-faq"
-        structuredData={faqSchema}
-      />
+      <SeoMeta canonicalPath="/faq" structuredData={faqSchema} />
 
-      <div className="space-y-3 text-center max-w-xl mx-auto">
-        <div className="w-12 h-12 bg-brand-100 dark:bg-brand-950/60 rounded-2xl flex items-center justify-center text-brand-600 dark:text-brand-400 mx-auto">
-          <HelpCircle className="w-6 h-6" />
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-          Frequently Asked Questions
-        </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
-          Everything you need to know about gameplay rules, scoring mathematics, privacy, and color science.
-        </p>
-      </div>
+      <PageHeader title="Frequently asked questions" intro="Answers about the game, scoring, privacy and color." />
 
       {/* Accordion FAQ items */}
       <div className="space-y-3">
         {FAQ_ITEMS.map((item, idx) => (
           <details
             key={idx}
-            className="group p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs transition-colors cursor-pointer"
+            className="group p-5 bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-card transition-colors cursor-pointer"
           >
-            <summary className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white list-none flex justify-between items-center gap-3">
+            <summary className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-white list-none flex justify-between items-center gap-3">
               <span>{item.question}</span>
-              <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform flex-shrink-0" />
+              <ChevronDown className="w-4 h-4 text-zinc-400 group-open:rotate-180 transition-transform flex-shrink-0" />
             </summary>
-            <p className="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-700/60 pt-3">
+            <p className="mt-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-zinc-100 dark:border-zinc-700/60 pt-3">
               {item.answer}
             </p>
           </details>
@@ -59,11 +44,9 @@ export const FaqPage: React.FC = () => {
       </div>
 
       <div className="text-center pt-6">
-        <Link to="/color-guessing-game">
-          <Button variant="primary" size="lg">
+        <ButtonLink to="/color-guessing-game" variant="primary" size="lg">
             Ready to Play? Start Now
-          </Button>
-        </Link>
+          </ButtonLink>
       </div>
     </div>
   );

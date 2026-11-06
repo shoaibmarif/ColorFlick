@@ -2,80 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>ColorWise - Precision Color Guessing Game & Palette Challenge</title>
-    <meta
-      name="description"
-      content="ColorWise is a precision color guessing game and visual challenge platform featuring RGB, HEX, HSL matching, OKLab color distance, timed sprints, and daily challenges."
-    />
-    <link rel="canonical" href="https://colorwise.netlify.app/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!--seo-head-->
+    <meta name="application-name" content="ColorFlick" />
+    <meta name="apple-mobile-web-app-title" content="ColorFlick" />
+    <meta name="author" content="Shoaib Arif" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#8b5cf6" />
-    
-    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    
-    <!-- Open Graph Metadata -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="ColorWise" />
-    <meta property="og:title" content="ColorWise - Precision Color Guessing Game & Palette Challenge" />
-    <meta
-      property="og:description"
-      content="ColorWise is a precision color guessing game and visual challenge platform featuring RGB, HEX, HSL matching, OKLab color distance, timed sprints, and daily challenges."
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
-    <meta property="og:url" content="https://colorwise.netlify.app/" />
-    <meta property="og:image" content="https://colorwise.netlify.app/favicon.svg" />
 
-    <!-- Twitter Card Metadata -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="ColorWise - Precision Color Guessing Game & Palette Challenge" />
-    <meta
-      name="twitter:description"
-      content="ColorWise is a precision color guessing game and visual challenge platform featuring RGB, HEX, HSL matching, OKLab color distance, timed sprints, and daily challenges."
-    />
-    <meta name="twitter:image" content="https://colorwise.netlify.app/favicon.svg" />
-
-    <!-- Structured Data (WebApplication) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "ColorWise",
-      "url": "https://colorwise.netlify.app/",
-      "description": "ColorWise is a precision color guessing game and visual challenge platform featuring RGB, HEX, HSL matching, OKLab color distance, timed sprints, and daily challenges.",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "All",
-      "browserRequirements": "Requires JavaScript. Requires HTML5.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-    </script>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5E2CW60GBT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5E2CW60GBT');
-</script>
-  </head>
-  <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased min-h-screen">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-
-    <!-- Safe Service Worker Registration -->
+    <!-- Apply the saved theme before first paint to avoid a light/dark flash. -->
     <script>
-      if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {});
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem('colorGuessing.settings') || '{}');
+          var t = s.theme || 'system';
+          if (t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5E2CW60GBT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-5E2CW60GBT');
+    </script>
+  </head>
+  <body>
+    <div id="root"><!--seo-body--></div>
+    <noscript>
+      <p style="max-width: 40rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif">
+        ColorFlick is an interactive game and needs JavaScript to play. Please enable JavaScript in your browser.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function () {});
         });
       }
     </script>

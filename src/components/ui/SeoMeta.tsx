@@ -1,101 +1,84 @@
 import React, { useEffect } from 'react';
+import { getRouteMeta } from '../../seo/routes';
+import { buildHead, JsonLd } from '../../seo/head';
+import { SITE } from '../../seo/site';
 
 interface SeoMetaProps {
-  title: string;
-  description: string;
+  /** Path of the canonical URL. Title/description come from src/seo/routes.ts. */
   canonicalPath: string;
-  keywords?: string[];
-  structuredData?: Record<string, unknown>;
+  /** Overrides — only needed for pages that are not in the route registry. */
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  structuredData?: JsonLd | JsonLd[];
 }
 
+/**
+ * Keeps <head> in sync with the current page during client-side navigation.
+ * The same tags are written into static HTML at build time (see vite.config.ts),
+ * so crawlers and link previews get them without running JavaScript.
+ */
 export const SeoMeta: React.FC<SeoMetaProps> = ({
+  canonicalPath,
   title,
   description,
-  canonicalPath,
-  keywords,
+  noindex,
   structuredData,
 }) => {
+  const json = JSON.stringify(structuredData ?? null);
+
   useEffect(() => {
-    // Update Title
-    document.title = title;
+    const registered = getRouteMeta(canonicalPath);
+    const extra = structuredData
+      ? Array.isArray(structuredData)
+        ? structuredData
+        : [structuredData]
+      : [];
+    const head = buildHead(
+      {
+        path: canonicalPath,
+        title: title ?? registered?.title ?? SITE.name,
+        description: description ?? registered?.description ?? SITE.defaultDescription,
+        noindex: noindex ?? registered?.noindex,
+      },
+      extra
+    );
 
-    // Update Meta Description
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
+    document.title = head.title;
+
+    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!registered && (noindex ?? false)) {
+      // Error/utility pages should not advertise a canonical URL.
+      canonical?.remove();
+      canonical = null;
+    } else if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
     }
-    metaDesc.setAttribute('content', description);
+    if (canonical) canonical.href = head.canonical;
 
-    // Update Meta Keywords
-    if (keywords && keywords.length > 0) {
-      let metaKw = document.querySelector('meta[name="keywords"]');
-      if (!metaKw) {
-        metaKw = document.createElement('meta');
-        metaKw.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKw);
-      }
-      metaKw.setAttribute('content', keywords.join(', '));
-    }
-
-    // Update Canonical Link
-    const baseUrl = 'https://colorwise.netlify.app';
-    const fullCanonicalUrl = `${baseUrl}${canonicalPath}`;
-
-    let linkCanonical = document.querySelector('link[rel="canonical"]');
-    if (!linkCanonical) {
-      linkCanonical = document.createElement('link');
-      linkCanonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(linkCanonical);
-    }
-    linkCanonical.setAttribute('href', fullCanonicalUrl);
-
-    // Open Graph updates
-    const setMetaTag = (property: string, content: string) => {
-      let tag = document.querySelector(`meta[property="${property}"]`);
+    for (const m of head.meta) {
+      let tag = document.head.querySelector<HTMLMetaElement>(`meta[${m.key}="${m.id}"]`);
       if (!tag) {
         tag = document.createElement('meta');
-        tag.setAttribute('property', property);
+        tag.setAttribute(m.key, m.id);
         document.head.appendChild(tag);
       }
-      tag.setAttribute('content', content);
-    };
-
-    setMetaTag('og:title', title);
-    setMetaTag('og:description', description);
-    setMetaTag('og:url', fullCanonicalUrl);
-    setMetaTag('og:type', 'website');
-    setMetaTag('og:image', `${baseUrl}/favicon.svg`);
-
-    // Twitter Card
-    const setTwitterTag = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('name', name);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-
-    setTwitterTag('twitter:card', 'summary');
-    setTwitterTag('twitter:title', title);
-    setTwitterTag('twitter:description', description);
-    setTwitterTag('twitter:image', `${baseUrl}/favicon.svg`);
-
-    // Structured Data (JSON-LD)
-    if (structuredData) {
-      let script = document.getElementById('jsonld-schema');
-      if (!script) {
-        script = document.createElement('script');
-        script.id = 'jsonld-schema';
-        script.setAttribute('type', 'application/ld+json');
-        document.head.appendChild(script);
-      }
-      script.textContent = JSON.stringify(structuredData);
+      tag.content = m.content;
     }
-  }, [title, description, canonicalPath, keywords, structuredData]);
+
+    // Replace (not accumulate) structured data from the previous page.
+    document.head.querySelectorAll('script[data-seo]').forEach((el) => el.remove());
+    for (const block of head.jsonLd) {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.dataset.seo = '';
+      script.textContent = JSON.stringify(block);
+      document.head.appendChild(script);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canonicalPath, title, description, noindex, json]);
 
   return null;
 };

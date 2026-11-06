@@ -151,7 +151,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       {/* Format-Specific Configuration Sub-Bar */}
       {engine.format === 'timed' && engine.roundStatus === 'guessing' && engine.roundNumber === 1 && (
         <div className="flex items-center gap-2 mb-3 bg-sky-50 dark:bg-sky-950/40 px-3.5 py-1.5 rounded-full border border-sky-200 dark:border-sky-800 text-xs">
-          <span className="font-bold text-sky-700 dark:text-sky-300">Sprint Duration:</span>
+          <span className="font-semibold text-sky-700 dark:text-sky-300">Sprint Duration:</span>
           {[30, 60, 120].map((sec) => (
             <button
               key={sec}
@@ -161,9 +161,9 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                 timer.reset(sec);
                 timer.start();
               }}
-              className={`px-2 py-0.5 rounded-md font-bold transition-all ${
+              className={`px-2 py-0.5 rounded-md font-semibold transition-all ${
                 timedDuration === sec
-                  ? 'bg-sky-600 text-white shadow-xs'
+                  ? 'bg-sky-600 text-white shadow-card'
                   : 'text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/50'
               }`}
             >
@@ -175,7 +175,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
       {engine.format === 'quick-challenge' && engine.roundStatus === 'guessing' && engine.roundNumber === 1 && (
         <div className="flex items-center gap-2 mb-3 bg-amber-50 dark:bg-amber-950/40 px-3.5 py-1.5 rounded-full border border-amber-200 dark:border-amber-800 text-xs">
-          <span className="font-bold text-amber-700 dark:text-amber-300">Challenge Length:</span>
+          <span className="font-semibold text-amber-700 dark:text-amber-300">Challenge Length:</span>
           {[5, 10, 20].map((rounds) => (
             <button
               key={rounds}
@@ -184,9 +184,9 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                 setQuickRoundsCount(rounds);
                 engine.setTargetRoundsCount(rounds);
               }}
-              className={`px-2 py-0.5 rounded-md font-bold transition-all ${
+              className={`px-2 py-0.5 rounded-md font-semibold transition-all ${
                 quickRoundsCount === rounds
-                  ? 'bg-amber-600 text-white shadow-xs'
+                  ? 'bg-amber-600 text-white shadow-card'
                   : 'text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50'
               }`}
             >
@@ -211,8 +211,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
         {/* Combo / Special Event Badge */}
         {engine.comboBanner && (
-          <div className="text-center animate-bounce">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 rounded-full text-xs font-black border border-amber-300 dark:border-amber-700 shadow-sm">
+          <div className="text-center">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 rounded-full text-xs font-semibold border border-amber-300 dark:border-amber-700 shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{engine.comboBanner}</span>
             </span>
@@ -320,7 +320,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
       {/* Educational Explanation Box (Warm-Cool / Light-Dark / Color theory) */}
       {engine.lastResult && engine.roundStatus === 'answered' && engine.lastResult.explanation && (
-        <div className="max-w-md w-full my-2 p-3.5 bg-blue-50/70 dark:bg-blue-950/40 rounded-2xl border border-blue-200 dark:border-blue-800 text-xs text-blue-900 dark:text-blue-200 flex items-start gap-2.5 shadow-xs">
+        <div className="max-w-md w-full my-2 p-3.5 bg-blue-50/70 dark:bg-blue-950/40 rounded-2xl border border-blue-200 dark:border-blue-800 text-xs text-blue-900 dark:text-blue-200 flex items-start gap-2.5 shadow-card">
           <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
           <p className="leading-relaxed">{engine.lastResult.explanation}</p>
         </div>

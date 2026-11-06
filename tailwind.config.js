@@ -1,63 +1,50 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
+      screens: {
+        xs: '420px',
+      },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       colors: {
+        // A single, quiet accent. The UI itself stays neutral (zinc) so it
+        // never competes with — or tints the perception of — the swatches.
         brand: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
-          800: '#5b21b6',
-          900: '#4c1d95',
-          950: '#2e1065',
+          50: '#eef3ff',
+          100: '#dce6fe',
+          200: '#bfd2fe',
+          300: '#93b3fd',
+          400: '#608bf9',
+          500: '#3b66f5',
+          600: '#2549ea',
+          700: '#1d38d7',
+          800: '#1e30ae',
+          900: '#1e2f89',
+          950: '#171f53',
         },
       },
       boxShadow: {
-        'glow-brand': '0 0 30px -5px rgba(139, 92, 246, 0.35)',
-        'glow-emerald': '0 0 30px -5px rgba(16, 185, 129, 0.35)',
-        'glow-rose': '0 0 30px -5px rgba(244, 63, 94, 0.35)',
-        'glow-amber': '0 0 30px -5px rgba(245, 158, 11, 0.35)',
-        'glow-sky': '0 0 30px -5px rgba(14, 165, 233, 0.35)',
-        'tactile': '0 4px 0 0 rgba(0, 0, 0, 0.15)',
-        'tactile-pressed': '0 1px 0 0 rgba(0, 0, 0, 0.15)',
+        card: '0 1px 2px 0 rgb(0 0 0 / 0.04), 0 1px 3px 0 rgb(0 0 0 / 0.04)',
+        pop: '0 10px 30px -10px rgb(0 0 0 / 0.25)',
       },
       animation: {
-        'pop': 'pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-        'shake': 'shake 0.4s ease-in-out',
-        'pulse-subtle': 'pulseSubtle 2.5s infinite ease-in-out',
-        'float': 'float 4s ease-in-out infinite',
+        pop: 'pop 0.2s ease-out',
+        shake: 'shake 0.35s ease-in-out',
       },
       keyframes: {
         pop: {
-          '0%': { transform: 'scale(0.92)', opacity: '0.8' },
+          '0%': { transform: 'scale(0.96)', opacity: '0.6' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
         shake: {
           '0%, 100%': { transform: 'translateX(0)' },
-          '20%, 60%': { transform: 'translateX(-4px)' },
-          '40%, 80%': { transform: 'translateX(4px)' },
-        },
-        pulseSubtle: {
-          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-          '50%': { opacity: '0.9', transform: 'scale(0.99)' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-6px)' },
+          '25%, 75%': { transform: 'translateX(-3px)' },
+          '50%': { transform: 'translateX(3px)' },
         },
       },
     },

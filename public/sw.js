@@ -1,7 +1,7 @@
-// Minimal safe Service Worker for Color Guessing Game
+// Minimal service worker for ColorFlick
 // Strictly avoids caching HTML, sitemap, robots, and manifest to prevent stale versions
 
-const CACHE_NAME = 'color-guessing-game-v1';
+const CACHE_NAME = 'colorflick-v2';
 const STATIC_ASSETS = [
   '/',
   '/favicon.svg',

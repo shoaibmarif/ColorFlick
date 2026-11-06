@@ -18,7 +18,7 @@ export const RoundFeedback: React.FC<RoundFeedbackProps> = ({
     <div
       role="status"
       aria-live="polite"
-      className={`w-full max-w-md mx-auto my-3 p-4 rounded-2xl border shadow-lg animate-pop transition-all ${
+      className={`w-full max-w-md mx-auto my-3 p-4 rounded-2xl border shadow-sm animate-pop transition-all ${
         result.isCorrect
           ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100'
           : 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-100'
@@ -34,11 +34,11 @@ export const RoundFeedback: React.FC<RoundFeedbackProps> = ({
 
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base">
+              <span className="font-semibold text-base">
                 {result.isCorrect ? 'Correct!' : 'Not quite!'}
               </span>
               {result.isCorrect && (
-                <span className="bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 font-mono text-xs font-bold px-2 py-0.5 rounded-md">
+                <span className="bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 font-mono text-xs font-semibold px-2 py-0.5 rounded-md">
                   +{result.scoreEarned} pts
                 </span>
               )}
@@ -46,13 +46,13 @@ export const RoundFeedback: React.FC<RoundFeedbackProps> = ({
 
             {/* Detailed comparison if available */}
             {result.differencePercentage !== undefined ? (
-              <p className="text-xs text-slate-600 dark:text-slate-300">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">
                 Perceptual difference: <strong>{result.differencePercentage.toFixed(1)}%</strong>
               </p>
             ) : !result.isCorrect ? (
-              <div className="text-xs space-y-0.5 text-slate-600 dark:text-slate-300">
+              <div className="text-xs space-y-0.5 text-zinc-600 dark:text-zinc-300">
                 <p>
-                  Target was: <span className="font-mono font-bold">{result.targetCategory || result.targetHex}</span>
+                  Target was: <span className="font-mono font-semibold">{result.targetCategory || result.targetHex}</span>
                 </p>
                 {result.playerAnswerLabel && (
                   <p>

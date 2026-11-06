@@ -17,15 +17,15 @@ export const ColorComparison: React.FC<ColorComparisonProps> = ({
   const playerTextColor = getOptimalTextColor(playerHex);
 
   return (
-    <div className="w-full bg-slate-100 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+    <div className="w-full bg-zinc-100 dark:bg-zinc-800/80 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-inner">
       <div className="grid grid-cols-2 gap-3 mb-3">
         {/* Target Swatch */}
         <div>
-          <span className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">
+          <span className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 mb-1">
             Target
           </span>
           <div
-            className="w-full h-20 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-bold shadow-md ring-1 ring-black/10"
+            className="w-full h-20 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-semibold shadow-md ring-1 ring-black/10"
             style={{ backgroundColor: targetHex, color: targetTextColor }}
           >
             {targetHex}
@@ -34,11 +34,11 @@ export const ColorComparison: React.FC<ColorComparisonProps> = ({
 
         {/* Player Swatch */}
         <div>
-          <span className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">
+          <span className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 mb-1">
             Your Color
           </span>
           <div
-            className="w-full h-20 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-bold shadow-md ring-1 ring-black/10"
+            className="w-full h-20 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-semibold shadow-md ring-1 ring-black/10"
             style={{ backgroundColor: playerHex, color: playerTextColor }}
           >
             {playerHex}
@@ -48,17 +48,17 @@ export const ColorComparison: React.FC<ColorComparisonProps> = ({
 
       {/* Accuracy & Difference Stats */}
       <div className="space-y-1.5">
-        <div className="flex justify-between text-xs font-bold">
-          <span className="text-slate-600 dark:text-slate-300">
+        <div className="flex justify-between text-xs font-semibold">
+          <span className="text-zinc-600 dark:text-zinc-300">
             Perceptual Match: <span className="text-brand-600 dark:text-brand-400">{similarity}%</span>
           </span>
-          <span className="text-slate-500 dark:text-slate-400">
+          <span className="text-zinc-500 dark:text-zinc-400">
             Difference: {differencePercentage.toFixed(1)}%
           </span>
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div className="w-full h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-500 rounded-full ${
               similarity >= 90

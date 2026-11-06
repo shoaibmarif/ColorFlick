@@ -25,7 +25,7 @@ export const ColorSwatch: React.FC<ColorSwatchProps> = ({
     sm: 'w-10 h-10 rounded-lg',
     md: 'w-16 h-16 rounded-xl',
     lg: 'w-24 h-24 rounded-2xl',
-    xl: 'w-full h-36 sm:h-48 rounded-3xl',
+    xl: 'w-full h-36 sm:h-48 rounded-2xl',
   };
 
   const patternStyle = accessiblePattern
@@ -48,8 +48,8 @@ export const ColorSwatch: React.FC<ColorSwatchProps> = ({
       className={`relative flex items-center justify-center transition-all duration-200 ${
         sizeClasses[size]
       } ${
-        showBorder ? 'ring-1 ring-black/10 dark:ring-white/10 shadow-sm' : ''
-      } ${onClick ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]' : ''} ${className}`}
+        showBorder ? 'ring-1 ring-black/10 dark:ring-white/10' : ''
+      } ${onClick ? 'cursor-pointer' : ''} ${className}`}
     >
       {children}
     </div>
