@@ -6,6 +6,7 @@ import { GameModeDescription } from '../components/game/GameModeDescription';
 import { GameMode, GameFormat, Difficulty } from '../types/game';
 import { useSettings } from '../hooks/useSettings';
 import { PageHeader } from '../components/layout/PageHeader';
+import { Onboarding } from '../components/game/Onboarding';
 import { getRouteMeta } from '../seo/routes';
 import { gameJsonLd } from '../seo/head';
 
@@ -75,6 +76,8 @@ export const GameArena: React.FC<GameArenaProps> = ({
       />
 
       <PageHeader title={routeMeta?.heading ?? 'Color guessing game'} intro={pageDesc} />
+
+      <Onboarding />
 
       <div className="card p-4 shadow-card sm:p-6">
         <GameBoard

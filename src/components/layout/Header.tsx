@@ -119,7 +119,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
               </div>
             );
           })}
-          <NavLink to="/daily-color-challenge" className={topLink}>
+          <NavLink to="/daily-color-challenge" className={(a) => `${topLink(a)} inline-flex items-center gap-1.5`}>
+            <span className="h-2 w-2 rounded-full bg-coral-500" aria-hidden="true" />
             Daily
           </NavLink>
         </nav>

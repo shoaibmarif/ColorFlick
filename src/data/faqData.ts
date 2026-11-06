@@ -1,3 +1,6 @@
+import { SCORING_SUMMARY } from './modeGuides';
+import { SCORING } from '../utils/scoring';
+
 export interface FaqItem {
   question: string;
   answer: string;
@@ -17,12 +20,11 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: 'How does the daily challenge work?',
     answer:
-      'Every day at midnight (your local time) a new set of ten rounds is generated from the date, so everyone playing on the same day gets the same colors. You can play it once per day, and your daily streak grows each day you finish it.',
+      'Every day at midnight (your local time) a new set of ten rounds is generated from the date, so everyone playing on the same day gets the same colors. Your daily streak grows each day you finish it, and you can share your result as a spoiler-free grid of squares. Missed a day? Replay the last five weeks from the calendar — replays just don’t count toward your streak.',
   },
   {
     question: 'How is my score calculated?',
-    answer:
-      'Each correct answer earns 100 base points, multiplied by the difficulty (Easy ×1, Medium ×1.25, Hard ×1.5, Expert ×2). Fast answers add a speed bonus of up to 100 points, and consecutive correct answers build a streak multiplier of up to ×2. In slider and picker modes, points scale with how close your color is.',
+    answer: `Each correct answer is worth ${SCORING_SUMMARY.map((x) => x.replace(/\.$/, '')).join('; ').replace(/^\d+ points for every correct answer; /, `${SCORING.base} points, plus `)}.`,
   },
   {
     question: 'How do you decide how close two colors are?',
@@ -53,5 +55,10 @@ export const FAQ_ITEMS: FaqItem[] = [
     question: 'Why might a color look different on another screen?',
     answer:
       'Screens vary in calibration, brightness and features such as Night Shift or True Tone, and room lighting changes how we see color too. Scoring is based on the color values themselves, so results are consistent, but for the fairest game turn off blue-light filters.',
+  },
+  {
+    question: 'Is ColorFlick open source?',
+    answer:
+      'Yes. The code is public at github.com/shoaibmarif/colorflick. Bug reports, ideas for new modes and pull requests are all welcome.',
   },
 ];

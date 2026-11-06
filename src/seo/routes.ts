@@ -376,10 +376,10 @@ export const ROUTES: RouteMeta[] = [
   }),
   r({
     path: '/terms',
-    title: 'Terms of Use',
+    title: 'Terms and Conditions',
     description: 'The terms that apply when you use ColorFlick.',
     label: 'Terms',
-    heading: 'Terms of use',
+    heading: 'Terms and conditions',
     changefreq: 'yearly',
     priority: 0.3,
     parent: '/',

@@ -1,4 +1,5 @@
 import { SITE } from '../seo/site';
+import { trackEvent } from './analytics';
 
 export interface ShareResultOptions {
   modeName: string;
@@ -8,43 +9,55 @@ export interface ShareResultOptions {
   roundCount: number;
 }
 
-export async function shareGameResult(
-  opts: ShareResultOptions
-): Promise<{ success: boolean; method: 'share' | 'clipboard' | 'failed' }> {
-  const url = `${SITE.url}/`;
+/** Shares the result of a regular (non-daily) game. */
+export async function shareGameResult(opts: ShareResultOptions) {
   const text = [
     `${SITE.name} — ${opts.modeName}`,
-    `Score: ${opts.score.toLocaleString()}`,
-    `Accuracy: ${opts.accuracy}% (${opts.roundCount} rounds)`,
-    `Best streak: ${opts.bestStreak}`,
-    ``,
-    `Can you beat it?`,
-  ].join('\n');
+    `${opts.score.toLocaleString()} points · ${opts.accuracy}% accuracy over ${opts.roundCount} rounds`,
+    opts.bestStreak > 1 ? `Best streak: ${opts.bestStreak}` : '',
+    'Can you beat it?',
+  ]
+    .filter(Boolean)
+    .join('\n');
+  return shareText(text, `${SITE.url}/`, `My ${SITE.name} score`);
+}
 
+/** Emoji grid for a finished daily challenge, e.g. 🟩🟩🟥🟩… — no spoilers. */
+export function dailyShareText(opts: {
+  dateLabel: string;
+  results: boolean[];
+  score: number;
+  streak?: number;
+}): string {
+  const grid = opts.results.map((ok) => (ok ? '🟩' : '🟥')).join('');
+  const correct = opts.results.filter(Boolean).length;
+  return [
+    `${SITE.name} daily · ${opts.dateLabel}`,
+    `${grid} ${correct}/${opts.results.length}`,
+    `${opts.score.toLocaleString()} points${opts.streak && opts.streak > 1 ? ` · ${opts.streak}-day streak` : ''}`,
+  ].join('\n');
+}
+
+/** Shares text + link with the native share sheet, falling back to the clipboard. */
+export async function shareText(
+  text: string,
+  url: string,
+  title: string = SITE.name
+): Promise<'share' | 'clipboard' | 'failed'> {
   if (typeof navigator !== 'undefined' && navigator.share) {
     try {
-      await navigator.share({
-        title: `My ${SITE.name} score`,
-        text,
-        url,
-      });
-      return { success: true, method: 'share' };
+      await navigator.share({ title, text, url });
+      trackEvent('result_shared', { method: 'share' });
+      return 'share';
     } catch (err) {
-      if ((err as Error).name === 'AbortError') {
-        return { success: false, method: 'failed' };
-      }
-      // fall through to clipboard
+      if ((err as Error).name === 'AbortError') return 'failed';
     }
   }
-
-  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-    try {
-      await navigator.clipboard.writeText(`${text}\n${url}`);
-      return { success: true, method: 'clipboard' };
-    } catch {
-      return { success: false, method: 'failed' };
-    }
+  try {
+    await navigator.clipboard.writeText(`${text}\n${url}`);
+    trackEvent('result_shared', { method: 'clipboard' });
+    return 'clipboard';
+  } catch {
+    return 'failed';
   }
-
-  return { success: false, method: 'failed' };
 }

@@ -4,7 +4,7 @@ import { PlayerStats } from '../types/stats';
 export const STORAGE_VERSION = 1;
 
 export const DEFAULT_SETTINGS: GameSettings = {
-  theme: 'system',
+  theme: 'light',
   soundEnabled: true,
   soundVolume: 0.6,
   reducedMotion: false,

@@ -1,0 +1,102 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/color-guessing-game-online",
+      "destination": "/color-guessing-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-game",
+      "destination": "/color-guessing-game",
+      "permanent": true
+    },
+    {
+      "source": "/guess-the-color",
+      "destination": "/color-guessing-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-challenge",
+      "destination": "/color-guessing-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-quiz",
+      "destination": "/color-guessing-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-test",
+      "destination": "/color-guessing-game",
+      "permanent": true
+    },
+    {
+      "source": "/rgb-color-guessing-game",
+      "destination": "/rgb-color-game",
+      "permanent": true
+    },
+    {
+      "source": "/hex-color-guessing-game",
+      "destination": "/hex-color-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-match-game",
+      "destination": "/color-matching-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-theory-quiz",
+      "destination": "/color-theory-game",
+      "permanent": true
+    },
+    {
+      "source": "/color-guessing-game-faq",
+      "destination": "/faq",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,6 @@
-import { RGB } from '../types/color';
+import { RGB, OKLab } from '../types/color';
 import { Difficulty, RoundChoice } from '../types/game';
-import { hslToRgb, rgbToHex, rgbToHsl, hexToRgb } from './colorConversion';
-import { oklabDistance } from './colorDistance';
+import { hslToRgb, rgbToHex, rgbToOklab, oklabToRgb } from './colorConversion';
 import { CURATED_NAMED_COLORS } from '../data/colorNames';
 
 export type RngFn = () => number;
@@ -38,42 +37,151 @@ export function generateRandomRgb(rng: RngFn = secureRandom): RGB {
 }
 
 /**
- * Difficulty distance thresholds in OKLab color space:
- * - minDistance: Minimum perceptual difference so choices aren't duplicates
- * - maxDistance: Maximum perceptual difference to keep choices challenging
- * - choiceCount: Number of choices presented
+ * Smallest OKLab difference most people can reliably see on a typical screen
+ * (a "just noticeable difference"). No two swatches in a round may be closer
+ * than this, otherwise a round becomes a coin flip.
  */
-interface DifficultyConfig {
+export const JND = 0.02;
+
+/**
+ * Single source of truth for difficulty. The game, the mode descriptions and
+ * the How-to-play page all read from here, so the numbers can't drift apart.
+ *
+ * Distances are OKLab ΔE (0 = identical, ~1 = black vs white).
+ */
+export interface DifficultyConfig {
+  /** Total swatches shown in "Exact color" mode (including the answer). */
   choiceCount: number;
+  /** Total swatches shown in "Closest color" mode. */
+  closestChoiceCount: number;
+  /** Every wrong swatch is at least this far from the target… */
   minDelta: number;
+  /** …and at most this far (except Easy, which uses unrelated colors). */
   maxDelta: number;
+  /** Every pair of wrong swatches is at least this far apart. */
+  minPairDelta: number;
+  /** "Closest color": distance band for the correct answer… */
+  closestBand: [number, number];
+  /** …and how much further every other swatch must be. */
+  closestMargin: number;
+  /** Plain-language summary used in the UI. */
+  summary: string;
 }
 
 export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
   easy: {
-    choiceCount: 4,
-    minDelta: 0.22,
-    maxDelta: 0.50,
+    choiceCount: 3,
+    closestChoiceCount: 3,
+    minDelta: 0.25,
+    maxDelta: 0.9,
+    minPairDelta: 0.15,
+    closestBand: [0.04, 0.1],
+    closestMargin: 0.2,
+    summary: 'Three clearly different colors.',
   },
   medium: {
     choiceCount: 6,
-    minDelta: 0.12,
-    maxDelta: 0.25,
+    closestChoiceCount: 4,
+    minDelta: 0.1,
+    maxDelta: 0.2,
+    minPairDelta: 0.06,
+    closestBand: [0.04, 0.1],
+    closestMargin: 0.12,
+    summary: 'Six colors from the same family.',
   },
   hard: {
     choiceCount: 8,
-    minDelta: 0.06,
-    maxDelta: 0.14,
+    closestChoiceCount: 5,
+    minDelta: 0.05,
+    maxDelta: 0.1,
+    minPairDelta: 0.035,
+    closestBand: [0.035, 0.09],
+    closestMargin: 0.07,
+    summary: 'Eight close shades that differ slightly in hue or lightness.',
   },
   expert: {
     choiceCount: 9,
-    minDelta: 0.025,
-    maxDelta: 0.06,
+    closestChoiceCount: 5,
+    minDelta: 0.03,
+    maxDelta: 0.055,
+    minPairDelta: 0.025,
+    closestBand: [0.03, 0.07],
+    closestMargin: 0.04,
+    summary: 'Nine near-identical shades, just above what the eye can tell apart.',
   },
 };
 
+const labDistance = (a: OKLab, b: OKLab) =>
+  Math.sqrt((a.L - b.L) ** 2 + (a.a - b.a) ** 2 + (a.b - b.b) ** 2);
+
+/** Random point on a shell of radius [rMin, rMax] around `center` in OKLab. */
+function sampleShell(center: OKLab, rMin: number, rMax: number, rng: RngFn): OKLab {
+  // Uniform direction on the unit sphere.
+  const z = rng() * 2 - 1;
+  const theta = rng() * Math.PI * 2;
+  const r = Math.sqrt(1 - z * z);
+  const d = rMin + rng() * (rMax - rMin);
+  return {
+    L: center.L + d * z,
+    a: center.a + d * r * Math.cos(theta),
+    b: center.b + d * r * Math.sin(theta),
+  };
+}
+
+interface PickOptions {
+  count: number;
+  /** Generates a candidate color. */
+  candidate: (rng: RngFn) => RGB;
+  /** Accepts/rejects by distance to the target. */
+  acceptTarget: (deltaToTarget: number) => boolean;
+  minPairDelta: number;
+  /** Colors every pick must also stay away from (e.g. the target). */
+  avoid: OKLab[];
+  rng: RngFn;
+}
+
 /**
- * Generates distractors for "Exact Color" matching mode.
+ * Picks `count` colors that satisfy the target constraint and are at least
+ * `minPairDelta` apart from each other and from `avoid`. If the space is too
+ * crowded it gradually relaxes the pair spacing, but never below the JND, so
+ * the requested number of colors is always returned and they are always
+ * visibly different.
+ */
+function pickDistinct({ count, candidate, acceptTarget, minPairDelta, avoid, rng }: PickOptions) {
+  const picked: { rgb: RGB; lab: OKLab; delta: number }[] = [];
+  const target = avoid[0];
+  let pairMin = minPairDelta;
+  let attempts = 0;
+
+  while (picked.length < count) {
+    attempts++;
+    if (attempts % 300 === 0) pairMin = Math.max(JND, pairMin * 0.85);
+    if (attempts > 20000) break; // pathological safety valve
+
+    // After many misses, fall back to random colors so we always finish.
+    const rgb = attempts > 2000 && rng() < 0.5 ? generateRandomRgb(rng) : candidate(rng);
+    const lab = rgbToOklab(rgb); // measure the *rounded, in-gamut* color
+    const delta = labDistance(lab, target);
+    if (!acceptTarget(delta)) continue;
+    if (delta < JND) continue;
+    if (avoid.some((o) => labDistance(o, lab) < JND)) continue;
+    if (picked.some((p) => labDistance(p.lab, lab) < pairMin)) continue;
+    picked.push({ rgb, lab, delta });
+  }
+  return picked;
+}
+
+function shuffle<T>(items: T[], rng: RngFn): T[] {
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  return items;
+}
+
+/**
+ * "Exact color" mode: the target plus distractors that are all visibly
+ * different from the target and from each other.
  */
 export function generateExactColorChoices(
   targetRgb: RGB,
@@ -82,162 +190,80 @@ export function generateExactColorChoices(
 ): RoundChoice[] {
   const config = DIFFICULTY_CONFIGS[difficulty];
   const targetHex = rgbToHex(targetRgb);
-  const targetHsl = rgbToHsl(targetRgb);
+  const targetLab = rgbToOklab(targetRgb);
+
+  const distractors = pickDistinct({
+    count: config.choiceCount - 1,
+    candidate:
+      difficulty === 'easy'
+        ? (r) => generateRandomRgb(r)
+        : (r) => oklabToRgb(sampleShell(targetLab, config.minDelta, config.maxDelta, r)),
+    acceptTarget: (d) => d >= config.minDelta && d <= config.maxDelta,
+    minPairDelta: config.minPairDelta,
+    avoid: [targetLab],
+    rng,
+  });
 
   const choices: RoundChoice[] = [
-    {
-      id: `target-${targetHex}`,
-      hex: targetHex,
-      isCorrect: true,
-      distanceToTarget: 0,
-    },
+    { id: `target-${targetHex}`, hex: targetHex, isCorrect: true, distanceToTarget: 0 },
+    ...distractors.map((d, i) => ({
+      id: `choice-${rgbToHex(d.rgb)}-${i}`,
+      hex: rgbToHex(d.rgb),
+      isCorrect: false,
+      distanceToTarget: d.delta,
+    })),
   ];
 
-  const usedHexes = new Set<string>([targetHex]);
-  let attempts = 0;
-
-  while (choices.length < config.choiceCount && attempts < 200) {
-    attempts++;
-
-    let candidateRgb: RGB;
-
-    if (difficulty === 'expert') {
-      // Very slight variation in hue, saturation, or lightness
-      const hDelta = (rng() * 2 - 1) * 8;
-      const sDelta = (rng() * 2 - 1) * 8;
-      const lDelta = (rng() * 2 - 1) * 6;
-      const newH = (targetHsl.h + hDelta + 360) % 360;
-      const newS = Math.max(10, Math.min(100, targetHsl.s + sDelta));
-      const newL = Math.max(15, Math.min(85, targetHsl.l + lDelta));
-      candidateRgb = hslToRgb({ h: newH, s: newS, l: newL });
-    } else if (difficulty === 'hard') {
-      const hDelta = (rng() * 2 - 1) * 20;
-      const sDelta = (rng() * 2 - 1) * 15;
-      const lDelta = (rng() * 2 - 1) * 12;
-      const newH = (targetHsl.h + hDelta + 360) % 360;
-      const newS = Math.max(10, Math.min(100, targetHsl.s + sDelta));
-      const newL = Math.max(15, Math.min(85, targetHsl.l + lDelta));
-      candidateRgb = hslToRgb({ h: newH, s: newS, l: newL });
-    } else if (difficulty === 'medium') {
-      const hDelta = (rng() * 2 - 1) * 45;
-      const sDelta = (rng() * 2 - 1) * 25;
-      const lDelta = (rng() * 2 - 1) * 20;
-      const newH = (targetHsl.h + hDelta + 360) % 360;
-      const newS = Math.max(15, Math.min(95, targetHsl.s + sDelta));
-      const newL = Math.max(20, Math.min(80, targetHsl.l + lDelta));
-      candidateRgb = hslToRgb({ h: newH, s: newS, l: newL });
-    } else {
-      // Easy: Generate clearly distinct colors
-      candidateRgb = generateRandomRgb(rng);
-    }
-
-    const hex = rgbToHex(candidateRgb);
-    if (usedHexes.has(hex)) continue;
-
-    const delta = oklabDistance(targetRgb, candidateRgb);
-
-    // Verify delta falls within difficulty bounds
-    if (delta < config.minDelta || delta > config.maxDelta + 0.1) {
-      if (difficulty !== 'easy' || delta < config.minDelta) {
-        continue;
-      }
-    }
-
-    // Ensure it's also sufficiently distant from already chosen distractors
-    const tooCloseToOther = choices.some((c) => {
-      const existingRgb = hexToRgb(c.hex);
-      return existingRgb ? oklabDistance(candidateRgb, existingRgb) < config.minDelta * 0.4 : false;
-    });
-    if (tooCloseToOther && choices.length > 2) {
-      // allow some flexibility if attempts are high
-      if (attempts < 100) continue;
-    }
-
-    usedHexes.add(hex);
-    choices.push({
-      id: `choice-${hex}-${choices.length}`,
-      hex,
-      isCorrect: false,
-      distanceToTarget: delta,
-    });
-  }
-
-  // Shuffle choices deterministically if custom rng is provided
-  for (let i = choices.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [choices[i], choices[j]] = [choices[j], choices[i]];
-  }
-
-  return choices;
+  return shuffle(choices, rng);
 }
 
 /**
- * Generates questions for "Closest Color" mode:
- * Exactly one distractor is demonstrably closest to the target.
+ * "Closest color" mode: exactly one swatch is clearly nearest to the target.
+ * The answer sits at roughly the difficulty's distance; every other swatch is
+ * further away by a margin you can see.
  */
 export function generateClosestColorChoices(
   targetRgb: RGB,
   difficulty: Difficulty,
   rng: RngFn = Math.random
 ): RoundChoice[] {
-  const count = difficulty === 'easy' ? 3 : difficulty === 'medium' ? 4 : 5;
-  const targetHsl = rgbToHsl(targetRgb);
+  const config = DIFFICULTY_CONFIGS[difficulty];
+  const targetLab = rgbToOklab(targetRgb);
 
-  // Candidate 1: The closest one
-  const closeDeltaH = (rng() * 2 - 1) * (difficulty === 'expert' ? 6 : 14);
-  const closeRgb = hslToRgb({
-    h: (targetHsl.h + closeDeltaH + 360) % 360,
-    s: Math.max(20, Math.min(90, targetHsl.s + (rng() * 2 - 1) * 8)),
-    l: Math.max(25, Math.min(75, targetHsl.l + (rng() * 2 - 1) * 6)),
+  const [bandMin, bandMax] = config.closestBand;
+  const [closest] = pickDistinct({
+    count: 1,
+    candidate: (r) => oklabToRgb(sampleShell(targetLab, bandMin, bandMax, r)),
+    acceptTarget: (d) => d >= bandMin && d <= bandMax,
+    minPairDelta: JND,
+    avoid: [targetLab],
+    rng,
   });
-  const closestDist = oklabDistance(targetRgb, closeRgb);
+
+  const floor = closest.delta + config.closestMargin;
+  const others = pickDistinct({
+    count: config.closestChoiceCount - 1,
+    // Mix nearby shells with fully random colors so out-of-gamut targets
+    // (very dark/light/saturated) can still be filled.
+    candidate: (r) =>
+      r() < 0.6 ? oklabToRgb(sampleShell(targetLab, floor, floor + 0.25, r)) : generateRandomRgb(r),
+    acceptTarget: (d) => d >= floor,
+    minPairDelta: Math.max(config.minPairDelta, 0.05),
+    avoid: [targetLab, closest.lab],
+    rng,
+  });
 
   const choices: RoundChoice[] = [
-    {
-      id: 'closest-true',
-      hex: rgbToHex(closeRgb),
-      isCorrect: true,
-      distanceToTarget: closestDist,
-    },
+    { id: 'closest-true', hex: rgbToHex(closest.rgb), isCorrect: true, distanceToTarget: closest.delta },
+    ...others.map((o, i) => ({
+        id: `far-${i}`,
+        hex: rgbToHex(o.rgb),
+        isCorrect: false,
+        distanceToTarget: o.delta,
+      })),
   ];
 
-  // Candidates 2..N: Clearly further away
-  const usedHex = new Set<string>([choices[0].hex, rgbToHex(targetRgb)]);
-  let attempts = 0;
-
-  while (choices.length < count && attempts < 100) {
-    attempts++;
-    const farDeltaH = (rng() * 2 - 1) * 60 + (rng() > 0.5 ? 40 : -40);
-    const candidateRgb = hslToRgb({
-      h: (targetHsl.h + farDeltaH + 360) % 360,
-      s: randomInt(30, 90, rng),
-      l: randomInt(25, 75, rng),
-    });
-    const dist = oklabDistance(targetRgb, candidateRgb);
-
-    // Must be noticeably further than the closest color
-    const margin = difficulty === 'expert' ? 0.03 : 0.08;
-    if (dist <= closestDist + margin) continue;
-
-    const hex = rgbToHex(candidateRgb);
-    if (usedHex.has(hex)) continue;
-
-    usedHex.add(hex);
-    choices.push({
-      id: `far-${choices.length}`,
-      hex,
-      isCorrect: false,
-      distanceToTarget: dist,
-    });
-  }
-
-  // Shuffle
-  for (let i = choices.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [choices[i], choices[j]] = [choices[j], choices[i]];
-  }
-
-  return choices;
+  return shuffle(choices, rng);
 }
 
 /**

@@ -1,7 +1,7 @@
 // Minimal service worker for ColorFlick
 // Strictly avoids caching HTML, sitemap, robots, and manifest to prevent stale versions
 
-const CACHE_NAME = 'colorflick-v2';
+const CACHE_NAME = 'colorflick-v3';
 const STATIC_ASSETS = [
   '/',
   '/favicon.svg',

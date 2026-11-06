@@ -12,8 +12,47 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       colors: {
-        // A single, quiet accent. The UI itself stays neutral (zinc) so it
-        // never competes with — or tints the perception of — the swatches.
+        // Brand palette = the four logo colors. Pages use them freely; the
+        // game board itself stays neutral so it never tints the swatches.
+        coral: {
+          50: '#fff3f1',
+          100: '#ffe3df',
+          200: '#ffcbc4',
+          300: '#fca698',
+          400: '#f7806d',
+          500: '#f25f4c',
+          600: '#de4330',
+          700: '#ba3424',
+          800: '#992e22',
+          900: '#7f2b22',
+          950: '#45130d',
+        },
+        sun: {
+          50: '#fffaeb',
+          100: '#fff0c6',
+          200: '#ffe088',
+          300: '#fdcb4c',
+          400: '#f5b83d',
+          500: '#ec9a12',
+          600: '#d0740c',
+          700: '#ad520e',
+          800: '#8c4012',
+          900: '#733512',
+          950: '#421a05',
+        },
+        mint: {
+          50: '#effcf7',
+          100: '#d8f7ea',
+          200: '#b4eed8',
+          300: '#81dfc1',
+          400: '#4cc9a6',
+          500: '#1fb58f',
+          600: '#149274',
+          700: '#12755f',
+          800: '#135d4d',
+          900: '#124d41',
+          950: '#082b25',
+        },
         brand: {
           50: '#eef3ff',
           100: '#dce6fe',

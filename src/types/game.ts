@@ -56,6 +56,21 @@ export interface GameSettings {
   keyboardNavigation: boolean;
 }
 
+/** Compact record of one finished daily challenge, kept for the calendar. */
+export interface DailySummary {
+  date: string; // YYYY-MM-DD
+  score: number;
+  accuracy: number;
+  correctAnswers: number;
+  totalRounds: number;
+  /** Per-round outcome, used for the shareable result grid. */
+  results: boolean[];
+  /** Target color of each round (shown on the results screen). */
+  targets: string[];
+  /** True if played on the day itself (counts toward streaks). */
+  onTheDay: boolean;
+}
+
 export interface DailyChallengeState {
   date: string; // YYYY-MM-DD
   version: number;

@@ -1,76 +1,79 @@
-import { useState, useMemo, useCallback } from 'react';
-import { DailyChallengeState, RoundResult } from '../types/game';
+import { useCallback, useMemo, useState } from 'react';
+import { DailySummary, RoundResult } from '../types/game';
 import { Storage } from '../storage/localStorage';
 import { createDailyRng } from '../utils/seededRandom';
 import { useGameEngine } from './useGameEngine';
-import { useStats } from './useStats';
+import { useStats, statsStore } from './useStats';
+import { trackEvent } from '../utils/analytics';
+import { addDays, todayKey } from '../utils/dates';
+import { createStore, useStore } from '../storage/store';
 
-export function getTodayDateString(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+export const DAILY_ROUNDS = 10;
+
+/** Shared so the calendar updates as soon as a game finishes. */
+export const dailyHistoryStore = createStore<Record<string, DailySummary>>(() => Storage.getDailyHistory());
+
+export function useDailyHistory() {
+  return useStore(dailyHistoryStore);
 }
 
-export function useDailyChallenge() {
-  const todayStr = useMemo(() => getTodayDateString(), []);
-  const [persistedState, setPersistedState] = useState<DailyChallengeState | null>(() =>
-    Storage.getDailyChallenge(todayStr)
-  );
-
+/**
+ * Daily challenge for a given date (defaults to today). Every date has its own
+ * seeded set of rounds, identical for all players. Only playing on the day
+ * itself counts toward the daily streak; older dates are replays.
+ */
+export function useDailyChallenge(dateKey: string = todayKey()) {
+  const isToday = dateKey === todayKey();
+  const history = useDailyHistory();
+  const [justFinished, setJustFinished] = useState<DailySummary | null>(null);
   const { recordGameComplete } = useStats();
 
-  // Create deterministic PRNG for today
-  const dailyRng = useMemo(() => createDailyRng(todayStr), [todayStr]);
+  const dailyRng = useMemo(() => createDailyRng(dateKey), [dateKey]);
 
   const handleGameComplete = useCallback(
-    (
-      _mode: string,
-      _format: string,
-      _diff: string,
-      finalScore: number,
-      rounds: RoundResult[]
-    ) => {
-      const correctCount = rounds.filter((r) => r.isCorrect).length;
-      const accuracy = rounds.length > 0 ? Math.round((correctCount / rounds.length) * 100) : 0;
-
-      const completedState: DailyChallengeState = {
-        date: todayStr,
-        version: 1,
-        completed: true,
+    (_mode: string, _format: string, _diff: string, finalScore: number, rounds: RoundResult[]) => {
+      const correct = rounds.filter((r) => r.isCorrect).length;
+      const accuracy = rounds.length ? Math.round((correct / rounds.length) * 100) : 0;
+      const summary: DailySummary = {
+        date: dateKey,
         score: finalScore,
         accuracy,
-        correctAnswers: correctCount,
+        correctAnswers: correct,
         totalRounds: rounds.length,
-        rounds,
+        results: rounds.map((r) => r.isCorrect),
+        targets: rounds.map((r) => r.targetHex),
+        onTheDay: isToday,
       };
 
-      Storage.saveDailyChallenge(completedState);
-      setPersistedState(completedState);
-
-      // Update daily streak in stats
-      const stats = Storage.getStats();
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
-
-      let newDailyStreak = 1;
-      if (stats.lastDailyDate === yesterdayStr) {
-        newDailyStreak = stats.dailyStreak + 1;
-      } else if (stats.lastDailyDate === todayStr) {
-        newDailyStreak = stats.dailyStreak; // already counted today
+      // A replay never overwrites the original on-the-day result.
+      const existing = dailyHistoryStore.get()[dateKey];
+      if (!existing || (!existing.onTheDay && finalScore > existing.score)) {
+        Storage.saveDailySummary(summary);
+        dailyHistoryStore.set(Storage.getDailyHistory());
       }
+      setJustFinished(summary);
+      trackEvent('daily_challenge_completed', { score: finalScore, accuracy, replay: !isToday });
 
-      stats.dailyStreak = newDailyStreak;
-      stats.longestDailyStreak = Math.max(stats.longestDailyStreak, newDailyStreak);
-      stats.lastDailyDate = todayStr;
-      stats.dailyCompletedCount = stats.dailyCompletedCount + 1;
-      Storage.saveStats(stats);
+      if (isToday && !existing) {
+        const stats = { ...statsStore.get() };
+        const yesterday = addDays(dateKey, -1);
+        const streak =
+          stats.lastDailyDate === yesterday
+            ? stats.dailyStreak + 1
+            : stats.lastDailyDate === dateKey
+            ? stats.dailyStreak
+            : 1;
+        stats.dailyStreak = streak;
+        stats.longestDailyStreak = Math.max(stats.longestDailyStreak, streak);
+        stats.lastDailyDate = dateKey;
+        stats.dailyCompletedCount += 1;
+        Storage.saveStats(stats);
+        statsStore.set(stats);
+      }
 
       recordGameComplete('exact-color', 'daily', 'medium', finalScore, rounds);
     },
-    [todayStr, recordGameComplete]
+    [dateKey, isToday, recordGameComplete]
   );
 
   const engine = useGameEngine({
@@ -78,14 +81,11 @@ export function useDailyChallenge() {
     initialFormat: 'daily',
     initialDifficulty: 'medium',
     customRng: dailyRng,
-    totalRounds: 10,
+    totalRounds: DAILY_ROUNDS,
     onGameComplete: handleGameComplete,
   });
 
-  return {
-    todayStr,
-    isCompletedToday: persistedState?.completed ?? false,
-    dailyResult: persistedState,
-    engine,
-  };
+  const result = justFinished ?? history[dateKey] ?? null;
+
+  return { dateKey, isToday, result, engine };
 }

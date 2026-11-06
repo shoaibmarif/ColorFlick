@@ -22,10 +22,36 @@ import {
 } from '../utils/randomColor';
 import { classifyWarmCool, getWarmCoolExplanation } from '../utils/warmCool';
 import { classifyLightDark, getLuminanceExplanation } from '../utils/luminance';
-import { calculateRoundScore } from '../utils/scoring';
+import { calculateRoundScore, SCORING } from '../utils/scoring';
 import { calculateDifferencePercentage } from '../utils/colorDistance';
 import { sanitizeHexInput } from '../utils/validation';
 import { soundManager } from '../utils/audio';
+
+/**
+ * Difficulty for a given round. Survival and quick-challenge formats escalate
+ * as you progress; every other format uses the chosen difficulty.
+ */
+export function difficultyForRound(
+  format: GameFormat,
+  chosen: Difficulty,
+  round: number,
+  totalRounds: number
+): Difficulty {
+  if (format === 'survival') {
+    if (round <= 3) return 'easy';
+    if (round <= 6) return 'medium';
+    if (round <= 10) return 'hard';
+    return 'expert';
+  }
+  if (format === 'quick-challenge') {
+    const progress = round / totalRounds;
+    if (progress <= 0.3) return 'easy';
+    if (progress <= 0.6) return 'medium';
+    if (progress <= 0.85) return 'hard';
+    return 'expert';
+  }
+  return chosen;
+}
 
 interface GameEngineConfig {
   initialMode?: GameMode;
@@ -75,22 +101,10 @@ export function useGameEngine({
   const rngRef = useRef<RngFn>(customRng || secureRandom);
 
   // Determine active difficulty (auto-escalates in survival and quick-challenge modes)
-  const getActiveDifficulty = useCallback((): Difficulty => {
-    if (format === 'survival') {
-      if (roundNumber <= 3) return 'easy';
-      if (roundNumber <= 6) return 'medium';
-      if (roundNumber <= 10) return 'hard';
-      return 'expert';
-    }
-    if (format === 'quick-challenge') {
-      const progress = roundNumber / targetRoundsCount;
-      if (progress <= 0.3) return 'easy';
-      if (progress <= 0.6) return 'medium';
-      if (progress <= 0.85) return 'hard';
-      return 'expert';
-    }
-    return difficulty;
-  }, [format, difficulty, roundNumber, targetRoundsCount]);
+  const getActiveDifficulty = useCallback(
+    (): Difficulty => difficultyForRound(format, difficulty, roundNumber, targetRoundsCount),
+    [format, difficulty, roundNumber, targetRoundsCount]
+  );
 
   // Generate question for current round
   const setupRound = useCallback(
@@ -192,7 +206,7 @@ export function useGameEngine({
 
       const initialTarget = generateRandomRgb(rngRef.current);
       setTargetRgb(initialTarget);
-      setupRound(initialTarget, activeDiff);
+      setupRound(initialTarget, difficultyForRound(activeFormat, activeDiff, 1, activeRounds));
     },
     [mode, format, difficulty, targetRoundsCount, setupRound]
   );
@@ -382,7 +396,7 @@ export function useGameEngine({
       if (!guessedRgb) return;
 
       const diff = calculateDifferencePercentage(targetRgb, guessedRgb);
-      const isCorrect = diff <= 8.0;
+      const isCorrect = diff <= SCORING.codeGuessTolerancePct;
 
       finishRound(isCorrect, sanitized, sanitized, diff);
     },
@@ -394,7 +408,7 @@ export function useGameEngine({
     (guessedRgb: RGB) => {
       if (roundStatus !== 'guessing') return;
       const diff = calculateDifferencePercentage(targetRgb, guessedRgb);
-      const isCorrect = diff <= 8.0;
+      const isCorrect = diff <= SCORING.codeGuessTolerancePct;
       const hex = rgbToHex(guessedRgb);
 
       finishRound(isCorrect, hex, `RGB(${guessedRgb.r}, ${guessedRgb.g}, ${guessedRgb.b})`, diff);
@@ -408,7 +422,7 @@ export function useGameEngine({
       if (roundStatus !== 'guessing') return;
       const diff = calculateDifferencePercentage(targetRgb, guessedRgb);
       // Correct if similarity >= 88%
-      const isCorrect = similarityPercentage >= 88.0;
+      const isCorrect = similarityPercentage >= SCORING.sliderPassSimilarityPct;
       const hex = rgbToHex(guessedRgb);
       const hsl = rgbToHsl(guessedRgb);
 
@@ -430,19 +444,10 @@ export function useGameEngine({
     const nextTarget = generateRandomRgb(rngRef.current);
     setTargetRgb(nextTarget);
 
-    const activeDiff =
-      format === 'survival'
-        ? nextRoundNum <= 3
-          ? 'easy'
-          : nextRoundNum <= 6
-          ? 'medium'
-          : nextRoundNum <= 10
-          ? 'hard'
-          : 'expert'
-        : difficulty;
+    const activeDiff = difficultyForRound(format, difficulty, nextRoundNum, targetRoundsCount);
 
     setupRound(nextTarget, activeDiff);
-  }, [roundStatus, roundNumber, format, difficulty, setupRound]);
+  }, [roundStatus, roundNumber, format, difficulty, targetRoundsCount, setupRound]);
 
   // Complete game prematurely (e.g. when timed countdown expires)
   const forceCompleteGame = useCallback(() => {

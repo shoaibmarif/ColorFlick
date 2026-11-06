@@ -1,4 +1,4 @@
-import { GameSettings, DailyChallengeState } from '../types/game';
+import { GameSettings, DailyChallengeState, DailySummary } from '../types/game';
 import { PlayerStats, Achievement } from '../types/stats';
 import {
   DEFAULT_SETTINGS,
@@ -14,6 +14,8 @@ const KEYS = {
   HISTORY: 'colorGuessing.history',
   ACHIEVEMENTS: 'colorGuessing.achievements',
   DAILY: 'colorGuessing.daily',
+  DAILY_HISTORY: 'colorGuessing.dailyHistory',
+  ONBOARDED: 'colorGuessing.onboarded',
 } as const;
 
 // In-memory fallback if localStorage is blocked by private mode or permission
@@ -120,6 +122,42 @@ export const Storage = {
 
   saveDailyChallenge(state: DailyChallengeState): void {
     setItem(KEYS.DAILY, state);
+  },
+
+  /** All finished daily challenges, keyed by date (YYYY-MM-DD). */
+  getDailyHistory(): Record<string, DailySummary> {
+    const history = getItem<Record<string, DailySummary>>(KEYS.DAILY_HISTORY, {});
+    // Back-fill from the single "today" record older versions stored.
+    const legacy = getItem<DailyChallengeState | null>(KEYS.DAILY, null);
+    if (legacy?.completed && !history[legacy.date]) {
+      history[legacy.date] = {
+        date: legacy.date,
+        score: legacy.score,
+        accuracy: legacy.accuracy,
+        correctAnswers: legacy.correctAnswers,
+        totalRounds: legacy.totalRounds,
+        results: legacy.rounds.map((r) => r.isCorrect),
+        targets: legacy.rounds.map((r) => r.targetHex),
+        onTheDay: true,
+      };
+    }
+    return history;
+  },
+
+  saveDailySummary(summary: DailySummary): void {
+    const history = this.getDailyHistory();
+    history[summary.date] = summary;
+    // Keep roughly the last year.
+    const dates = Object.keys(history).sort().slice(-400);
+    setItem(KEYS.DAILY_HISTORY, Object.fromEntries(dates.map((d) => [d, history[d]])));
+  },
+
+  isOnboarded(): boolean {
+    return getItem<boolean>(KEYS.ONBOARDED, false);
+  },
+
+  setOnboarded(): void {
+    setItem(KEYS.ONBOARDED, true);
   },
 
   resetAllData(): void {
