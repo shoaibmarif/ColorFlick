@@ -34,11 +34,11 @@ export const PrivacyPage: React.FC = () => (
         aggregate, how many people visit, which pages they use and which game modes are popular (for example, “a game was completed in HEX mode”).
       </p>
       <p>
-        Analytics cookies are <strong>off until you choose “Accept”</strong> in the cookie notice. If
-        you decline, Google Analytics runs in a cookieless mode that only sends basic, anonymous
-        signals without identifying you across visits. You can change your choice at any time with{' '}
-        <strong>Cookie settings</strong> in the footer. We do not use advertising cookies, build ad
-        profiles or sell data. See{' '}
+        Analytics is on by default. You can turn it off at any time by choosing{' '}
+        <strong>Opt out</strong> in the notice, or later with <strong>Cookie settings</strong> in the
+        footer; your choice is remembered on this device. When you opt out, Google Analytics runs in a
+        cookieless mode that only sends basic, anonymous signals without identifying you across visits.
+        We do not use advertising cookies, build ad profiles or sell data. See{' '}
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
           Google’s privacy policy
         </a>{' '}

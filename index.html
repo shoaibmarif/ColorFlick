@@ -37,23 +37,23 @@
     </script>
 
     <!-- Consent Mode defaults: must run before Google Tag Manager loads.
-         No analytics cookies until the visitor accepts in the cookie notice. -->
+         Analytics is on by default; visitors can opt out from the cookie notice
+         or "Cookie settings" in the footer. Advertising storage is always off. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       (function () {
-        var granted = false;
+        var optedOut = false;
         try {
-          granted = localStorage.getItem('colorflick.consent') === 'granted';
+          optedOut = localStorage.getItem('colorflick.consent') === 'denied';
         } catch (e) {}
         gtag('consent', 'default', {
-          analytics_storage: granted ? 'granted' : 'denied',
+          analytics_storage: optedOut ? 'denied' : 'granted',
           ad_storage: 'denied',
           ad_user_data: 'denied',
-          ad_personalization: 'denied',
-          wait_for_update: 500
+          ad_personalization: 'denied'
         });
       })();
       gtag('js', new Date());
