@@ -5,7 +5,7 @@
  */
 export const SITE = {
   name: 'ColorFlick',
-  url: 'https://colorflick.netlify.app',
+  url: 'https://colorflick.vercel.app',
   tagline: 'The free color guessing game',
   defaultDescription:
     'ColorFlick is a free color guessing game. Match swatches, guess HEX and RGB codes, mix colors with sliders and play a new daily challenge. No sign-up, no ads.',
@@ -20,7 +20,10 @@ export const SITE = {
     url: 'https://shoaibarif.vercel.app/',
     github: 'https://github.com/shoaibmarif',
     linkedin: 'https://www.linkedin.com/in/shoaibmarif/',
+    email: 'shoaibmuhammadarif@gmail.com',
   },
+  repo: 'https://github.com/shoaibmarif/colorflick',
+  issues: 'https://github.com/shoaibmarif/colorflick/issues',
 } as const;
 
 export const absoluteUrl = (path: string): string =>

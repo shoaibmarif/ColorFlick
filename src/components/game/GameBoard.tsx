@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GameMode, GameFormat, Difficulty, GameSettings } from '../../types/game';
 import { useGameEngine } from '../../hooks/useGameEngine';
 import { useTimer } from '../../hooks/useTimer';
@@ -49,6 +49,15 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     onRoundComplete: recordRoundResult,
     onGameComplete: recordGameComplete,
   });
+
+  // Personal best as it was *before* this game, so the "new best" message can
+  // compare against it (stats are updated the moment the game ends).
+  const bestBeforeGame = useRef(stats.highestScore);
+  useEffect(() => {
+    if (engine.roundNumber === 1 && engine.roundStatus === 'guessing') {
+      bestBeforeGame.current = stats.highestScore;
+    }
+  }, [engine.roundNumber, engine.roundStatus, stats.highestScore]);
 
   const isTimedFormat = engine.format === 'timed';
   const durationSeconds = timedDuration;
@@ -110,17 +119,18 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       engine.mode === 'color-match',
   });
 
-  // Determine grid columns
+  // Grid columns: keep rows full (3 → 3 cols, 6/9 → 3 cols, 8 → 4 cols).
+  const n = engine.choices.length;
   const choiceGridCols =
-    engine.mode === 'warm-cool'
-      ? 'grid-cols-3 max-w-md mx-auto'
-      : engine.mode === 'light-dark'
+    engine.mode === 'light-dark'
       ? 'grid-cols-2 max-w-sm mx-auto'
-      : engine.choices.length <= 4
-      ? 'grid-cols-2 sm:grid-cols-2 max-w-md mx-auto'
-      : engine.choices.length <= 6
-      ? 'grid-cols-2 sm:grid-cols-3 max-w-lg mx-auto'
-      : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 max-w-2xl mx-auto';
+      : n === 4
+      ? 'grid-cols-2 max-w-md mx-auto'
+      : n === 8
+      ? 'grid-cols-2 sm:grid-cols-4 max-w-2xl mx-auto'
+      : n === 5
+      ? 'grid-cols-2 sm:grid-cols-5 max-w-2xl mx-auto'
+      : 'grid-cols-3 max-w-lg mx-auto';
 
   // Assistive code displays
   const shouldShowCodeOnTarget =
@@ -360,7 +370,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         difficulty={engine.difficulty}
         score={engine.score}
         rounds={engine.roundHistory}
-        isNewPersonalBest={engine.score > stats.highestScore && engine.score > 0}
+        isNewPersonalBest={engine.score > bestBeforeGame.current && engine.score > 0}
       />
     </section>
   );

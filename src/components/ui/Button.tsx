@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'accent';
+type Variant = 'primary' | 'dark' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'accent';
 type Size = 'sm' | 'md' | 'lg';
 
 const base =
@@ -14,9 +14,9 @@ const sizes: Record<Size, string> = {
 };
 
 const variants: Record<Variant, string> = {
-  primary:
-    'bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200',
-  accent: 'bg-brand-600 text-white hover:bg-brand-700',
+  primary: 'bg-brand-600 text-white hover:bg-brand-700 dark:bg-brand-500 dark:hover:bg-brand-400',
+  dark: 'bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200',
+  accent: 'bg-coral-500 text-white hover:bg-coral-600',
   secondary:
     'bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800',
   outline:

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getBreadcrumbs } from '../../seo/routes';
+import { ColorStripe } from '../ui/ColorStripe';
 
 interface PageHeaderProps {
   title: React.ReactNode;
@@ -38,6 +39,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, intro, path, alig
           </ol>
         </nav>
       )}
+      <ColorStripe className={`mb-4 ${align === 'center' ? 'justify-center' : ''}`} />
       <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">{title}</h1>
       {intro && <p className="mt-3 text-lg leading-8 text-zinc-600 dark:text-zinc-400">{intro}</p>}
       {children}

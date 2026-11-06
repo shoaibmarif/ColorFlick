@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { SettingsModal } from '../settings/SettingsModal';
 import { Toast } from '../ui/Toast';
+import { ConsentBanner } from '../ui/ConsentBanner';
 import { useSettings } from '../../hooks/useSettings';
 import { useStats } from '../../hooks/useStats';
 
@@ -41,6 +42,7 @@ export const PageShell: React.FC<PageShellProps> = ({ children }) => {
       />
 
       <Toast achievement={newlyUnlocked} onDismiss={clearNewAchievementToast} />
+      <ConsentBanner />
     </div>
   );
 };

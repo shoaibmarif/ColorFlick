@@ -1,20 +1,27 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { GameMode, GameFormat, Difficulty, RoundResult } from '../types/game';
 import { PlayerStats, Achievement } from '../types/stats';
 import { Storage } from '../storage/localStorage';
 import { soundManager } from '../utils/audio';
 import { trackEvent } from '../utils/analytics';
+import { createStore, useStore } from '../storage/store';
+import { settingsStore } from './useSettings';
+
+export const statsStore = createStore<PlayerStats>(() => Storage.getStats());
+export const achievementsStore = createStore<Achievement[]>(() => Storage.getAchievements());
+const unlockedStore = createStore<Achievement | null>(() => null);
+const setNewlyUnlocked = (a: Achievement | null) => unlockedStore.set(a);
+const setAchievements = (a: Achievement[]) => achievementsStore.set(a);
+const setStats = statsStore.set;
 
 export interface NewlyUnlockedAchievement {
   achievement: Achievement;
 }
 
 export function useStats() {
-  const [stats, setStats] = useState<PlayerStats>(() => Storage.getStats());
-  const [achievements, setAchievements] = useState<Achievement[]>(() =>
-    Storage.getAchievements()
-  );
-  const [newlyUnlocked, setNewlyUnlocked] = useState<Achievement | null>(null);
+  const stats = useStore(statsStore);
+  const achievements = useStore(achievementsStore);
+  const newlyUnlocked = useStore(unlockedStore);
 
   const checkAndUnlockAchievements = useCallback(
     (
@@ -257,6 +264,7 @@ export function useStats() {
     Storage.resetAllData();
     setStats(Storage.getStats());
     setAchievements(Storage.getAchievements());
+    settingsStore.set(Storage.getSettings());
   }, []);
 
   return {

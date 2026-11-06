@@ -116,7 +116,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-8">
+    <div className="w-full space-y-8">
       {/* Empty State if no games */}
       {stats.totalGames === 0 ? (
         <div className="text-center py-12 px-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-700 space-y-4">
