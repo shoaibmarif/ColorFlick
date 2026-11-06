@@ -1,20 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { BarChart3, ChevronDown, Menu, Settings, X } from 'lucide-react';
-import { Logo } from './Logo';
-<<<<<<< HEAD
-=======
-import { ThemeToggle } from './ThemeToggle';
->>>>>>> 5d0725c3e733ecb8bbf8a3f8be119c714c02c702
-import { NAV_GROUPS, SITE_LINKS } from './nav';
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { BarChart3, ChevronDown, Menu, Settings, X } from "lucide-react";
+import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
+import { NAV_GROUPS, SITE_LINKS } from "./nav";
 
 interface HeaderProps {
   onOpenSettings: () => void;
 }
 
 const iconButton =
-  'inline-flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white';
+  "inline-flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white";
 
 export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -32,14 +29,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
   useEffect(() => {
     if (!openMenu) return;
     const onClick = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
+      if (navRef.current && !navRef.current.contains(e.target as Node))
+        setOpenMenu(null);
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpenMenu(null);
-    document.addEventListener('mousedown', onClick);
-    document.addEventListener('keydown', onKey);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenMenu(null);
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener('mousedown', onClick);
-      document.removeEventListener('keydown', onKey);
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
     };
   }, [openMenu]);
 
@@ -47,23 +45,26 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
   useEffect(() => {
     if (!mobileOpen) return;
     const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMobileOpen(false);
-    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setMobileOpen(false);
+    document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
-      document.removeEventListener('keydown', onKey);
+      document.removeEventListener("keydown", onKey);
     };
   }, [mobileOpen]);
 
   const groupActive = (id: string) =>
-    NAV_GROUPS.find((g) => g.id === id)?.items.some((i) => i.to === location.pathname);
+    NAV_GROUPS.find((g) => g.id === id)?.items.some(
+      (i) => i.to === location.pathname,
+    );
 
   const topLink = ({ isActive }: { isActive: boolean }) =>
     `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
       isActive
-        ? 'text-zinc-900 dark:text-white'
-        : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+        ? "text-zinc-900 dark:text-white"
+        : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
     }`;
 
   return (
@@ -71,7 +72,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Logo />
 
-        <nav ref={navRef} aria-label="Main" className="hidden items-center gap-1 md:flex">
+        <nav
+          ref={navRef}
+          aria-label="Main"
+          className="hidden items-center gap-1 md:flex"
+        >
           {NAV_GROUPS.map((group) => {
             const isOpen = openMenu === group.id;
             return (
@@ -83,13 +88,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                   onClick={() => setOpenMenu(isOpen ? null : group.id)}
                   className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                     isOpen || groupActive(group.id)
-                      ? 'text-zinc-900 dark:text-white'
-                      : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                      ? "text-zinc-900 dark:text-white"
+                      : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   }`}
                 >
                   {group.label}
                   <ChevronDown
-                    className={`h-3.5 w-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`}
                     aria-hidden="true"
                   />
                 </button>
@@ -103,7 +108,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                         <li key={item.to}>
                           <Link
                             to={item.to}
-                            aria-current={location.pathname === item.to ? 'page' : undefined}
+                            aria-current={
+                              location.pathname === item.to ? "page" : undefined
+                            }
                             className="block rounded-lg px-3 py-2 hover:bg-zinc-100 aria-[current=page]:bg-zinc-100 dark:hover:bg-zinc-800 dark:aria-[current=page]:bg-zinc-800"
                           >
                             <span className="block text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -123,21 +130,35 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
               </div>
             );
           })}
-          <NavLink to="/daily-color-challenge" className={(a) => `${topLink(a)} inline-flex items-center gap-1.5`}>
-            <span className="h-2 w-2 rounded-full bg-coral-500" aria-hidden="true" />
+          <NavLink
+            to="/daily-color-challenge"
+            className={(a) => `${topLink(a)} inline-flex items-center gap-1.5`}
+          >
+            <span
+              className="h-2 w-2 rounded-full bg-coral-500"
+              aria-hidden="true"
+            />
             Daily
           </NavLink>
         </nav>
 
         <div className="flex items-center gap-1">
-          <Link to="/statistics" className={`${iconButton} hidden sm:inline-flex`} aria-label="Your statistics" title="Statistics">
+          <Link
+            to="/statistics"
+            className={`${iconButton} hidden sm:inline-flex`}
+            aria-label="Your statistics"
+            title="Statistics"
+          >
             <BarChart3 className="h-[18px] w-[18px]" />
           </Link>
-<<<<<<< HEAD
-=======
           <ThemeToggle />
->>>>>>> 5d0725c3e733ecb8bbf8a3f8be119c714c02c702
-          <button type="button" onClick={onOpenSettings} className={iconButton} aria-label="Settings" title="Settings">
+          <button
+            type="button"
+            onClick={onOpenSettings}
+            className={iconButton}
+            aria-label="Settings"
+            title="Settings"
+          >
             <Settings className="h-[18px] w-[18px]" />
           </button>
           <button
@@ -154,7 +175,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
 
       {mobileOpen &&
         createPortal(
-          <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+          <div
+            className="fixed inset-0 z-50 md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+          >
             <div
               className="absolute inset-0 bg-zinc-950/40 animate-fadeInOverlay"
               onClick={() => setMobileOpen(false)}
@@ -172,14 +198,21 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-4 py-4">
+              <nav
+                aria-label="Mobile"
+                className="flex-1 overflow-y-auto px-4 py-4"
+              >
                 <Link
                   to="/daily-color-challenge"
                   className="mb-6 flex items-center justify-between rounded-xl border border-zinc-200 px-4 py-3 dark:border-zinc-800"
                 >
                   <span>
-                    <span className="block text-sm font-medium">Daily challenge</span>
-                    <span className="block text-xs text-zinc-500">Ten new rounds every day</span>
+                    <span className="block text-sm font-medium">
+                      Daily challenge
+                    </span>
+                    <span className="block text-xs text-zinc-500">
+                      Ten new rounds every day
+                    </span>
                   </span>
                   <span aria-hidden="true">→</span>
                 </Link>
@@ -191,7 +224,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                         <li key={item.to}>
                           <Link
                             to={item.to}
-                            aria-current={location.pathname === item.to ? 'page' : undefined}
+                            aria-current={
+                              location.pathname === item.to ? "page" : undefined
+                            }
                             className="block rounded-lg px-1 py-2 text-[15px] text-zinc-800 aria-[current=page]:font-semibold dark:text-zinc-200"
                           >
                             {item.label}
@@ -205,13 +240,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                   <p className="eyebrow mb-2 px-1">More</p>
                   <ul>
                     <li>
-                      <Link to="/statistics" className="block px-1 py-2 text-[15px] text-zinc-800 dark:text-zinc-200">
+                      <Link
+                        to="/statistics"
+                        className="block px-1 py-2 text-[15px] text-zinc-800 dark:text-zinc-200"
+                      >
                         Your statistics
                       </Link>
                     </li>
                     {SITE_LINKS.map((item) => (
                       <li key={item.to}>
-                        <Link to={item.to} className="block px-1 py-2 text-[15px] text-zinc-800 dark:text-zinc-200">
+                        <Link
+                          to={item.to}
+                          className="block px-1 py-2 text-[15px] text-zinc-800 dark:text-zinc-200"
+                        >
                           {item.label}
                         </Link>
                       </li>
@@ -221,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
               </nav>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </header>
   );
