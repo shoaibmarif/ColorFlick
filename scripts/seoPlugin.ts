@@ -43,7 +43,7 @@ const staticBody = (route: RouteMeta) => {
     .map((p) => ROUTES.find((r) => r.path === p)!)
     .map((r) => `<li><a href="${r.path}">${esc(r.label)}</a></li>`)
     .join('');
-  return `<div style="max-width:42rem;margin:0 auto;padding:6rem 1rem;font-family:Inter,system-ui,sans-serif;color:#3f3f46">
+  return `<div style="max-width:42rem;margin:0 auto;padding:6rem 1rem;font-family:Poppins,system-ui,sans-serif;color:#3f3f46">
       <p style="font-weight:600;color:#18181b"><a href="/" style="color:inherit;text-decoration:none">${SITE.name}</a></p>
       <h1 style="font-size:2rem;line-height:1.2;color:#18181b;margin:1rem 0">${esc(route.heading)}</h1>
       <p style="line-height:1.6">${esc(route.description)}</p>

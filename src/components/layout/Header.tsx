@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { BarChart3, ChevronDown, Menu, Settings, X } from 'lucide-react';
 import { Logo } from './Logo';
+import { ThemeToggle } from './ThemeToggle';
 import { NAV_GROUPS, SITE_LINKS } from './nav';
 
 interface HeaderProps {
@@ -129,6 +130,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           <Link to="/statistics" className={`${iconButton} hidden sm:inline-flex`} aria-label="Your statistics" title="Statistics">
             <BarChart3 className="h-[18px] w-[18px]" />
           </Link>
+          <ThemeToggle />
           <button type="button" onClick={onOpenSettings} className={iconButton} aria-label="Settings" title="Settings">
             <Settings className="h-[18px] w-[18px]" />
           </button>
