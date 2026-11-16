@@ -44,4 +44,22 @@ describe('every page renders', () => {
     expect(await screen.findByRole('heading', { level: 1, name: /doesn’t exist/ })).toBeTruthy();
     expect(document.querySelector('meta[name="robots"]')?.getAttribute('content')).toContain('noindex');
   });
+
+  it('shows the ToolEnhancer attribution in the shared header and footer', async () => {
+    window.history.pushState({}, '', '/');
+    render(<App />);
+
+    const partnerLinks = await screen.findAllByRole('link', { name: /ToolEnhancer/ });
+    expect(partnerLinks).toHaveLength(2);
+    expect(partnerLinks.every((link) => link.getAttribute('href') === 'http://toolenhancer.com/')).toBe(true);
+  });
+
+  it('shows the ToolEnhancer attribution on the About page', async () => {
+    window.history.pushState({}, '', '/about');
+    render(<App />);
+
+    const partnerLinks = await screen.findAllByRole('link', { name: /ToolEnhancer/ });
+    expect(partnerLinks).toHaveLength(3);
+    expect(partnerLinks.every((link) => link.getAttribute('href') === 'http://toolenhancer.com/')).toBe(true);
+  });
 });

@@ -33,6 +33,17 @@ export const Footer: React.FC = () => {
               A free color game for anyone who likes playing with colors. No account and no ads, and your
               progress stays in your browser.
             </p>
+            <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+              A project by{' '}
+              <a
+                href={SITE.partner.url}
+                target="_blank"
+                rel="noopener"
+                className="font-medium text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                {SITE.partner.name}
+              </a>
+            </p>
             <ul className="mt-5 flex gap-2">
               {SOCIAL.map(({ href, label, Icon }) => (
                 <li key={href}>

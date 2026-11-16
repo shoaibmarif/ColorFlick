@@ -68,6 +68,13 @@ export const AboutPage: React.FC = () => (
         , a software engineer, and ColorFlick is my side project. If you have feedback, found a bug or
         just want to say hi, I'd like to hear from you.
       </p>
+      <p>
+        ColorFlick is a project by{' '}
+        <a href={SITE.partner.url} target="_blank" rel="noopener">
+          {SITE.partner.name}
+        </a>
+        .
+      </p>
     </article>
 
     <ul className="mt-6 flex flex-wrap gap-2">

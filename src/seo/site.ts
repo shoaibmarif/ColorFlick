@@ -22,6 +22,10 @@ export const SITE = {
     linkedin: 'https://www.linkedin.com/in/shoaibmarif/',
     email: 'shoaibmuhammadarif@gmail.com',
   },
+  partner: {
+    name: 'ToolEnhancer',
+    url: 'http://toolenhancer.com/',
+  },
   repo: 'https://github.com/shoaibmarif/colorflick',
   issues: 'https://github.com/shoaibmarif/colorflick/issues',
 } as const;

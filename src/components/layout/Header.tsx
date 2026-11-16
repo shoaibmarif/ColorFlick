@@ -5,6 +5,7 @@ import { BarChart3, ChevronDown, Menu, Settings, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { NAV_GROUPS, SITE_LINKS } from "./nav";
+import { SITE } from "../../seo/site";
 
 interface HeaderProps {
   onOpenSettings: () => void;
@@ -152,6 +153,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
             <BarChart3 className="h-[18px] w-[18px]" />
           </Link>
           <ThemeToggle />
+          <a
+            href={SITE.partner.url}
+            target="_blank"
+            rel="noopener"
+            aria-label={`ColorFlick by ${SITE.partner.name}`}
+            className="hidden rounded-md px-2 py-2 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white md:inline-flex"
+          >
+            <span className="mr-1 text-zinc-400 dark:text-zinc-500">by</span>
+            {SITE.partner.name}
+          </a>
           <button
             type="button"
             onClick={onOpenSettings}
@@ -259,6 +270,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                     ))}
                   </ul>
                 </div>
+                <a
+                  href={SITE.partner.url}
+                  target="_blank"
+                  rel="noopener"
+                  className="block border-t border-zinc-200 px-1 pt-5 text-sm text-zinc-500 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-white"
+                >
+                  A project by {SITE.partner.name}
+                </a>
               </nav>
             </div>
           </div>,
